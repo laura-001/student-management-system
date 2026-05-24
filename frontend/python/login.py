@@ -24,7 +24,7 @@ window=Tk()
 window.geometry("1280x700+0+0")#size of window
 #window.resizable(False,False)#prevents resizing of window
 
-#backgroundImage = ImageTk.PhotoImage(file="bg.jpeg")#background image
+#backgroundImage = ImageTk.PhotoImage(file=str(IMAGE_DIR / "bg.jpeg"))#background image
 #bglabel=Label(window,image=backgroundImage)
 #bglabel.place(x=0,y=0)#places background image
 
