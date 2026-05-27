@@ -133,7 +133,9 @@
 <h1 class="font-headline-md text-headline-md text-primary">Academic Management System</h1>
 </div>
 <!-- Login form: grows to keep footer anchored to the bottom. -->
-<form class="flex flex-col gap-md flex-grow">
+<form class="flex flex-col gap-md flex-grow" id="login-form" novalidate>
+<!-- Form-level error message for invalid credentials. -->
+<div aria-live="polite" class="hidden rounded-lg border border-error/40 bg-error-container px-sm py-xs text-body-sm text-on-error-container" id="form-error" role="alert">Invalid sign-in ID or password.</div>
 <!-- Username field group. -->
 <div class="flex flex-col gap-xs">
 <!-- Input label stays visible above the control. -->
@@ -142,8 +144,10 @@
 <!-- Leading icon anchored with absolute positioning. -->
 <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[18px]">person</span>
 <!-- Text input uses Tailwind tokens for consistent spacing and focus. -->
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-sm font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="username" placeholder="Enter your ID " type="text"/>
+<input aria-describedby="username-error" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-sm font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="username" placeholder="Enter your ID " type="text"/>
 </div>
+<!-- Inline field error shown when the username is missing. -->
+<p aria-live="polite" class="hidden text-body-sm text-error" id="username-error">Sign-in ID is required.</p>
 </div>
 <!-- Password field group with show/hide toggle. -->
 <div class="flex flex-col gap-xs">
@@ -154,12 +158,14 @@
 <!-- Lock icon indicates a secure field. -->
 <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[18px]">lock</span>
 <!-- Password input is hidden by default. -->
-<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-[34px] font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="password" placeholder="••••••••" type="password"/>
+<input aria-describedby="password-error" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-[34px] font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="password" placeholder="••••••••" type="password"/>
 <!-- Toggle button flips input type and updates icon/aria state. -->
 <button aria-label="Show password" aria-pressed="false" class="absolute right-sm top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors focus:outline-none" data-show="false" id="toggle-password" type="button">
 <span class="material-symbols-outlined text-[18px]">visibility_off</span>
 </button>
 </div>
+<!-- Inline field error shown when the password is missing. -->
+<p aria-live="polite" class="hidden text-body-sm text-error" id="password-error">Password is required.</p>
 </div>
 <!-- Primary submit action. -->
 <div class="mt-md">
@@ -181,27 +187,97 @@
                 const toggle = document.getElementById("toggle-password");
                 const password = document.getElementById("password");
 
-                // Safeguard if markup changes or elements are missing.
-                if (!toggle || !password) {
-                        return;
+                // Wire up the show/hide toggle only if the elements exist.
+                if (toggle && password) {
+                        // Switch between hidden/visible password states on click.
+                        toggle.addEventListener("click", () => {
+                                // Toggle input type to show or hide characters.
+                                const isHidden = password.type === "password";
+                                password.type = isHidden ? "text" : "password";
+
+                                // Swap the icon to reflect the current state.
+                                const icon = toggle.querySelector(".material-symbols-outlined");
+                                if (icon) {
+                                        icon.textContent = isHidden ? "visibility" : "visibility_off";
+                                }
+
+                                // Keep aria attributes aligned for accessibility.
+                                toggle.setAttribute("aria-pressed", String(isHidden));
+                                toggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+                        });
                 }
 
-                // Switch between hidden/visible password states on click.
-                toggle.addEventListener("click", () => {
-                        // Toggle input type to show or hide characters.
-                        const isHidden = password.type === "password";
-                        password.type = isHidden ? "text" : "password";
+                // Form validation: handle empty fields and invalid credentials.
+                const form = document.getElementById("login-form");
+                const username = document.getElementById("username");
+                const formError = document.getElementById("form-error");
+                const usernameError = document.getElementById("username-error");
+                const passwordError = document.getElementById("password-error");
 
-                        // Swap the icon to reflect the current state.
-                        const icon = toggle.querySelector(".material-symbols-outlined");
-                        if (icon) {
-                                icon.textContent = isHidden ? "visibility" : "visibility_off";
-                        }
+                if (form && username && password && formError && usernameError && passwordError) {
+                        // Demo-only credential list for client-side validation.
+                        const validUsers = [
+                                { username: "Admin", password: "admin" },
+                                { username: "Laura", password: "1234" }
+                        ];
 
-                        // Keep aria attributes aligned for accessibility.
-                        toggle.setAttribute("aria-pressed", String(isHidden));
-                        toggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
-                });
+                        // Clear error styling and messages from previous attempts.
+                        const clearFieldError = (input, errorElement) => {
+                                input.classList.remove("border-error", "focus:border-error", "focus:ring-error");
+                                input.removeAttribute("aria-invalid");
+                                errorElement.classList.add("hidden");
+                        };
+
+                        // Apply error styling and set the message for a field.
+                        const setFieldError = (input, errorElement, message) => {
+                                errorElement.textContent = message;
+                                errorElement.classList.remove("hidden");
+                                input.classList.add("border-error", "focus:border-error", "focus:ring-error");
+                                input.setAttribute("aria-invalid", "true");
+                        };
+
+                        // Reset all visible errors at once.
+                        const resetErrors = () => {
+                                formError.classList.add("hidden");
+                                clearFieldError(username, usernameError);
+                                clearFieldError(password, passwordError);
+                        };
+
+                        form.addEventListener("submit", (event) => {
+                                resetErrors();
+
+                                const usernameValue = username.value.trim();
+                                const passwordValue = password.value.trim();
+                                let hasFieldError = false;
+
+                                // Show required field errors when inputs are empty.
+                                if (!usernameValue) {
+                                        setFieldError(username, usernameError, "Sign-in ID is required.");
+                                        hasFieldError = true;
+                                }
+
+                                if (!passwordValue) {
+                                        setFieldError(password, passwordError, "Password is required.");
+                                        hasFieldError = true;
+                                }
+
+                                if (hasFieldError) {
+                                        event.preventDefault();
+                                        return;
+                                }
+
+                                // Check against demo credentials (replace with server validation).
+                                const isValid = validUsers.some(
+                                        (user) => user.username === usernameValue && user.password === passwordValue
+                                );
+
+                                if (!isValid) {
+                                        event.preventDefault();
+                                        formError.textContent = "Invalid sign-in ID or password.";
+                                        formError.classList.remove("hidden");
+                                }
+                        });
+                }
         });
 </script>
 </body></html>
