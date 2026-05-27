@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!-- Login page layout and behavior (static HTML + small JS toggle). -->
+
+<html lang="en" style=""><head>
+<!-- Document metadata for encoding and responsive scaling. -->
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Student Course Registration - Login</title>
+<!-- Web fonts and icon glyphs used by the UI. -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS runtime for utility classes used on this page. -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration: custom tokens to match the design system. -->
+<script id="tailwind-config">
+        // Theme tokens referenced by utility classes throughout the markup.
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#adaeaf",
+                    "surface-dim": "#d4dbe3",
+                    "tertiary-container": "#404243",
+                    "on-secondary-fixed": "#241a00",
+                    "primary-container": "#0b3d91",
+                    "on-error": "#ffffff",
+                    "on-primary-container": "#8dadff",
+                    "surface-container-low": "#eef4fd",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#745c00",
+                    "on-secondary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "background": "#f6f9ff",
+                    "on-primary-fixed-variant": "#144296",
+                    "on-background": "#151c22",
+                    "inverse-on-surface": "#ebf1fa",
+                    "on-secondary-fixed-variant": "#574500",
+                    "tertiary-fixed": "#e1e3e4",
+                    "secondary-fixed-dim": "#e9c349",
+                    "tertiary": "#292c2d",
+                    "outline-variant": "#c4c6d3",
+                    "primary-fixed-dim": "#b1c5ff",
+                    "surface-tint": "#345baf",
+                    "secondary": "#735c00",
+                    "surface": "#f6f9ff",
+                    "secondary-fixed": "#ffe088",
+                    "tertiary-fixed-dim": "#c5c7c8",
+                    "on-tertiary-fixed-variant": "#454748",
+                    "surface-variant": "#dce3ec",
+                    "surface-bright": "#f6f9ff",
+                    "outline": "#747783",
+                    "surface-container-highest": "#dce3ec",
+                    "on-surface": "#151c22",
+                    "on-error-container": "#93000a",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#fed65b",
+                    "inverse-primary": "#b1c5ff",
+                    "primary": "#002869",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#2a3138",
+                    "on-primary-fixed": "#001947",
+                    "on-tertiary-fixed": "#191c1d",
+                    "surface-container-high": "#e2e9f1",
+                    "surface-container": "#e8eef7",
+                    "primary-fixed": "#dae2ff",
+                    "on-primary": "#ffffff",
+                    "on-surface-variant": "#434652"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "55px",
+                    "gutter": "21px",
+                    "sm": "13px",
+                    "md": "21px",
+                    "xxl": "89px",
+                    "xs": "8px",
+                    "lg": "34px",
+                    "margin": "34px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg-mobile": ["Inter"],
+                    "headline-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["10px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg-mobile": ["42px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg": ["42px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg": ["68px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["26px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["10px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "headline-sm": ["16px", {"lineHeight": "1.5", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+                /* Custom shadow utility to match the card elevation. */
+        .shadow-level-1 {
+            box-shadow: 0px 2px 13px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-lg h-screen w-full flex overflow-hidden">
+<!-- Main content wrapper: centers the card within the viewport. -->
+<main class="flex-1 flex flex-col items-center justify-center relative z-10 px-gutter">
+<!-- Decorative background: subtle radial highlight behind the card. -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-20" style="background-image: radial-gradient(circle at 10% 20%, var(--surface-tint) 0%, transparent 20%);"></div>
+<!-- Login card container: fixed size for consistent proportions. -->
+<div class="bg-surface-container-lowest rounded-xl shadow-level-1 p-margin flex flex-col relative z-10 w-[380px] min-h-[614px]">
+<!-- Header section: brand icon and title. -->
+<div class="flex flex-col items-center text-center gap-sm mb-lg flex-shrink-0">
+<!-- Logo container keeps the icon aligned and padded. -->
+<div class="bg-primary rounded-lg flex items-center justify-center mb-xs w-[77px] h-[77px]"><img alt="Educational Institution Icon" class="w-full h-full object-contain p-2" src="https://lh3.googleusercontent.com/aida/ADBb0ujIjMlnV7ycxX3oxW54DLVcRYZvcCYRN5rNsMoiS_N2zaBoJzkllDKBPwN0PMjC2qDI80qtUMChqCFQfqnEsvcFnyHv-AGnP77berb6hGmlmO4tepziyUJpAwt8tosNMoh8BSB-bi6afbSipSJT-aQChmF-Es7sBOm8UddY-UdeFIam2Hq5IhA6nTFlvVQXgJraXg9-_WRGacZ-gF-PYroeM-GiudGyfJX3GpfJs9NfE1XTHqFYPiThhj8"/></div>
+<!-- Product/portal name. -->
+<h1 class="font-headline-md text-headline-md text-primary">Academic Management System</h1>
+</div>
+<!-- Login form: grows to keep footer anchored to the bottom. -->
+<form class="flex flex-col gap-md flex-grow">
+<!-- Username field group. -->
+<div class="flex flex-col gap-xs">
+<!-- Input label stays visible above the control. -->
+<label class="font-label-md text-label-md text-on-surface uppercase" for="username">SIGN-IN ID</label>
+<div class="relative">
+<!-- Leading icon anchored with absolute positioning. -->
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[18px]">person</span>
+<!-- Text input uses Tailwind tokens for consistent spacing and focus. -->
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-sm font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="username" placeholder="Enter your ID " type="text"/>
+</div>
+</div>
+<!-- Password field group with show/hide toggle. -->
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center">
+<label class="font-label-md text-label-md text-on-surface uppercase" for="password">Password</label>
+</div>
+<div class="relative">
+<!-- Lock icon indicates a secure field. -->
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[18px]">lock</span>
+<!-- Password input is hidden by default. -->
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-[34px] font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="password" placeholder="••••••••" type="password"/>
+<!-- Toggle button flips input type and updates icon/aria state. -->
+<button aria-label="Show password" aria-pressed="false" class="absolute right-sm top-1/2 -translate-y-1/2 text-outline hover:text-on-surface transition-colors focus:outline-none" data-show="false" id="toggle-password" type="button">
+<span class="material-symbols-outlined text-[18px]">visibility_off</span>
+</button>
+</div>
+</div>
+<!-- Primary submit action. -->
+<div class="mt-md">
+<button class="w-full bg-primary text-on-primary rounded-lg py-[12px] font-headline-sm text-headline-sm hover:bg-primary/90 transition-colors flex items-center justify-center gap-xs" type="submit">
+                        Sign in
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Footer: secondary action (registration). -->
+<div class="mt-lg pt-md border-t border-outline-variant flex-shrink-0 text-center"><p class="font-body-lg text-on-surface-variant">Don't have an account? <a class="text-primary font-headline-sm hover:underline" href="#">Register</a></p></div>
+</div>
+</main>
+<!-- Password visibility toggle behavior. -->
+<script>
+        // Wait for DOM so elements are available before querying.
+        document.addEventListener("DOMContentLoaded", () => {
+                // Get references to the toggle button and password input.
+                const toggle = document.getElementById("toggle-password");
+                const password = document.getElementById("password");
+
+                // Safeguard if markup changes or elements are missing.
+                if (!toggle || !password) {
+                        return;
+                }
+
+                // Switch between hidden/visible password states on click.
+                toggle.addEventListener("click", () => {
+                        // Toggle input type to show or hide characters.
+                        const isHidden = password.type === "password";
+                        password.type = isHidden ? "text" : "password";
+
+                        // Swap the icon to reflect the current state.
+                        const icon = toggle.querySelector(".material-symbols-outlined");
+                        if (icon) {
+                                icon.textContent = isHidden ? "visibility" : "visibility_off";
+                        }
+
+                        // Keep aria attributes aligned for accessibility.
+                        toggle.setAttribute("aria-pressed", String(isHidden));
+                        toggle.setAttribute("aria-label", isHidden ? "Hide password" : "Show password");
+                });
+        });
+</script>
+</body></html>
