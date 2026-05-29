@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!-- Login page layout and behavior (static HTML + small JS toggle). -->
 
-<html lang="en" style=""><head>
+<html lang="en"><head>
 <!-- Document metadata for encoding and responsive scaling. -->
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -128,7 +128,7 @@
 <!-- Header section: brand icon and title. -->
 <div class="flex flex-col items-center text-center gap-sm mb-lg flex-shrink-0">
 <!-- Logo container keeps the icon aligned and padded. -->
-<div class="bg-primary rounded-lg flex items-center justify-center mb-xs w-[77px] h-[77px]"><img alt="Educational Institution Icon" class="w-full h-full object-contain p-2" src="https://lh3.googleusercontent.com/aida/ADBb0ujIjMlnV7ycxX3oxW54DLVcRYZvcCYRN5rNsMoiS_N2zaBoJzkllDKBPwN0PMjC2qDI80qtUMChqCFQfqnEsvcFnyHv-AGnP77berb6hGmlmO4tepziyUJpAwt8tosNMoh8BSB-bi6afbSipSJT-aQChmF-Es7sBOm8UddY-UdeFIam2Hq5IhA6nTFlvVQXgJraXg9-_WRGacZ-gF-PYroeM-GiudGyfJX3GpfJs9NfE1XTHqFYPiThhj8"/></div>
+<div class="bg-primary rounded-lg flex items-center justify-center mb-xs w-[77px] h-[77px]"><img alt="Educational Institution Icon" class="w-full h-full object-contain p-2" src="../assets/images/logo.png"/></div>
 <!-- Product/portal name. -->
 <h1 class="font-headline-md text-headline-md text-primary">Academic Management System</h1>
 </div>
@@ -139,12 +139,12 @@
 <!-- Username field group. -->
 <div class="flex flex-col gap-xs">
 <!-- Input label stays visible above the control. -->
-<label class="font-label-md text-label-md text-on-surface uppercase" for="username">SIGN-IN ID</label>
+<label class="font-label-md text-label-md text-on-surface uppercase" for="username">SIGN-IN </label>
 <div class="relative">
 <!-- Leading icon anchored with absolute positioning. -->
 <span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline text-[18px]">person</span>
 <!-- Text input uses Tailwind tokens for consistent spacing and focus. -->
-<input aria-describedby="username-error" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-sm font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="username" placeholder="Enter your ID " type="text"/>
+<input aria-describedby="username-error" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-[10px] pl-[34px] pr-sm font-body-lg text-body-lg text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors placeholder:text-outline/70" id="username" placeholder="Enter your email " type="text"/>
 </div>
 <!-- Inline field error shown when the username is missing. -->
 <p aria-live="polite" class="hidden text-body-sm text-error" id="username-error">Sign-in ID is required.</p>
@@ -176,7 +176,7 @@
 </div>
 </form>
 <!-- Footer: secondary action (registration). -->
-<div class="mt-lg pt-md border-t border-outline-variant flex-shrink-0 text-center"><p class="font-body-lg text-on-surface-variant">Don't have an account? <a class="text-primary font-headline-sm hover:underline" href="account-creation.html">Register</a></p></div>
+<div class="mt-lg pt-md border-t border-outline-variant flex-shrink-0 text-center"><p class="font-body-lg text-on-surface-variant">Don't have an account? <a class="text-primary font-headline-sm hover:underline" href="account-registration.html">Register</a></p></div>
 </div>
 </main>
 <!-- Password visibility toggle behavior. -->
