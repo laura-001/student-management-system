@@ -224,8 +224,9 @@
                 if (form && username && password && formError && usernameError && passwordError) {
                         // Demo-only credential list for client-side validation.
                         const validUsers = [
-                                { username: "Admin", password: "admin" },
-                                { username: "Laura", password: "1234" }
+                                { username: "Admin", password: "admin", role: "admin" },
+                                { username: "Laura", password: "1234", role: "student" },
+                                { username: "test", password: "test1234", role: "student" }
                         ];
 
                         // Clear error styling and messages from previous attempts.
@@ -274,15 +275,21 @@
                                 }
 
                                 // Check against demo credentials (replace with server validation).
-                                const isValid = validUsers.some(
+                                const matchedUser = validUsers.find(
                                         (user) => user.username === usernameValue && user.password === passwordValue
                                 );
 
-                                if (!isValid) {
+                                if (!matchedUser) {
                                         event.preventDefault();
                                         formError.textContent = "Invalid sign-in ID or password.";
                                         formError.classList.remove("hidden");
+                                        return;
                                 }
+
+                                event.preventDefault();
+                                window.location.href = matchedUser.role === "admin"
+                                        ? "admin-dashboard.html"
+                                        : "student-dashboard.html";
                         });
                 }
         });
