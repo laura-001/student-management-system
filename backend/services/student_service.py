@@ -1,16 +1,7 @@
-students=[]
+from sqlalchemy.orm import Session
 
-def add_student(student_id,name,Course,email,phone,password):
-    student={
-        'Student_id':student_id,
-        'Name':name,
-        'Course':Course,
-        'Email':email,
-        'Phone':phone,
-        'Password':password
-    }
-    students.append(student)
-    return student
+from database.models import Student
 
-def get_all_students():
-    return students
+
+def get_student_by_user_id(db: Session, user_id: int) -> Student | None:
+    return db.query(Student).filter(Student.user_id == user_id).first()
