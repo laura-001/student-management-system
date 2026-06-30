@@ -186,6 +186,7 @@
 <div class="mt-lg pt-md border-t border-outline-variant flex-shrink-0 text-center"><p class="font-body-lg text-on-surface-variant">Don't have an account? <a class="text-primary font-headline-sm hover:underline" href="account-registration.html">Register</a></p></div>
 </div>
 </main>
+<script src="../js/api.js"></script>
 <!-- Password visibility toggle behavior. -->
 <script>
         // Wait for DOM so elements are available before querying.
@@ -222,13 +223,6 @@
                 const passwordError = document.getElementById("password-error");
 
                 if (form && username && password && formError && usernameError && passwordError) {
-                        // Demo-only credential list for client-side validation.
-                        const validUsers = [
-                                { username: "Admin", password: "admin", role: "admin" },
-                                { username: "Laura", password: "1234", role: "student" },
-                                { username: "test", password: "test1234", role: "student" }
-                        ];
-
                         // Clear error styling and messages from previous attempts.
                         const clearFieldError = (input, errorElement) => {
                                 input.classList.remove("border-error", "focus:border-error", "focus:ring-error");
@@ -251,7 +245,8 @@
                                 clearFieldError(password, passwordError);
                         };
 
-                        form.addEventListener("submit", (event) => {
+                        form.addEventListener("submit", async (event) => {
+                                event.preventDefault();
                                 resetErrors();
 
                                 const usernameValue = username.value.trim();
@@ -270,26 +265,18 @@
                                 }
 
                                 if (hasFieldError) {
-                                        event.preventDefault();
                                         return;
                                 }
 
-                                // Check against demo credentials (replace with server validation).
-                                const matchedUser = validUsers.find(
-                                        (user) => user.username === usernameValue && user.password === passwordValue
-                                );
-
-                                if (!matchedUser) {
-                                        event.preventDefault();
-                                        formError.textContent = "Invalid sign-in ID or password.";
+                                try {
+                                        const signedInUser = await loginWithDatabase(usernameValue, passwordValue);
+                                        window.location.href = signedInUser.role === "admin"
+                                                ? "admin-dashboard.html"
+                                                : "student-dashboard.html";
+                                } catch (error) {
+                                        formError.textContent = error.message || "Invalid sign-in ID or password.";
                                         formError.classList.remove("hidden");
-                                        return;
                                 }
-
-                                event.preventDefault();
-                                window.location.href = matchedUser.role === "admin"
-                                        ? "admin-dashboard.html"
-                                        : "student-dashboard.html";
                         });
                 }
         });

@@ -156,7 +156,7 @@
 <span class="text-label-md font-label-md">Profile Record</span>
 </a>
 
-<a class="flex items-center gap-3 text-error hover:bg-error-container/10 transition-colors duration-200 mx-4 px-4 py-3 rounded-lg" href="login.html">
+<a class="flex items-center gap-3 text-error hover:bg-error-container/10 transition-colors duration-200 mx-4 px-4 py-3 rounded-lg" href="login.html" data-logout-trigger="true">
 <span class="material-symbols-outlined">logout</span>
 <span class="text-label-md font-label-md">Logout</span>
 </a>
@@ -174,7 +174,7 @@
 <div class="flex flex-col items-center text-center mb-lg border-l-4 border-primary pl-4 mb-xl">
 <div>
 <h2 class="text-headline-md font-headline-md text-on-surface">My Courses</h2>
-<p class="text-body-lg text-on-surface-variant">6 Active Courses enrolled for this term.</p>
+<p class="text-body-lg text-on-surface-variant" id="registered-page-summary">Loading active course registrations...</p>
 </div>
 
 </div>
@@ -188,91 +188,9 @@
 <div class="col-span-2 text-label-md text-on-surface-variant uppercase font-bold tracking-wider text-right">Status</div>
 </div>
 <!-- Course Rows -->
-<div class="divide-y divide-outline-variant/30">
-<!-- Course 1 -->
-<div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
-<div class="col-span-2 font-mono text-primary font-bold">BIT2101</div>
-<div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">Data Structures and Algorithms</div>
-<div class="col-span-2 text-body-lg">3.0</div>
-<div class="col-span-2 pr-4">
-<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[65%]"></div>
+<div class="divide-y divide-outline-variant/30" id="registered-course-list">
+<div class="px-md py-5 text-on-surface-variant">Loading registered courses...</div>
 </div>
-</div>
-<div class="col-span-2 text-right">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase">Active</span>
-</div>
-</div>
-<!-- Course 2 -->
-<div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
-<div class="col-span-2 font-mono text-primary font-bold">BIT2102</div>
-<div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">Web Programming</div>
-<div class="col-span-2 text-body-lg">3.0</div>
-<div class="col-span-2 pr-4">
-<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-secondary-container w-[40%]"></div>
-</div>
-</div>
-<div class="col-span-2 text-right">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase">Active</span>
-</div>
-</div>
-<!-- Course 3 -->
-<div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
-<div class="col-span-2 font-mono text-primary font-bold">BIT2103</div>
-<div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">Database Systems</div>
-<div class="col-span-2 text-body-lg">3.0</div>
-<div class="col-span-2 pr-4">
-<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[85%]"></div>
-</div>
-</div>
-<div class="col-span-2 text-right">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase">Active</span>
-</div>
-</div>
-<!-- Course 4 -->
-<div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
-<div class="col-span-2 font-mono text-primary font-bold">BIT2104</div>
-<div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">Operating Systems</div>
-<div class="col-span-2 text-body-lg">3.0</div>
-<div class="col-span-2 pr-4">
-<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-secondary-container w-[15%]"></div>
-</div>
-</div>
-<div class="col-span-2 text-right">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase">Active</span>
-</div>
-</div>
-<!-- Course 5 -->
-<div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
-<div class="col-span-2 font-mono text-primary font-bold">BIT2105</div>
-<div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">Software Engineering</div>
-<div class="col-span-2 text-body-lg">3.0</div>
-<div class="col-span-2 pr-4">
-<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[80%]"></div>
-</div>
-</div>
-<div class="col-span-2 text-right">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase">Active</span>
-</div>
-</div>
-<!-- Course 6 -->
-<div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
-<div class="col-span-2 font-mono text-primary font-bold">BIT2106</div>
-<div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">Human Computer Interaction</div>
-<div class="col-span-2 text-body-lg">3.0</div>
-<div class="col-span-2 pr-4">
-<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
-<div class="h-full bg-secondary-container w-[30%]"></div>
-</div>
-</div>
-<div class="col-span-2 text-right">
-<span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold bg-primary/10 text-primary uppercase">Active</span>
-</div>
-</div></div>
 </div>
 
 <div class="flex justify-center mt-lg pt-4"><button class="bg-primary text-white font-semibold text-label-md px-xl py-3 rounded-[4px] hover:bg-primary-container transition-all active:scale-95 shadow-sm">Register for New Courses</button></div></div>
@@ -284,7 +202,70 @@
 
 </div>
 <!-- Micro-interactions Script -->
+<script src="../js/api.js"></script>
 <script>
+        const registeredCourseList = document.getElementById('registered-course-list');
+        const registeredPageSummary = document.getElementById('registered-page-summary');
+
+        const statusBadgeClass = (status) => {
+            if (status === 'waitlisted') {
+                return 'bg-secondary-container text-on-secondary-container';
+            }
+            if (status === 'dropped') {
+                return 'bg-error-container text-on-error-container';
+            }
+            return 'bg-primary/10 text-primary';
+        };
+
+        const renderRegisteredCourses = (registrations) => {
+            if (!registeredCourseList) {
+                return;
+            }
+
+            if (!registrations.length) {
+                registeredCourseList.innerHTML = '<div class="px-md py-5 text-on-surface-variant">No course registrations found.</div>';
+                return;
+            }
+
+            registeredCourseList.innerHTML = registrations.map((registration) => {
+                const progress = registration.status === 'active' ? 100 : 0;
+                return `
+                    <div class="grid grid-cols-12 px-md py-5 items-center hover:bg-surface transition-colors cursor-pointer group" style="transform: translateX(0px);">
+                        <div class="col-span-2 font-mono text-primary font-bold">${escapeHtml(registration.course_code)}</div>
+                        <div class="col-span-4 font-semibold text-on-surface group-hover:underline underline-offset-4">${escapeHtml(registration.course_name)}</div>
+                        <div class="col-span-2 text-body-lg">${escapeHtml(registration.credit_units)}</div>
+                        <div class="col-span-2 pr-4">
+                            <div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+                                <div class="h-full bg-primary" style="width: ${progress}%;"></div>
+                            </div>
+                        </div>
+                        <div class="col-span-2 text-right">
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase ${statusBadgeClass(registration.status)}">${escapeHtml(registration.status)}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        const loadRegisteredCourses = async () => {
+            try {
+                await requireStudentSession();
+                const data = await apiRequest('/students/me/registrations');
+                const registrations = data.registrations || [];
+                const activeCount = registrations.filter((registration) => registration.status === 'active').length;
+                if (registeredPageSummary) {
+                    registeredPageSummary.textContent = `${activeCount} active course${activeCount === 1 ? '' : 's'} registered for this term.`;
+                }
+                renderRegisteredCourses(registrations);
+            } catch (error) {
+                if (registeredCourseList) {
+                    registeredCourseList.innerHTML = `<div class="px-md py-5 text-error">${escapeHtml(error.message)}</div>`;
+                }
+            }
+        };
+
+        loadRegisteredCourses();
+
         document.addEventListener('DOMContentLoaded', () => {
             // Hover effect for table rows
             const rows = document.querySelectorAll('.grid.cursor-pointer');
@@ -306,6 +287,10 @@
                         console.log('Navigating to:', link.textContent.trim());
                     }
                 });
+            });
+
+            document.querySelectorAll('[data-logout-trigger]').forEach((trigger) => {
+                trigger.addEventListener('click', () => clearAuthSession());
             });
         });
     </script>

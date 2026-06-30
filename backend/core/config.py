@@ -2,7 +2,9 @@
 #Loads all Environment Variables from .env
 
 from pydantic_settings import BaseSettings
-from typing import Optional
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 class Settings(BaseSettings):
     #Database
@@ -19,10 +21,9 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = "*"
 
     class Config:
-        env_file = ".env"
+        env_file = BASE_DIR / ".env"
         env_file_encoding = "utf-8"
         extra = "ignore"
 
 #single instance used across the app
-settings = Settings()        
-  
+settings = Settings()

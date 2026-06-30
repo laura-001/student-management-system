@@ -144,7 +144,7 @@
 <span class="font-headline-sm">Profile Record</span>
 </a>
 <hr class="border-outline-variant my-xs">
-<a class="flex items-center gap-sm px-sm py-md hover:bg-error-container/20 transition-all duration-150 text-error-container" href="login.html">
+<a class="flex items-center gap-sm px-sm py-md hover:bg-error-container/20 transition-all duration-150 text-error-container" href="login.html" data-logout-trigger="true">
 <span class="material-symbols-outlined">logout</span>
 <span class="font-headline-sm">Logout</span>
 </a>
@@ -166,7 +166,7 @@
 <!-- Search Bar -->
 <div class="relative flex-grow w-full">
 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
-<input class="w-full pl-xl pr-md py-md bg-surface border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-lg" placeholder="Search courses by title, code or instructor..." type="text">
+<input class="w-full pl-xl pr-md py-md bg-surface border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-lg" id="course-search" placeholder="Search courses by title or code..." type="text">
 </div>
 <!-- Category Filters -->
 <div class="flex w-full md:w-auto overflow-x-auto scrollbar-hide flex-nowrap md:w-full gap-md">
@@ -193,7 +193,7 @@
 <div class="mb-lg flex justify-between items-end">
 <div>
 <h3 class="text-headline-sm font-headline-sm text-on-surface-variant">Available Courses</h3>
-<p class="text-body-sm text-outline">Showing 148 results across all departments</p>
+<p class="text-body-sm text-outline" id="course-result-count">Loading courses...</p>
 </div>
 <div class="flex gap-xs text-label-md font-label-md text-on-surface-variant">
 
@@ -201,89 +201,12 @@
 </div>
 </div>
 <!-- Courses Grid -->
-<div class="flex flex-col border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest">
-  <!-- Course Row 1 -->
-  <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
-    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
-      <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">BIT2101</span>
-      <div class="flex flex-col">
-        <h4 class="text-headline-sm font-bold text-on-surface">Advanced Web Systems &amp; Cloud Architecture</h4>
-        
-      </div>
-    </div>
-    <div class="shrink-0 w-full md:w-auto">
-      <button class="w-full md:w-auto px-lg py-sm bg-primary text-on-primary rounded font-headline-sm hover:bg-primary-container transition-colors">Register</button>
-    </div>
-  </div>
-  <!-- Course Row 2 -->
-  <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
-    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
-      <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">CSC3204</span>
-      <div class="flex flex-col">
-        <h4 class="text-headline-sm font-bold text-on-surface">Machine Learning Fundamentals</h4>
-        
-      </div>
-    </div>
-    <div class="shrink-0 w-full md:w-auto">
-      <button class="w-full md:w-auto px-lg py-sm bg-primary text-on-primary rounded font-headline-sm hover:bg-primary-container transition-colors">Register</button>
-    </div>
-  </div>
-  <!-- Course Row 3 (Waitlisted) -->
-  <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
-    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
-      <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">PSY1102</span>
-      <div class="flex flex-col">
-        <h4 class="text-headline-sm font-bold text-on-surface">Cognitive Psychology &amp; Behavioral Science</h4>
-        
-      </div>
-    </div>
-    <div class="shrink-0 w-full md:w-auto">
-      <button class="w-full md:w-auto px-lg py-sm bg-surface border border-primary text-primary rounded font-headline-sm hover:bg-primary/5 transition-colors">Join Waitlist</button>
-    </div>
-  </div>
-  <!-- Course Row 4 -->
-  <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
-    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
-      <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">MAT2201</span>
-      <div class="flex flex-col">
-        <h4 class="text-headline-sm font-bold text-on-surface">Discrete Mathematics II</h4>
-        
-      </div>
-    </div>
-    <div class="shrink-0 w-full md:w-auto">
-      <button class="w-full md:w-auto px-lg py-sm bg-primary text-on-primary rounded font-headline-sm hover:bg-primary-container transition-colors">Register</button>
-    </div>
-  </div>
-  <!-- Course Row 5 -->
-  <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md border-b border-outline-variant hover:bg-surface-container-low transition-colors">
-    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
-      <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">ENG1105</span>
-      <div class="flex flex-col">
-        <h4 class="text-headline-sm font-bold text-on-surface">Technical Communication &amp; Ethics</h4>
-        
-      </div>
-    </div>
-    <div class="shrink-0 w-full md:w-auto">
-      <button class="w-full md:w-auto px-lg py-sm bg-primary text-on-primary rounded font-headline-sm hover:bg-primary-container transition-colors">Register</button>
-    </div>
-  </div>
-  <!-- Course Row 6 -->
-  <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md hover:bg-surface-container-low transition-colors">
-    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
-      <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">BIT2210</span>
-      <div class="flex flex-col">
-        <h4 class="text-headline-sm font-bold text-on-surface">Cybersecurity &amp; Network Defense</h4>
-        
-      </div>
-    </div>
-    <div class="shrink-0 w-full md:w-auto">
-      <button class="w-full md:w-auto px-lg py-sm bg-primary text-on-primary rounded font-headline-sm hover:bg-primary-container transition-colors">Register</button>
-    </div>
-  </div>
+<div class="flex flex-col border border-outline-variant rounded-lg overflow-hidden bg-surface-container-lowest" id="course-list">
+  <div class="p-md text-on-surface-variant">Loading courses...</div>
 </div>
 <!-- Load More / Pagination -->
 <div class="mt-xl flex justify-center pb-xl">
-<button class="flex items-center gap-sm px-lg py-md bg-surface-container-high text-primary font-bold rounded hover:bg-surface-container-highest transition-all duration-150">
+<button class="hidden items-center gap-sm px-lg py-md bg-surface-container-high text-primary font-bold rounded hover:bg-surface-container-highest transition-all duration-150">
 <span class="">Load More Courses</span>
 <span class="material-symbols-outlined">expand_more</span>
 </button>
@@ -292,7 +215,9 @@
 </section>
 </main>
 <!-- Micro-interaction Scripts -->
+<script src="../js/api.js"></script>
 <script>
+        if (false) {
         // Simple search feedback
         const searchInput = document.querySelector('input[type="text"]');
         searchInput.addEventListener('input', (e) => {
@@ -301,7 +226,7 @@
         });
 
         // Register button simulation
-        const regButtons = document.querySelectorAll('button:contains("Register")');
+        const regButtons = document.querySelectorAll('button[data-disabled-demo]');
         regButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span>';
@@ -328,6 +253,107 @@
                 });
             }
         });
+        }
+    </script>
+<script>
+        const courseList = document.getElementById('course-list');
+        const courseSearch = document.getElementById('course-search');
+        const courseResultCount = document.getElementById('course-result-count');
+        let allCourses = [];
+
+        const courseButton = (course) => {
+            if (course.is_registered) {
+                return '<button class="w-full md:w-auto px-lg py-sm bg-secondary-container text-on-secondary-container rounded font-headline-sm cursor-default" disabled>Registered</button>';
+            }
+            if (course.available_slots <= 0) {
+                return `<button class="w-full md:w-auto px-lg py-sm bg-surface border border-primary text-primary rounded font-headline-sm hover:bg-primary/5 transition-colors" data-course-id="${course.id}" data-registration-status="waitlisted">Join Waitlist</button>`;
+            }
+            return `<button class="w-full md:w-auto px-lg py-sm bg-primary text-on-primary rounded font-headline-sm hover:bg-primary-container transition-colors" data-course-id="${course.id}" data-registration-status="active">Register</button>`;
+        };
+
+        const renderCourses = (courses) => {
+            if (!courseList) {
+                return;
+            }
+
+            if (courseResultCount) {
+                courseResultCount.textContent = `Showing ${courses.length} course${courses.length === 1 ? '' : 's'} from the database`;
+            }
+
+            if (!courses.length) {
+                courseList.innerHTML = '<div class="p-md text-on-surface-variant">No matching courses found.</div>';
+                return;
+            }
+
+            courseList.innerHTML = courses.map((course, index) => `
+                <div class="flex flex-col md:flex-row items-center justify-between p-md gap-md ${index < courses.length - 1 ? 'border-b border-outline-variant' : ''} hover:bg-surface-container-low transition-colors">
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-md flex-grow">
+                        <span class="bg-primary-fixed text-on-primary-fixed px-xs py-1 rounded text-label-md font-bold shrink-0">${escapeHtml(course.course_code)}</span>
+                        <div class="flex flex-col">
+                            <h4 class="text-headline-sm font-bold text-on-surface">${escapeHtml(course.course_name)}</h4>
+                            <p class="text-body-sm text-outline">${escapeHtml(course.credit_units)} units | Year ${escapeHtml(course.year_of_study)} | Semester ${escapeHtml(course.semester)} | ${escapeHtml(course.available_slots)} slots available</p>
+                        </div>
+                    </div>
+                    <div class="shrink-0 w-full md:w-auto">
+                        ${courseButton(course)}
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        const filterCourses = () => {
+            const query = (courseSearch?.value || '').trim().toLowerCase();
+            const visibleCourses = allCourses.filter((course) => (
+                course.course_code.toLowerCase().includes(query)
+                || course.course_name.toLowerCase().includes(query)
+            ));
+            renderCourses(visibleCourses);
+        };
+
+        const loadCourses = async () => {
+            try {
+                await requireStudentSession();
+                const data = await apiRequest('/courses');
+                allCourses = data.courses || [];
+                filterCourses();
+            } catch (error) {
+                if (courseList) {
+                    courseList.innerHTML = `<div class="p-md text-error">${escapeHtml(error.message)}</div>`;
+                }
+            }
+        };
+
+        courseSearch?.addEventListener('input', filterCourses);
+
+        courseList?.addEventListener('click', async (event) => {
+            const button = event.target.closest('[data-course-id]');
+            if (!button) {
+                return;
+            }
+
+            const courseId = button.getAttribute('data-course-id');
+            const registrationStatus = button.getAttribute('data-registration-status') || 'active';
+            button.disabled = true;
+            button.textContent = 'Processing...';
+
+            try {
+                await apiRequest(`/students/me/registrations/${courseId}`, {
+                    method: 'POST',
+                    body: JSON.stringify({ status: registrationStatus }),
+                });
+                await loadCourses();
+            } catch (error) {
+                button.disabled = false;
+                button.textContent = registrationStatus === 'waitlisted' ? 'Join Waitlist' : 'Register';
+                alert(error.message);
+            }
+        });
+
+        document.querySelectorAll('[data-logout-trigger]').forEach((trigger) => {
+            trigger.addEventListener('click', () => clearAuthSession());
+        });
+
+        loadCourses();
     </script>
 
 

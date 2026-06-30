@@ -163,8 +163,8 @@
 </div>
 <div class="flex items-center gap-md">
 <div class="flex flex-col items-end  px-m py-s rounded-full leading-tight">
-<span class="text-body-lg font-body-lg text-on-surface">Nathan Mwamburi</span>
-<span class="text-body-s font-body-sm text-on-surface-variant">ID: 220772</span>
+<span class="text-body-lg font-body-lg text-on-surface" id="nav-student-name">Loading...</span>
+<span class="text-body-s font-body-sm text-on-surface-variant" id="nav-student-id">ID: Loading...</span>
 </div>
 </div>
 </header>
@@ -173,27 +173,27 @@
 <!-- Welcome Header -->
 <section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
 <div class="space-y-xs">
-<h2 class="text-headline-lg font-headline-lg text-primary">Welcome, Nathan Mwamburi!</h2>
+<h2 class="text-headline-lg font-headline-lg text-primary" id="welcome-heading">Welcome!</h2>
 <p class="text-body-lg font-body-lg text-on-surface-variant">Here is an overview of your academic information.</p>
 </div>
 <div class="flex items-center gap-sm text-on-surface-variant font-medium">
 <span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
-<span class="text-label-md font-label-md uppercase tracking-wider">May 21, 2025</span>
+<span class="text-label-md font-label-md uppercase tracking-wider" id="today-label">Loading...</span>
 </div>
 </section>
 <!-- Quick Stats Row -->
 <section class="grid grid-cols-1 md:grid-cols-3 gap-md">
 <div class="bg-white p-lg rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-primary transition-all hover:-translate-y-1">
 <p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Total Registered Courses</p>
-<p class="text-display-lg font-display-lg text-primary leading-none">3</p>
+<p class="text-display-lg font-display-lg text-primary leading-none" id="registered-count">0</p>
 </div>
 <div class="bg-white p-lg rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-secondary-fixed-dim transition-all hover:-translate-y-1">
 <p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Total Registered Units</p>
-<p class="text-display-lg font-display-lg text-secondary leading-none">9</p>
+<p class="text-display-lg font-display-lg text-secondary leading-none" id="registered-units">0</p>
 </div>
 <div class="bg-white p-lg rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-primary-container transition-all hover:-translate-y-1">
-<p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Current GPA</p>
-<p class="text-display-lg font-display-lg text-primary leading-none">3.82</p>
+<p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Year of Study</p>
+<p class="text-display-lg font-display-lg text-primary leading-none" id="student-year-stat">-</p>
 </div>
 </section>
 <!-- Main Grid: Courses & Summary -->
@@ -213,21 +213,9 @@
 <th class="text-right px-lg py-sm text-label-md font-label-md text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">Units</th>
 </tr>
 </thead>
-<tbody>
-<tr class="hover:bg-surface-container transition-colors">
-<td class="px-lg py-md text-body-lg font-medium border-b border-outline-variant">BIT2101</td>
-<td class="px-lg py-md text-body-lg border-b border-outline-variant">Data Structures and Algorithms</td>
-<td class="px-lg py-md text-body-lg text-right border-b border-outline-variant">3</td>
-</tr>
-<tr class="hover:bg-surface-container transition-colors">
-<td class="px-lg py-md text-body-lg font-medium border-b border-outline-variant">BIT2102</td>
-<td class="px-lg py-md text-body-lg border-b border-outline-variant">Web Programming</td>
-<td class="px-lg py-md text-body-lg text-right border-b border-outline-variant">3</td>
-</tr>
-<tr class="hover:bg-surface-container transition-colors">
-<td class="px-lg py-md text-body-lg font-medium border-b border-outline-variant">BIT2103</td>
-<td class="px-lg py-md text-body-lg border-b border-outline-variant">Database Systems</td>
-<td class="px-lg py-md text-body-lg text-right border-b border-outline-variant">3</td>
+<tbody id="dashboard-course-list">
+<tr>
+<td class="px-lg py-md text-body-lg text-on-surface-variant border-b border-outline-variant" colspan="3">Loading registered courses...</td>
 </tr>
 </tbody>
 </table>
@@ -250,7 +238,7 @@
 <div class="space-y-xs">
 <label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">Year of Study</label>
 <div class="flex items-center justify-between">
-<span class="text-body-lg font-bold">2nd Year</span>
+<span class="text-body-lg font-bold" id="summary-year">Loading...</span>
 <span class="material-symbols-outlined text-primary-container" data-icon="calendar_today">calendar_today</span>
 </div>
 <div class="w-full bg-surface-container h-[4px] rounded-full overflow-hidden">
@@ -260,7 +248,7 @@
 <div class="space-y-xs">
 <label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">Current Semester</label>
 <div class="flex items-center justify-between">
-<span class="text-body-lg font-bold">Semester 2</span>
+<span class="text-body-lg font-bold" id="summary-semester">Not available</span>
 <span class="material-symbols-outlined text-primary-container" data-icon="pending_actions">pending_actions</span>
 </div>
 <div class="w-full bg-surface-container h-[4px] rounded-full overflow-hidden">
@@ -293,7 +281,75 @@
 </div>
 </div>
 </div>
+<script src="../js/api.js"></script>
 <script>
+        const dashboardCourseList = document.getElementById('dashboard-course-list');
+
+        const renderDashboardCourses = (registrations) => {
+            if (!dashboardCourseList) {
+                return;
+            }
+
+            const activeRegistrations = registrations.filter((registration) => registration.status === 'active');
+            if (!activeRegistrations.length) {
+                dashboardCourseList.innerHTML = `
+                    <tr>
+                        <td class="px-lg py-md text-body-lg text-on-surface-variant border-b border-outline-variant" colspan="3">
+                            You do not have active course registrations yet.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            dashboardCourseList.innerHTML = activeRegistrations.slice(0, 5).map((registration) => `
+                <tr class="hover:bg-surface-container transition-colors">
+                    <td class="px-lg py-md text-body-lg font-medium border-b border-outline-variant">${escapeHtml(registration.course_code)}</td>
+                    <td class="px-lg py-md text-body-lg border-b border-outline-variant">${escapeHtml(registration.course_name)}</td>
+                    <td class="px-lg py-md text-body-lg text-right border-b border-outline-variant">${escapeHtml(registration.credit_units)}</td>
+                </tr>
+            `).join('');
+        };
+
+        const loadStudentDashboard = async () => {
+            const todayLabel = document.getElementById('today-label');
+            if (todayLabel) {
+                todayLabel.textContent = new Intl.DateTimeFormat('en', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }).format(new Date());
+            }
+
+            try {
+                const student = await requireStudentSession();
+                const registrationData = await apiRequest('/students/me/registrations');
+                const registrations = registrationData.registrations || [];
+                const activeRegistrations = registrations.filter((registration) => registration.status === 'active');
+                const semester = activeRegistrations.find((registration) => registration.semester)?.semester;
+
+                setText('#nav-student-name', student.full_name);
+                setText('#nav-student-id', `ID: ${student.student_number || 'Not provided'}`);
+                setText('#welcome-heading', `Welcome, ${student.full_name}!`);
+                setText('#registered-count', registrationData.summary?.registered_count ?? 0);
+                setText('#registered-units', registrationData.summary?.total_units ?? 0);
+                setText('#student-year-stat', student.year_of_study ? String(student.year_of_study) : '-');
+                setText('#summary-year', student.year_of_study ? `${ordinal(student.year_of_study)} Year` : 'Not provided');
+                setText('#summary-semester', semester ? `Semester ${semester}` : 'No active semester');
+                renderDashboardCourses(registrations);
+            } catch (error) {
+                if (dashboardCourseList) {
+                    dashboardCourseList.innerHTML = `
+                        <tr>
+                            <td class="px-lg py-md text-body-lg text-error border-b border-outline-variant" colspan="3">
+                                ${error.message}
+                            </td>
+                        </tr>`;
+                }
+            }
+        };
+
+        loadStudentDashboard();
+
         // Simple micro-interactions
         document.querySelectorAll('.cursor-pointer').forEach(item => {
             item.addEventListener('mousedown', () => {
@@ -337,6 +393,7 @@
 
         if (logoutConfirm) {
             logoutConfirm.addEventListener('click', () => {
+                clearAuthSession();
                 window.location.href = 'login.html';
             });
         }

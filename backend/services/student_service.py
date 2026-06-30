@@ -1,16 +1,24 @@
-students=[]
+from sqlalchemy.orm import Session
 
-def add_student(student_id,name,Course,email,phone,password):
-    student={
-        'Student_id':student_id,
-        'Name':name,
-        'Course':Course,
-        'Email':email,
-        'Phone':phone,
-        'Password':password
-    }
-    students.append(student)
+from database.models import Student, User
+
+
+def add_student(
+    db: Session,
+    user: User,
+    student_number: str,
+    year_of_study: int | None = None,
+) -> Student:
+    student = Student(
+        user_id=user.id,
+        student_number=student_number,
+        year_of_study=year_of_study,
+    )
+    db.add(student)
+    db.commit()
+    db.refresh(student)
     return student
 
-def get_all_students():
-    return students
+
+def get_all_students(db: Session) -> list[Student]:
+    return db.query(Student).all()
