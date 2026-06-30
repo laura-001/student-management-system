@@ -1,53 +1,70 @@
+from __future__ import annotations
+
+from dataclasses import dataclass
+from typing import Generic, TypeVar
+
+from dsa.linked_list import LinkedList
+
+
+K = TypeVar("K")
+V = TypeVar("V")
+
+
+@dataclass
+class HashEntry(Generic[K, V]):
+    key: K
+    value: V
+
+
+class HashTable(Generic[K, V]):
+    """Hash table with separate chaining through the project's linked list."""
+
+    def __init__(self, capacity: int = 16):
+        if capacity <= 0:
+            raise ValueError("capacity must be greater than zero")
+        self._buckets: list[LinkedList[HashEntry[K, V]]] = [LinkedList() for _ in range(capacity)]
+        self._length = 0
+
+    def _bucket(self, key: K) -> LinkedList[HashEntry[K, V]]:
+        return self._buckets[hash(key) % len(self._buckets)]
+
+    def set(self, key: K, value: V) -> None:
+        bucket = self._bucket(key)
+        entry = bucket.find(lambda item: item.key == key)
+        if entry is not None:
+            entry.value = value
+            return
+        bucket.append(HashEntry(key=key, value=value))
+        self._length += 1
+
+    def get(self, key: K, default: V | None = None) -> V | None:
+        entry = self._bucket(key).find(lambda item: item.key == key)
+        return entry.value if entry is not None else default
+
+    def delete(self, key: K) -> V | None:
+        removed = self._bucket(key).remove(lambda item: item.key == key)
+        if removed is None:
+            return None
+        self._length -= 1
+        return removed.value
+
+    def contains(self, key: K) -> bool:
+        return self._bucket(key).contains(lambda item: item.key == key)
+
+    def keys(self) -> list[K]:
+        return [entry.key for bucket in self._buckets for entry in bucket]
+
+    def values(self) -> list[V]:
+        return [entry.value for bucket in self._buckets for entry in bucket]
+
+    def items(self) -> list[tuple[K, V]]:
+        return [(entry.key, entry.value) for bucket in self._buckets for entry in bucket]
+
+    def __len__(self) -> int:
+        return self._length
 
 
 
-class Node:
-    def __init__(self,course_code,student_id):
-        
-        self.value = (course_code,student_id)
-        self.next = None
-
-class Linkedlist:
-    def __init__(self):
-        self.head = None
-
-    def add(self,course_code,student_id):
-
-        #prevents duplicate entries
-        if self.contains(course_code,student_id):
-            return False 
-        
-        new_node = Node(course_code,student_id)
-
-        if self.head is None:
-            self.head = new_node
-            return True
-        current = self.head
-
-        def contains(self,course_code,student_id):
-            current = self.head
-            while current :
-                if current.value == (course_code,student_id):
-                    return True
-                current = current.next
-
-            return False  
-
-        def remove(self,course_code,student_id):
-            current = self.head
-            previous = None
-
-            while current:
-                if current.value == (course_code,student_id):
-                    if previous is None:
-                        self.head = current.next
-                    else:
-                        previous.next = current.next
-                    return True
-                previous = current
-                current = current.next
-
-            return False
 
 
 
@@ -55,30 +72,3 @@ class Linkedlist:
 
 
 
-
-
-
-
-
-
-
-
-       # class Node:
-   #def __init__(self, data):
-       # self.data = data
-       # self.next = None
-    
-#node1 = Node(3)
-#node2 = Node(5)
-#node3 = Node(13)
-#node4 = Node(2)
-
-#node1.next = node2
-#node2.next = node3
-#node3.next = node4
-
-#currentNode = node1
-#while currentNode:
-    #print(currentNode.data, end=" -> ")
-    #currentNode = currentNode.next
-#print("null")  ///
