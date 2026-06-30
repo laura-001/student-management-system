@@ -1,0 +1,417 @@
+<!DOCTYPE html><html class="light" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Academic Portal - Student Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#ffe088",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#0b3d91",
+                    "inverse-surface": "#2a3138",
+                    "outline-variant": "#c4c6d3",
+                    "on-tertiary-fixed-variant": "#454748",
+                    "on-primary-container": "#8dadff",
+                    "secondary": "#735c00",
+                    "outline": "#747783",
+                    "tertiary-fixed-dim": "#c5c7c8",
+                    "surface": "#f6f9ff",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#574500",
+                    "on-surface-variant": "#434652",
+                    "tertiary-container": "#404243",
+                    "tertiary": "#292c2d",
+                    "primary": "#002869",
+                    "inverse-primary": "#b1c5ff",
+                    "secondary-fixed-dim": "#e9c349",
+                    "on-secondary": "#ffffff",
+                    "surface-bright": "#f6f9ff",
+                    "surface-dim": "#d4dbe3",
+                    "on-tertiary-fixed": "#191c1d",
+                    "on-secondary-container": "#745c00",
+                    "on-tertiary-container": "#adaeaf",
+                    "on-error-container": "#93000a",
+                    "tertiary-fixed": "#e1e3e4",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#144296",
+                    "surface-container": "#e8eef7",
+                    "surface-tint": "#345baf",
+                    "on-secondary-fixed": "#241a00",
+                    "surface-container-highest": "#dce3ec",
+                    "secondary-container": "#fed65b",
+                    "on-primary-fixed": "#001947",
+                    "on-surface": "#151c22",
+                    "background": "#f6f9ff",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#dae2ff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-on-surface": "#ebf1fa",
+                    "surface-container-high": "#e2e9f1",
+                    "primary-fixed-dim": "#b1c5ff",
+                    "surface-variant": "#dce3ec",
+                    "on-background": "#151c22",
+                    "surface-container-low": "#eef4fd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "55px",
+                    "lg": "34px",
+                    "xxl": "89px",
+                    "md": "21px",
+                    "margin": "34px",
+                    "xs": "8px",
+                    "sm": "13px",
+                    "gutter": "21px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-lg-mobile": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["26px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["10px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["42px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-lg-mobile": ["42px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-sm": ["16px", {"lineHeight": "1.5", "fontWeight": "600"}],
+                    "display-lg": ["68px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["10px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f6f9ff;
+            color: #151c22;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            background-color: #dae2ff;
+            color: #001947;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-primary-container text-white flex flex-col p-md gap-sm shadow-none z-50">
+<!-- Logo/Header Area -->
+<div class="mb-lg px-xs">
+<h1 class="text-headline-sm font-headline-sm font-bold text-inverse-primary">Academic Portal</h1>
+<p class="text-label-md font-label-md opacity-70">Student Services</p>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-sm px-sm py-sm active-tab rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="student-dashboard.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-body-lg font-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="student-courses.html">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="text-body-lg font-body-lg">Courses</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="student-registered-courses.html">
+<span class="material-symbols-outlined" data-icon="app_registration">app_registration</span>
+<span class="text-body-lg font-body-lg">Registered Courses</span>
+</a>
+
+</nav>
+<!-- Footer Actions -->
+<div class="mt-auto border-t border-white/10 pt-sm"><a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer mb-1" href="student-profile.html">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="text-body-lg font-body-lg">Profile Record</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="login.html" data-logout-trigger="true">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="text-body-lg font-body-lg">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="sticky top-0 w-full flex justify-between items-center bg-surface dark:bg-surface-container-low px-lg py-sm border-b border-outline-variant shadow-sm z-40 h-[64px]">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="school">school</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary">Student Portal</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex flex-col items-end  px-m py-s rounded-full leading-tight">
+<span class="text-body-lg font-body-lg text-on-surface" id="nav-student-name">Loading...</span>
+<span class="text-body-s font-body-sm text-on-surface-variant" id="nav-student-id">ID: Loading...</span>
+</div>
+</div>
+</header>
+<!-- Page Canvas -->
+<div class="p-lg max-w-[1140px] mx-auto w-full space-y-xl">
+<!-- Welcome Header -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div class="space-y-xs">
+<h2 class="text-headline-lg font-headline-lg text-primary" id="welcome-heading">Welcome!</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant">Here is an overview of your academic information.</p>
+</div>
+<div class="flex items-center gap-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="text-label-md font-label-md uppercase tracking-wider" id="today-label">Loading...</span>
+</div>
+</section>
+<!-- Quick Stats Row -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="bg-white p-lg rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-primary transition-all hover:-translate-y-1">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Total Registered Courses</p>
+<p class="text-display-lg font-display-lg text-primary leading-none" id="registered-count">0</p>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-secondary-fixed-dim transition-all hover:-translate-y-1">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Total Registered Units</p>
+<p class="text-display-lg font-display-lg text-secondary leading-none" id="registered-units">0</p>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-primary-container transition-all hover:-translate-y-1">
+<p class="text-label-md font-label-md text-on-surface-variant uppercase mb-xs">Year of Study</p>
+<p class="text-display-lg font-display-lg text-primary leading-none" id="student-year-stat">-</p>
+</div>
+</section>
+<!-- Main Grid: Courses & Summary -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- My Registered Courses -->
+<section class="lg:col-span-8">
+<div class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="text-headline-sm font-headline-sm text-primary">My Registered Courses</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface-container-lowest">
+<th class="text-left px-lg py-sm text-label-md font-label-md text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">Course Code</th>
+<th class="text-left px-lg py-sm text-label-md font-label-md text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">Course Name</th>
+<th class="text-right px-lg py-sm text-label-md font-label-md text-on-surface-variant uppercase tracking-wider border-b border-outline-variant">Units</th>
+</tr>
+</thead>
+<tbody id="dashboard-course-list">
+<tr>
+<td class="px-lg py-md text-body-lg text-on-surface-variant border-b border-outline-variant" colspan="3">Loading registered courses...</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-lg py-md">
+<a class="inline-flex items-center gap-xs text-primary font-bold text-label-md uppercase tracking-widest hover:underline group" href="student-registered-courses.html">
+                                View All Registered Courses
+                                <span class="material-symbols-outlined text-[14px] group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Academic Standing/Summary -->
+<section class="lg:col-span-4">
+<div class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden h-full">
+<div class="px-lg py-md border-b border-outline-variant bg-primary text-white">
+<h3 class="text-headline-sm font-headline-sm">Academic Summary</h3>
+</div>
+<div class="p-lg space-y-lg">
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">Year of Study</label>
+<div class="flex items-center justify-between">
+<span class="text-body-lg font-bold" id="summary-year">Loading...</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="calendar_today">calendar_today</span>
+</div>
+<div class="w-full bg-surface-container h-[4px] rounded-full overflow-hidden">
+<div class="bg-primary h-full w-1/2"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">Current Semester</label>
+<div class="flex items-center justify-between">
+<span class="text-body-lg font-bold" id="summary-semester">Not available</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="pending_actions">pending_actions</span>
+</div>
+<div class="w-full bg-surface-container h-[4px] rounded-full overflow-hidden">
+<div class="bg-secondary-fixed-dim h-full w-3/4"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<label class="text-label-md font-label-md text-on-surface-variant uppercase tracking-widest">Status</label>
+<div class="flex items-center gap-sm mt-xs">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-body-lg font-bold text-green-700">Good Standing</span>
+</div>
+<p class="text-label-md font-label-md text-on-surface-variant mt-sm leading-relaxed">
+                                    You are currently maintaining satisfactory progress toward your degree completion.
+                                </p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<div id="logout-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-50 flex" role="dialog" aria-modal="true" aria-labelledby="logout-title" aria-describedby="logout-description">
+<div class="bg-white w-[320px] rounded-xl shadow-[0px_12px_30px_rgba(0,0,0,0.2)] p-lg">
+<h3 id="logout-title" class="text-headline-sm font-headline-sm text-primary mb-xs">Confirm logout</h3>
+<p id="logout-description" class="text-body-lg font-body-lg text-on-surface-variant">Are you sure you want to log out?</p>
+<div class="mt-md flex items-center justify-end gap-sm">
+<button id="logout-cancel" type="button" class="px-md py-xs rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container">Cancel</button>
+<button id="logout-confirm" type="button" class="px-md py-xs rounded-lg bg-primary text-white hover:bg-primary/90">Logout</button>
+</div>
+</div>
+</div>
+<script src="../js/api.js"></script>
+<script>
+        const dashboardCourseList = document.getElementById('dashboard-course-list');
+
+        const renderDashboardCourses = (registrations) => {
+            if (!dashboardCourseList) {
+                return;
+            }
+
+            const activeRegistrations = registrations.filter((registration) => registration.status === 'active');
+            if (!activeRegistrations.length) {
+                dashboardCourseList.innerHTML = `
+                    <tr>
+                        <td class="px-lg py-md text-body-lg text-on-surface-variant border-b border-outline-variant" colspan="3">
+                            You do not have active course registrations yet.
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            dashboardCourseList.innerHTML = activeRegistrations.slice(0, 5).map((registration) => `
+                <tr class="hover:bg-surface-container transition-colors">
+                    <td class="px-lg py-md text-body-lg font-medium border-b border-outline-variant">${escapeHtml(registration.course_code)}</td>
+                    <td class="px-lg py-md text-body-lg border-b border-outline-variant">${escapeHtml(registration.course_name)}</td>
+                    <td class="px-lg py-md text-body-lg text-right border-b border-outline-variant">${escapeHtml(registration.credit_units)}</td>
+                </tr>
+            `).join('');
+        };
+
+        const loadStudentDashboard = async () => {
+            const todayLabel = document.getElementById('today-label');
+            if (todayLabel) {
+                todayLabel.textContent = new Intl.DateTimeFormat('en', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                }).format(new Date());
+            }
+
+            try {
+                const student = await requireStudentSession();
+                const registrationData = await apiRequest('/students/me/registrations');
+                const registrations = registrationData.registrations || [];
+                const activeRegistrations = registrations.filter((registration) => registration.status === 'active');
+                const semester = activeRegistrations.find((registration) => registration.semester)?.semester;
+
+                setText('#nav-student-name', student.full_name);
+                setText('#nav-student-id', `ID: ${student.student_number || 'Not provided'}`);
+                setText('#welcome-heading', `Welcome, ${student.full_name}!`);
+                setText('#registered-count', registrationData.summary?.registered_count ?? 0);
+                setText('#registered-units', registrationData.summary?.total_units ?? 0);
+                setText('#student-year-stat', student.year_of_study ? String(student.year_of_study) : '-');
+                setText('#summary-year', student.year_of_study ? `${ordinal(student.year_of_study)} Year` : 'Not provided');
+                setText('#summary-semester', semester ? `Semester ${semester}` : 'No active semester');
+                renderDashboardCourses(registrations);
+            } catch (error) {
+                if (dashboardCourseList) {
+                    dashboardCourseList.innerHTML = `
+                        <tr>
+                            <td class="px-lg py-md text-body-lg text-error border-b border-outline-variant" colspan="3">
+                                ${error.message}
+                            </td>
+                        </tr>`;
+                }
+            }
+        };
+
+        loadStudentDashboard();
+
+        // Simple micro-interactions
+        document.querySelectorAll('.cursor-pointer').forEach(item => {
+            item.addEventListener('mousedown', () => {
+                item.style.transform = 'scale(0.98)';
+            });
+            item.addEventListener('mouseup', () => {
+                item.style.transform = 'scale(1)';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'scale(1)';
+            });
+        });
+
+        const logoutModal = document.getElementById('logout-modal');
+        const logoutCancel = document.getElementById('logout-cancel');
+        const logoutConfirm = document.getElementById('logout-confirm');
+        const logoutTriggers = document.querySelectorAll('[data-logout-trigger]');
+
+        const openLogoutModal = (event) => {
+            event.preventDefault();
+            if (!logoutModal) {
+                return;
+            }
+            logoutModal.classList.remove('hidden');
+        };
+
+        const closeLogoutModal = () => {
+            if (!logoutModal) {
+                return;
+            }
+            logoutModal.classList.add('hidden');
+        };
+
+        logoutTriggers.forEach((trigger) => {
+            trigger.addEventListener('click', openLogoutModal);
+        });
+
+        if (logoutCancel) {
+            logoutCancel.addEventListener('click', closeLogoutModal);
+        }
+
+        if (logoutConfirm) {
+            logoutConfirm.addEventListener('click', () => {
+                clearAuthSession();
+                window.location.href = 'login.html';
+            });
+        }
+
+        if (logoutModal) {
+            logoutModal.addEventListener('click', (event) => {
+                if (event.target === logoutModal) {
+                    closeLogoutModal();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeLogoutModal();
+            }
+        });
+    </script>
+
+
+</body></html>

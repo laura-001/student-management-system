@@ -1,0 +1,554 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Management Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+    * { font-family: 'DM Sans', sans-serif; }
+    code, .mono { font-family: 'DM Mono', monospace; }
+
+    :root {
+      --navy: #0a2558;
+      --navy-hover: #0d2f6b;
+      --accent-gold: #b48600;
+      --accent-gold-bg: #fdf2d5;
+      --accent-gold-text: #d49a2a;
+      --bg-page: #f4f7f9;
+      --bg-sidebar: #f8fafc;
+      --border: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    /* Nav active */
+    .nav-active { background: var(--navy); color: #fff; }
+    .nav-item { color: var(--text-secondary); transition: background 0.15s; }
+    .nav-item:hover { background: #e8edf5; color: var(--navy); }
+
+    /* Table rows */
+    tbody tr { transition: background 0.1s; }
+    tbody tr:hover { background: #f8fafc; }
+
+    /* Buttons */
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 9px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.15s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary:hover { background: var(--navy-hover); }
+    .btn-primary:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+    .btn-secondary {
+      background: #fff;
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 9px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    .btn-secondary:hover { background: #f8fafc; }
+    .btn-secondary:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+
+    /* Status badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 99px;
+      letter-spacing: 0.02em;
+    }
+    .badge-open    { background: #dcfce7; color: #15803d; }
+    .badge-full    { background: #fee2e2; color: #b91c1c; }
+    .badge-waitlist { background: #fef9c3; color: #a16207; }
+    .badge-closed  { background: #f1f5f9; color: #64748b; }
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.7;
+    }
+
+    /* Capacity bar */
+    .cap-bar { height: 4px; border-radius: 99px; background: #e2e8f0; overflow: hidden; }
+    .cap-fill { height: 100%; border-radius: 99px; transition: width 0.4s; }
+    .cap-fill.low  { background: #22c55e; }
+    .cap-fill.mid  { background: #f59e0b; }
+    .cap-fill.high { background: #ef4444; }
+
+    /* Alert card */
+    .alert-card {
+      border-top: 3px solid var(--accent-gold);
+    }
+
+    /* Focus rings for nav */
+    a:focus-visible {
+      outline: 2px solid var(--navy);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    /* Right panel schedule item */
+    .schedule-item { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .schedule-item:last-child { border-bottom: none; }
+    .time-chip {
+      background: #eef2f6;
+      color: var(--navy);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      font-family: 'DM Mono', monospace;
+      margin-top: 1px;
+    }
+
+    /* Notification dot */
+    .notif-dot {
+      width: 7px; height: 7px;
+      background: #ef4444;
+      border-radius: 50%;
+      position: absolute;
+      top: -1px; right: -1px;
+    }
+
+    /* Search input */
+    .search-wrap { position: relative; }
+    .search-wrap input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-primary);
+      background: #fff;
+      outline: none;
+      transition: border 0.15s;
+    }
+    .search-wrap input:focus { border-color: #93b4e0; }
+    .search-wrap .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    /* Stat card hover */
+    .stat-card { transition: box-shadow 0.15s; }
+    .stat-card:hover { box-shadow: 0 4px 16px rgba(10,37,88,0.07); }
+  </style>
+</head>
+
+<body class="text-slate-800 h-screen flex overflow-hidden" style="background: var(--bg-page);">
+
+  <!-- ═══════════════════════════════════ SIDEBAR ═══════════════════════════════════ -->
+  <aside class="w-64 flex flex-col h-full z-20 flex-shrink-0" style="background: var(--bg-sidebar); border-right: 1px solid var(--border);">
+
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-6" style="border-bottom: 1px solid var(--border); background: #fff;">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded flex items-center justify-center" style="background: var(--navy);">
+          <i class="fa-solid fa-graduation-cap text-white" style="font-size:11px;"></i>
+        </div>
+        <h1 style="font-size:13px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">COURSE MANAGEMENT</h1>
+      </div>
+    </div>
+
+    <div class="p-4 flex-1 overflow-y-auto">
+
+      <!-- Active Term -->
+      <div class="rounded-md p-3 mb-7 mt-1" style="background: rgba(167,197,235,0.25); border: 1px solid #a7c5eb;">
+        <div style="font-size:10px; font-weight:700; color: var(--navy); letter-spacing:0.1em; margin-bottom:3px;">ACTIVE TERM</div>
+        <div style="font-size:13px; color: var(--navy); font-weight:500;">Fall Semester 2026</div>
+      </div>
+
+      <!-- Academics -->
+      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding: 0 4px;">ACADEMICS</div>
+      <nav class="space-y-0.5 mb-7" aria-label="Academics">
+        <a href="courses.html"class="nav-active flex items-center px-3 py-2.5 rounded-md text-sm font-medium" aria-current="page">
+          <i class="fa-solid fa-chart-simple w-5 text-center mr-2.5" aria-hidden="true"></i>
+          Academic Overview
+        </a>
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-users-rectangle w-5 text-center mr-2.5" aria-hidden="true"></i>
+          Enrollment Roster
+        </a>
+        <a href="courses.html" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-book-open-reader w-5 text-center mr-2.5" aria-hidden="true"></i>
+          Course Catalog
+        </a>
+      </nav>
+
+      <!-- Department -->
+      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding: 0 4px;">DEPARTMENT</div>
+      <nav class="space-y-0.5" aria-label="Department">
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-file-signature w-5 text-center mr-2.5" aria-hidden="true"></i>
+          Grade Records
+        </a>
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-calendar-days w-5 text-center mr-2.5" aria-hidden="true"></i>
+          Master Schedule
+        </a>
+      </nav>
+    </div>
+
+    <!-- Sidebar footer -->
+    <div class="px-4 py-4" style="border-top: 1px solid var(--border);">
+      <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+        <i class="fa-solid fa-gear w-5 text-center mr-2.5" aria-hidden="true"></i>
+        Settings
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════ MAIN ═══════════════════════════════════ -->
+  <main class="flex-1 flex flex-col h-full overflow-hidden" style="background: var(--bg-page);">
+
+    <!-- Top bar -->
+    <header class="h-16 flex items-center justify-between px-8 flex-shrink-0" style="border-bottom: 1px solid var(--border); background: var(--bg-page);">
+      <div class="flex items-center gap-2" style="font-size:13px; color: var(--text-secondary);">
+        <i class="fa-solid fa-building-columns" style="color: var(--text-muted);" aria-hidden="true"></i>
+        <span style="color: var(--text-muted);">Faculty of Sciences</span>
+        <i class="fa-solid fa-chevron-right" style="font-size:9px; color: var(--text-muted);" aria-hidden="true"></i>
+        <span style="color: var(--text-primary); font-weight:500;">Academic Overview</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Notifications -->
+        <button class="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors" aria-label="Notifications (3 unread)" style="border: 1px solid var(--border); background:#fff;">
+          <i class="fa-regular fa-bell" style="font-size:14px; color: var(--text-secondary);" aria-hidden="true"></i>
+          <span class="notif-dot" aria-hidden="true"></span>
+        </button>
+
+        <!-- User -->
+         <a href="admin-profile.html" class="flex items-center gap-3 pl-3 hover:opacity-80 transition-opacity cursor-pointer" style="border-left: 1px solid var(--border); text-decoration:none;">
+         <div class="text-right">
+    <div style="font-size:13px; font-weight:600; color: var(--text-primary);">Dr. Alistair Vance</div>
+    <div style="font-size:10px; color: var(--text-muted); letter-spacing:0.07em; text-transform:uppercase; margin-top:1px;">Course Administrator</div>
+  </div>
+  <div class="w-9 h-9 rounded-full overflow-hidden flex-shrink-0" style="border: 2px solid var(--border);">
+    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Dr. Alistair Vance profile photo" class="w-full h-full object-cover">
+  </div>
+</a>
+      </div>
+    </header>
+
+    <!-- Scrollable content -->
+    <div class="flex-1 overflow-y-auto p-8">
+
+      <!-- Page title row -->
+      <div class="flex justify-between items-start mb-7">
+        <div>
+          <h2 style="font-size:22px; color: var(--navy); font-weight:500; letter-spacing:-0.02em; margin-bottom:4px;">Academic Overview</h2>
+          <p style="font-size:13px; color: var(--text-secondary);">Real-time oversight of course offerings, enrollment, and academic schedules.</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn-secondary">
+            <i class="fa-solid fa-file-export" aria-hidden="true"></i> Export Roster
+          </button>
+          <button class="btn-primary">
+            <i class="fa-solid fa-plus" aria-hidden="true"></i> New Course
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Stat cards ── -->
+      <div class="grid grid-cols-4 gap-5 mb-7">
+
+        <div class="stat-card bg-white rounded-lg p-5" style="border: 1px solid var(--border);">
+          <div class="w-9 h-9 rounded flex items-center justify-center mb-4" style="background:#eef2f6; color: var(--navy);">
+            <i class="fa-solid fa-user-graduate" style="font-size:14px;" aria-hidden="true"></i>
+          </div>
+          <div style="font-size:11px; color: var(--text-secondary); font-weight:600; letter-spacing:0.08em; margin-bottom:6px;">TOTAL ENROLLED</div>
+          <div style="font-size:28px; font-weight:300; color: var(--text-primary); line-height:1; margin-bottom:4px;" id="stat-enrolled">—</div>
+          <div style="font-size:11px; color: var(--text-muted);">Undergraduate &amp; Grad</div>
+        </div>
+
+        <div class="stat-card bg-white rounded-lg p-5" style="border: 1px solid var(--border);">
+          <div class="w-9 h-9 rounded flex items-center justify-center mb-4" style="background: var(--accent-gold-bg); color: var(--accent-gold-text);">
+            <i class="fa-solid fa-chalkboard-user" style="font-size:14px;" aria-hidden="true"></i>
+          </div>
+          <div style="font-size:11px; color: var(--text-secondary); font-weight:600; letter-spacing:0.08em; margin-bottom:6px;">ACTIVE FACULTY</div>
+          <div style="font-size:28px; font-weight:300; color: var(--text-primary); line-height:1; margin-bottom:4px;" id="stat-faculty">—</div>
+          <div style="font-size:11px; color: var(--text-muted);">Professors &amp; Lecturers</div>
+        </div>
+
+        <div class="stat-card bg-white rounded-lg p-5" style="border: 1px solid var(--border);">
+          <div class="w-9 h-9 rounded flex items-center justify-center mb-4" style="background:#f1f5f9; color: var(--text-secondary);">
+            <i class="fa-solid fa-book" style="font-size:14px;" aria-hidden="true"></i>
+          </div>
+          <div style="font-size:11px; color: var(--text-secondary); font-weight:600; letter-spacing:0.08em; margin-bottom:6px;">SECTIONS OFFERED</div>
+          <div style="font-size:28px; font-weight:300; color: var(--text-primary); line-height:1; margin-bottom:4px;" id="stat-sections">—</div>
+          <div style="font-size:11px; color: var(--text-muted);">Fall Semester</div>
+        </div>
+
+        <!-- Alert card -->
+        <div class="stat-card alert-card bg-white rounded-lg p-5" style="border: 1px solid var(--border);">
+          <div class="w-9 h-9 rounded flex items-center justify-center mb-4" style="background: var(--accent-gold-bg); color: var(--accent-gold-text);">
+            <i class="fa-solid fa-clipboard-list" style="font-size:14px;" aria-hidden="true"></i>
+          </div>
+          <div style="font-size:11px; color: var(--text-secondary); font-weight:600; letter-spacing:0.08em; margin-bottom:6px;">WAITLIST OVERRIDES</div>
+          <div style="font-size:28px; font-weight:300; color: var(--accent-gold); line-height:1; margin-bottom:4px;" id="stat-waitlist">—</div>
+          <div style="font-size:11px; color: var(--text-secondary); margin-bottom:10px;">Requires Approval</div>
+          <a href="waitlist-overrides.html" class="btn-primary" style="font-size:11px; padding: 6px 12px; text-decoration:none; border-radius:5px;">
+            Review Overrides <i class="fa-solid fa-arrow-right" style="font-size:9px;" aria-hidden="true"></i>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- ── Bottom grid: table + right panel ── -->
+      <div class="grid gap-5" style="grid-template-columns: 1fr 300px;">
+
+        <!-- Course Sections Table -->
+        <div class="bg-white rounded-lg flex flex-col" style="border: 1px solid var(--border);">
+
+          <!-- Table header -->
+          <div class="flex justify-between items-center p-5" style="border-bottom: 1px solid var(--border);">
+            <h3 style="font-size:14px; color: var(--navy); font-weight:600;">Active Course Sections</h3>
+            <div class="flex items-center gap-3">
+              <div class="search-wrap" style="width:210px;">
+                <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+                <input type="search" id="table-search" placeholder="Search courses…" aria-label="Search active course sections">
+              </div>
+              <button class="w-8 h-8 flex items-center justify-center rounded transition-colors hover:bg-slate-100"
+                      style="border: 1px solid var(--border);" aria-label="Filter courses">
+                <i class="fa-solid fa-filter" style="font-size:12px; color: var(--text-secondary);" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="overflow-x-auto flex-1">
+            <table class="w-full text-left" aria-label="Active course sections">
+
+              <thead style="background:#f8fafc; border-bottom: 1px solid var(--border);">
+                <tr>
+                  <th scope="col" class="px-5 py-3" style="font-size:11px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">COURSE ID</th>
+                  <th scope="col" class="px-5 py-3" style="font-size:11px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">COURSE TITLE</th>
+                  <th scope="col" class="px-5 py-3" style="font-size:11px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">SEATS (FILLED / CAP)</th>
+                  <th scope="col" class="px-5 py-3" style="font-size:11px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">INSTRUCTOR</th>
+                  <th scope="col" class="px-5 py-3 text-center" style="font-size:11px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">STATUS</th>
+                </tr>
+              </thead>
+              <tbody id="course-table-body" style="font-size:13px; color: var(--text-primary);">
+                <!-- Rows injected by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Table footer -->
+          <div class="flex items-center justify-between px-5 py-3" style="border-top: 1px solid var(--border);">
+            <span style="font-size:12px; color: var(--text-muted);" id="table-footer-label">Showing — courses</span>
+            <div class="flex gap-1">
+              <button class="px-3 py-1.5 rounded text-xs hover:bg-slate-100 transition-colors" style="border: 1px solid var(--border); color: var(--text-secondary);" aria-label="Previous page">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              </button>
+              <button class="px-3 py-1.5 rounded text-xs font-semibold" style="background: var(--navy); color:#fff; border:none;">1</button>
+              <button class="px-3 py-1.5 rounded text-xs hover:bg-slate-100 transition-colors" style="border: 1px solid var(--border); color: var(--text-secondary);">2</button>
+              <button class="px-3 py-1.5 rounded text-xs hover:bg-slate-100 transition-colors" style="border: 1px solid var(--border); color: var(--text-secondary);" aria-label="Next page">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Right panel ── -->
+        <div class="flex flex-col gap-5">
+
+          <!-- Upcoming Schedule -->
+          <div class="bg-white rounded-lg flex-1" style="border: 1px solid var(--border);">
+            <div class="flex items-center justify-between px-5 py-4" style="border-bottom: 1px solid var(--border);">
+              <h3 style="font-size:14px; font-weight:600; color: var(--navy);">Upcoming Schedule</h3>
+              <span style="font-size:11px; color: var(--text-muted);" id="today-date"></span>
+            </div>
+            <div class="px-5 py-3" id="schedule-list">
+              <!-- Injected by JS -->
+            </div>
+          </div>
+
+          <!-- Pending Alerts -->
+          <div class="bg-white rounded-lg" style="border: 1px solid var(--border);">
+            <div class="flex items-center justify-between px-5 py-4" style="border-bottom: 1px solid var(--border);">
+              <h3 style="font-size:14px; font-weight:600; color: var(--navy);">Pending Alerts</h3>
+              <span class="badge badge-waitlist" id="alert-count-badge">—</span>
+            </div>
+            <div class="px-5 py-3 space-y-3" id="alert-list">
+              <!-- Injected by JS -->
+            </div>
+            <div class="px-5 pb-4">
+              <button class="btn-secondary w-full justify-center" style="font-size:12px;">
+                View All Alerts
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /scroll -->
+  </main>
+
+  <script>
+    // ── Placeholder data (replace with real API calls) ──────────────────────────
+    const STATS = {
+      enrolled: 12540,
+      faculty: 142,
+      sections: 482,
+      waitlist: 24
+    };
+
+    const COURSES = [
+      { id: 'CYB-101',  title: 'Foundations of Cybersecurity',               filled: 38, cap: 40, instructor: 'Dr. Patel',    status: 'open' },
+      { id: 'CYB-210',  title: 'Network Security & Protocols',                filled: 40, cap: 40, instructor: 'Dr. Vance',    status: 'full' },
+      { id: 'CYB-220',  title: 'Ethical Hacking & Penetration Testing',       filled: 29, cap: 30, instructor: 'Prof. Osei',   status: 'waitlist' },
+      { id: 'CYB-231',  title: 'Cryptography & Secure Communications',        filled: 22, cap: 35, instructor: 'Dr. Nakamura', status: 'open' },
+      { id: 'CYB-305',  title: 'Malware Analysis & Reverse Engineering',      filled: 15, cap: 25, instructor: 'Prof. Eriksen',status: 'open' },
+      { id: 'CYB-315',  title: 'Digital Forensics & Incident Response',       filled: 30, cap: 30, instructor: 'Dr. Okafor',   status: 'full' },
+      { id: 'CYB-410',  title: 'Cloud Security & Infrastructure Defence',     filled: 18, cap: 20, instructor: 'Dr. Vance',    status: 'open' },
+      { id: 'CYB-420',  title: 'Security Operations & Threat Intelligence',   filled: 25, cap: 40, instructor: 'Prof. Mbeki',  status: 'open' },
+    ];
+
+    const SCHEDULE = [
+      { time: '08:00', course: 'CYB-101',  room: 'Hall B-12', type: 'Lecture' },
+      { time: '09:30', course: 'CYB-210',  room: 'Lab 3',     type: 'Lab' },
+      { time: '11:00', course: 'CYB-220',  room: 'Room 204',  type: 'Tutorial' },
+      { time: '14:00', course: 'CYB-410',  room: 'Hall A-7',  type: 'Lecture' },
+      { time: '15:30', course: 'CYB-315',  room: 'Room 108',  type: 'Seminar' },
+    ];
+
+    const ALERTS = [
+      { icon: 'fa-clock-rotate-left', text: 'Grade submission deadline in 3 days', level: 'warn' },
+      { icon: 'fa-user-xmark',        text: '5 students missing prerequisite for CS-450', level: 'danger' },
+      { icon: 'fa-calendar-xmark',    text: 'CHEM-301 room conflict on Nov 14', level: 'warn' },
+    ];
+
+    // ── Render stats ────────────────────────────────────────────────────────────
+    document.getElementById('stat-enrolled').textContent  = STATS.enrolled.toLocaleString();
+    document.getElementById('stat-faculty').textContent   = STATS.faculty.toLocaleString();
+    document.getElementById('stat-sections').textContent  = STATS.sections.toLocaleString();
+    document.getElementById('stat-waitlist').textContent  = STATS.waitlist.toLocaleString();
+
+    // ── Render table ────────────────────────────────────────────────────────────
+    function statusBadge(status) {
+      const map = {
+        open:     ['badge-open',     'Open'],
+        full:     ['badge-full',     'Full'],
+        waitlist: ['badge-waitlist', 'Waitlist'],
+        closed:   ['badge-closed',   'Closed'],
+      };
+      const [cls, label] = map[status] || map.closed;
+      return `<span class="badge ${cls}">${label}</span>`;
+    }
+
+    function capClass(pct) {
+      if (pct >= 0.95) return 'high';
+      if (pct >= 0.70) return 'mid';
+      return 'low';
+    }
+
+    function renderTable(rows) {
+      const tbody = document.getElementById('course-table-body');
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:40px; color: var(--text-muted); font-size:13px;">No courses found.</td></tr>`;
+        document.getElementById('table-footer-label').textContent = 'Showing 0 courses';
+        return;
+      }
+      tbody.innerHTML = rows.map(c => {
+        const pct = c.filled / c.cap;
+        const pctPx = Math.round(pct * 100);
+        return `
+          <tr style="border-bottom: 1px solid var(--border);">
+            <td class="px-5 py-3"><span class="mono" style="font-size:12px; color: var(--navy); font-weight:500;">${c.id}</span></td>
+            <td class="px-5 py-3" style="white-space:normal; line-height:1.4;">${c.title}</td>
+            <td class="px-5 py-3">
+              <div style="font-size:12px; color: var(--text-secondary); margin-bottom:4px;">${c.filled} / ${c.cap}</div>
+              <div class="cap-bar"><div class="cap-fill ${capClass(pct)}" style="width:${pctPx}%"></div></div>
+            </td>
+            <td class="px-5 py-3" style="font-size:12px; color: var(--text-secondary); white-space:nowrap;">${c.instructor}</td>
+            <td class="px-5 py-3 text-center">${statusBadge(c.status)}</td>
+          </tr>`;
+      }).join('');
+      document.getElementById('table-footer-label').textContent = `Showing ${rows.length} of ${COURSES.length} courses`;
+    }
+
+    renderTable(COURSES);
+
+    // ── Search ──────────────────────────────────────────────────────────────────
+    document.getElementById('table-search').addEventListener('input', function() {
+      const q = this.value.toLowerCase().trim();
+      const filtered = q ? COURSES.filter(c =>
+        c.id.toLowerCase().includes(q) ||
+        c.title.toLowerCase().includes(q) ||
+        c.instructor.toLowerCase().includes(q)
+      ) : COURSES;
+      renderTable(filtered);
+    });
+
+    // ── Render schedule ─────────────────────────────────────────────────────────
+    const now = new Date();
+    document.getElementById('today-date').textContent = now.toLocaleDateString('en-US', { weekday:'short', month:'short', day:'numeric' });
+
+    document.getElementById('schedule-list').innerHTML = SCHEDULE.map(s => `
+      <div class="schedule-item">
+        <span class="time-chip">${s.time}</span>
+        <div>
+          <div style="font-size:13px; font-weight:500; color: var(--text-primary);">${s.course}</div>
+          <div style="font-size:11px; color: var(--text-muted); margin-top:1px;">${s.type} · ${s.room}</div>
+        </div>
+      </div>
+    `).join('');
+
+    // ── Render alerts ───────────────────────────────────────────────────────────
+    document.getElementById('alert-count-badge').textContent = `${ALERTS.length} pending`;
+
+    const alertColors = {
+      warn:   { bg: '#fef9c3', text: '#a16207', icon: '#ca8a04' },
+      danger: { bg: '#fee2e2', text: '#b91c1c', icon: '#dc2626' },
+    };
+
+    document.getElementById('alert-list').innerHTML = ALERTS.map(a => {
+      const c = alertColors[a.level] || alertColors.warn;
+      return `
+        <div style="display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:6px; background:${c.bg};">
+          <i class="fa-solid ${a.icon}" style="color:${c.icon}; font-size:13px; margin-top:2px; flex-shrink:0;" aria-hidden="true"></i>
+          <span style="font-size:12px; color:${c.text}; line-height:1.5;">${a.text}</span>
+        </div>`;
+    }).join('');
+  </script>
+</body>
+</html>

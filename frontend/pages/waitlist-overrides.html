@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waitlist Overrides — Course Management Center</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+    * { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
+    .mono { font-family: 'DM Mono', monospace; }
+
+    :root {
+      --navy: #0a2558;
+      --navy-hover: #0d2f6b;
+      --accent-gold: #b48600;
+      --accent-gold-bg: #fdf2d5;
+      --accent-gold-text: #d49a2a;
+      --bg-page: #f4f7f9;
+      --bg-sidebar: #f8fafc;
+      --border: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+    .nav-active { background: var(--navy); color: #fff; }
+    .nav-item { color: var(--text-secondary); transition: background 0.15s; }
+    .nav-item:hover { background: #e8edf5; color: var(--navy); }
+    a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 4px; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: background 0.15s, opacity 0.15s; letter-spacing: 0.03em; }
+    .btn-primary   { background: var(--navy); color: #fff; }
+    .btn-primary:hover { background: var(--navy-hover); }
+    .btn-secondary { background: #fff; color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: #f8fafc; }
+    .btn-approve { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .btn-approve:hover { background: #bbf7d0; }
+    .btn-deny    { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .btn-deny:hover { background: #fecaca; }
+    .btn-defer   { background: #fef9c3; color: #a16207; border: 1px solid #fef08a; }
+    .btn-defer:hover { background: #fef08a; }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Status badges */
+    .badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 99px; letter-spacing: 0.02em; white-space: nowrap; }
+    .badge::before { content:''; width:6px; height:6px; border-radius:50%; background:currentColor; opacity:0.7; }
+    .badge-pending  { background: #fef9c3; color: #a16207; }
+    .badge-approved { background: #dcfce7; color: #15803d; }
+    .badge-denied   { background: #fee2e2; color: #b91c1c; }
+    .badge-deferred { background: #e0f2fe; color: #0369a1; }
+
+    /* Priority tags */
+    .priority { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em; }
+    .priority-high   { background: #fee2e2; color: #b91c1c; }
+    .priority-medium { background: #fef9c3; color: #a16207; }
+    .priority-low    { background: #f1f5f9; color: #64748b; }
+
+    /* Cards */
+    .request-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; transition: box-shadow 0.15s; overflow: hidden; }
+    .request-card:hover { box-shadow: 0 4px 18px rgba(10,37,88,0.07); }
+    .request-card.is-approved { border-left: 3px solid #22c55e; }
+    .request-card.is-denied   { border-left: 3px solid #ef4444; }
+    .request-card.is-deferred { border-left: 3px solid #38bdf8; }
+    .request-card.is-pending  { border-left: 3px solid var(--accent-gold); }
+
+    /* Note box */
+    .note-area { width:100%; border:1px solid var(--border); border-radius:6px; padding:8px 10px; font-size:13px; color: var(--text-primary); resize:vertical; min-height:64px; outline:none; transition: border 0.15s; font-family: 'DM Sans', sans-serif; }
+    .note-area:focus { border-color: #93b4e0; }
+
+    /* Stat bar */
+    .stat-pill { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; display:flex; flex-direction:column; gap:3px; }
+
+    /* Filter tabs */
+    .tab { padding: 7px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid transparent; transition: all 0.15s; color: var(--text-secondary); }
+    .tab:hover { background: #e8edf5; color: var(--navy); }
+    .tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    /* Modal overlay */
+    .modal-overlay { position: fixed; inset:0; background: rgba(10,37,88,0.18); backdrop-filter: blur(2px); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition: opacity 0.2s; }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal-box { background:#fff; border-radius:12px; width:480px; max-width:92vw; box-shadow: 0 20px 60px rgba(10,37,88,0.18); transform: translateY(12px); transition: transform 0.2s; }
+    .modal-overlay.open .modal-box { transform: translateY(0); }
+
+    /* Toast */
+    .toast { position:fixed; bottom:28px; right:28px; background: var(--navy); color:#fff; padding:12px 20px; border-radius:8px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:10px; box-shadow: 0 8px 24px rgba(10,37,88,0.22); z-index:200; opacity:0; transform:translateY(8px); transition: opacity 0.25s, transform 0.25s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translateY(0); }
+    .toast.toast-approve { background: #16a34a; }
+    .toast.toast-deny    { background: #dc2626; }
+    .toast.toast-defer   { background: #0284c7; }
+
+    /* Avatar initials */
+    .avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; color:#fff; }
+  </style>
+</head>
+
+<body class="h-screen flex overflow-hidden" style="background: var(--bg-page);">
+
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <aside class="w-64 flex flex-col h-full z-20 flex-shrink-0" style="background: var(--bg-sidebar); border-right: 1px solid var(--border);">
+    <div class="h-16 flex items-center px-6" style="border-bottom: 1px solid var(--border); background:#fff;">
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded flex items-center justify-center" style="background: var(--navy);">
+          <i class="fa-solid fa-graduation-cap text-white" style="font-size:11px;"></i>
+        </div>
+        <h1 style="font-size:13px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">COURSE MANAGEMENT</h1>
+      </div>
+    </div>
+    <div class="p-4 flex-1 overflow-y-auto">
+      <div class="rounded-md p-3 mb-7 mt-1" style="background: rgba(167,197,235,0.25); border: 1px solid #a7c5eb;">
+        <div style="font-size:10px; font-weight:700; color: var(--navy); letter-spacing:0.1em; margin-bottom:3px;">ACTIVE TERM</div>
+        <div style="font-size:13px; color: var(--navy); font-weight:500;">Fall Semester 2026</div>
+      </div>
+      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding: 0 4px;">ACADEMICS</div>
+      <nav class="space-y-0.5 mb-7" aria-label="Academics">
+        <a href="admin-dashboard.html" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-chart-simple w-5 text-center mr-2.5" aria-hidden="true"></i>Academic Overview
+        </a>
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-users-rectangle w-5 text-center mr-2.5" aria-hidden="true"></i>Enrollment Roster
+        </a>
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-book-open-reader w-5 text-center mr-2.5" aria-hidden="true"></i>Course Catalog
+        </a>
+      </nav>
+      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding: 0 4px;">DEPARTMENT</div>
+      <nav class="space-y-0.5 mb-7" aria-label="Department">
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-file-signature w-5 text-center mr-2.5" aria-hidden="true"></i>Grade Records
+        </a>
+        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+          <i class="fa-solid fa-calendar-days w-5 text-center mr-2.5" aria-hidden="true"></i>Master Schedule
+        </a>
+      </nav>
+      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding: 0 4px;">ADMIN</div>
+      <nav class="space-y-0.5" aria-label="Admin">
+        <a href="#" class="nav-active flex items-center px-3 py-2.5 rounded-md text-sm font-medium" aria-current="page">
+          <i class="fa-solid fa-clipboard-list w-5 text-center mr-2.5" aria-hidden="true"></i>
+          Waitlist Overrides
+          <span class="ml-auto text-xs font-bold bg-white/20 rounded-full px-2 py-0.5" id="sidebar-count"></span>
+        </a>
+      </nav>
+    </div>
+    <div class="px-4 py-4" style="border-top: 1px solid var(--border);">
+      <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
+        <i class="fa-solid fa-gear w-5 text-center mr-2.5" aria-hidden="true"></i>Settings
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════ MAIN ═══════════════════ -->
+  <main class="flex-1 flex flex-col h-full overflow-hidden" style="background: var(--bg-page);">
+
+    <!-- Header -->
+    <header class="h-16 flex items-center justify-between px-8 flex-shrink-0" style="border-bottom: 1px solid var(--border); background: var(--bg-page);">
+      <div class="flex items-center gap-2" style="font-size:13px; color: var(--text-secondary);">
+        <i class="fa-solid fa-building-columns" style="color: var(--text-muted);" aria-hidden="true"></i>
+        <a href="admin-dashboard.html" style="color: var(--text-muted); text-decoration:none;" class="hover:underline">Academic Overview</a>
+        <i class="fa-solid fa-chevron-right" style="font-size:9px; color: var(--text-muted);" aria-hidden="true"></i>
+        <span style="color: var(--text-primary); font-weight:500;">Waitlist Overrides</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors" aria-label="Notifications" style="border: 1px solid var(--border); background:#fff;">
+          <i class="fa-regular fa-bell" style="font-size:14px; color: var(--text-secondary);" aria-hidden="true"></i>
+        </button>
+        <div class="flex items-center gap-3 pl-3" style="border-left: 1px solid var(--border);">
+          <div class="text-right">
+            <div style="font-size:13px; font-weight:600; color: var(--text-primary);">Dr. Alistair Vance</div>
+            <div style="font-size:10px; color: var(--text-muted); letter-spacing:0.07em; text-transform:uppercase; margin-top:1px;">Course Administrator</div>
+          </div>
+          <div class="w-9 h-9 rounded-full overflow-hidden flex-shrink-0" style="border: 2px solid var(--border);">
+            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Dr. Alistair Vance" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Scrollable body -->
+    <div class="flex-1 overflow-y-auto p-8">
+
+      <!-- Page title -->
+      <div class="flex justify-between items-start mb-7">
+        <div>
+          <h2 style="font-size:22px; color: var(--navy); font-weight:500; letter-spacing:-0.02em; margin-bottom:4px;">Waitlist Overrides</h2>
+          <p style="font-size:13px; color: var(--text-secondary);">Review, approve, deny, or defer manual enrollment override requests.</p>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary" onclick="exportCSV()">
+            <i class="fa-solid fa-file-export" aria-hidden="true"></i> Export
+          </button>
+          <button class="btn btn-primary" onclick="bulkAction('approved')" id="bulk-approve-btn" disabled>
+            <i class="fa-solid fa-check-double" aria-hidden="true"></i> Bulk Approve
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="grid grid-cols-4 gap-4 mb-7" id="stats-row">
+        <div class="stat-pill"><span style="font-size:11px; color: var(--text-muted); font-weight:600; letter-spacing:0.07em;">TOTAL</span><span style="font-size:24px; font-weight:300; color: var(--text-primary);" id="s-total">—</span></div>
+        <div class="stat-pill"><span style="font-size:11px; color: #a16207; font-weight:600; letter-spacing:0.07em;">PENDING</span><span style="font-size:24px; font-weight:300; color: var(--accent-gold);" id="s-pending">—</span></div>
+        <div class="stat-pill"><span style="font-size:11px; color: #15803d; font-weight:600; letter-spacing:0.07em;">APPROVED</span><span style="font-size:24px; font-weight:300; color: #16a34a;" id="s-approved">—</span></div>
+        <div class="stat-pill"><span style="font-size:11px; color: #b91c1c; font-weight:600; letter-spacing:0.07em;">DENIED</span><span style="font-size:24px; font-weight:300; color: #dc2626;" id="s-denied">—</span></div>
+      </div>
+
+      <!-- Filter + search bar -->
+      <div class="flex items-center justify-between mb-5 gap-4 flex-wrap">
+        <div class="flex gap-2 flex-wrap" id="filter-tabs">
+          <button class="tab active" data-filter="all">All Requests</button>
+          <button class="tab" data-filter="pending">Pending</button>
+          <button class="tab" data-filter="approved">Approved</button>
+          <button class="tab" data-filter="denied">Denied</button>
+          <button class="tab" data-filter="deferred">Deferred</button>
+        </div>
+        <div style="position:relative; width:230px;">
+          <i class="fa-solid fa-magnifying-glass" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); font-size:12px; color: var(--text-muted); pointer-events:none;" aria-hidden="true"></i>
+          <input type="search" id="search-input" placeholder="Search student or course…" aria-label="Search override requests"
+            style="width:100%; padding:8px 12px 8px 32px; border:1px solid var(--border); border-radius:6px; font-size:13px; outline:none; background:#fff; transition: border 0.15s;"
+            onfocus="this.style.borderColor='#93b4e0'" onblur="this.style.borderColor='var(--border)'">
+        </div>
+      </div>
+
+      <!-- Select all row -->
+      <div class="flex items-center gap-3 mb-4 px-1" id="select-bar">
+        <input type="checkbox" id="select-all" aria-label="Select all visible requests" style="width:15px; height:15px; cursor:pointer; accent-color: var(--navy);">
+        <label for="select-all" style="font-size:12px; color: var(--text-secondary); cursor:pointer;">Select all</label>
+        <span style="font-size:12px; color: var(--text-muted);" id="selected-count"></span>
+      </div>
+
+      <!-- Cards list -->
+      <div class="space-y-4" id="cards-container"></div>
+
+      <!-- Empty state -->
+      <div id="empty-state" style="display:none; text-align:center; padding:60px 20px;">
+        <i class="fa-solid fa-inbox" style="font-size:36px; color: var(--text-muted); margin-bottom:12px; display:block;"></i>
+        <div style="font-size:15px; font-weight:500; color: var(--text-secondary); margin-bottom:4px;">No requests found</div>
+        <div style="font-size:13px; color: var(--text-muted);">Try adjusting your filter or search query.</div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ═══════════════════ NOTE MODAL ═══════════════════ -->
+  <div class="modal-overlay" id="note-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-box">
+      <div class="flex items-center justify-between px-6 py-5" style="border-bottom:1px solid var(--border);">
+        <div>
+          <h3 id="modal-title" style="font-size:15px; font-weight:600; color: var(--navy); margin-bottom:2px;"></h3>
+          <p style="font-size:12px; color: var(--text-muted);" id="modal-subtitle"></p>
+        </div>
+        <button onclick="closeModal()" aria-label="Close" style="background:none; border:none; cursor:pointer; color: var(--text-muted); font-size:16px;">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="px-6 py-5">
+        <label style="font-size:12px; font-weight:600; color: var(--text-secondary); letter-spacing:0.05em; display:block; margin-bottom:6px;">ADMIN NOTE <span style="font-weight:400; color: var(--text-muted);">(optional)</span></label>
+        <textarea class="note-area" id="modal-note" placeholder="e.g. Student has instructor approval. Dean sign-off received."></textarea>
+      </div>
+      <div class="flex justify-end gap-2 px-6 pb-5" id="modal-actions"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" aria-live="polite">
+    <i class="fa-solid fa-circle-check" id="toast-icon"></i>
+    <span id="toast-msg"></span>
+  </div>
+
+  <script>
+    // ── Data ────────────────────────────────────────────────────────────────────
+    const AVATAR_COLORS = ['#0a2558','#7c3aed','#0369a1','#0f766e','#b45309','#be185d','#15803d','#c2410c'];
+
+    let REQUESTS = [
+      { id:1,  student:'Amara Diallo',     sid:'STU-2204', course:'CYB-220', courseTitle:'Ethical Hacking & Penetration Testing', reason:'Required for graduation this term. Advisor has confirmed.',         priority:'high',   submitted:'2026-08-01', status:'pending',  note:'' },
+      { id:2,  student:'Kwame Asante',     sid:'STU-1891', course:'CYB-315', courseTitle:'Digital Forensics & Incident Response',   reason:'Transfer student — equivalent course taken at prior institution.', priority:'high',   submitted:'2026-08-02', status:'pending',  note:'' },
+      { id:3,  student:'Sofia Reinholt',   sid:'STU-3047', course:'CYB-410', courseTitle:'Cloud Security & Infrastructure Defence', reason:'Instructor granted verbal approval during orientation week.',       priority:'medium', submitted:'2026-08-03', status:'pending',  note:'' },
+      { id:4,  student:'Jalen Obi',        sid:'STU-2765', course:'CYB-231', courseTitle:'Cryptography & Secure Communications',    reason:'Missed enrollment window due to hospitalisation. Docs attached.',  priority:'high',   submitted:'2026-08-03', status:'pending',  note:'' },
+      { id:5,  student:'Mei Tanaka',       sid:'STU-1122', course:'CYB-305', courseTitle:'Malware Analysis & Reverse Engineering',  reason:'Elective choice — completed all prerequisites ahead of schedule.', priority:'low',    submitted:'2026-08-04', status:'pending',  note:'' },
+      { id:6,  student:'Elias Bergström',  sid:'STU-3310', course:'CYB-420', courseTitle:'Security Operations & Threat Intelligence','reason':'Scholarship programme requires this module in current semester.',  priority:'medium', submitted:'2026-08-04', status:'pending',  note:'' },
+      { id:7,  student:'Priya Nair',       sid:'STU-2481', course:'CYB-210', courseTitle:'Network Security & Protocols',            reason:'Prerequisite waiver approved by department chair.',                 priority:'medium', submitted:'2026-08-05', status:'pending',  note:'' },
+      { id:8,  student:'Tomás Ríos',       sid:'STU-1657', course:'CYB-220', courseTitle:'Ethical Hacking & Penetration Testing',   reason:'Lab partner allocation requires same section.',                    priority:'low',    submitted:'2026-08-05', status:'approved', note:'Confirmed with instructor. Seat allocated.' },
+      { id:9,  student:'Fatou Seck',       sid:'STU-3901', course:'CYB-315', courseTitle:'Digital Forensics & Incident Response',   reason:'Academic plan adjustment — switching from CS major.',              priority:'low',    submitted:'2026-08-06', status:'denied',   note:'Course capacity cannot be exceeded this semester.' },
+      { id:10, student:'Nia Okonkwo',      sid:'STU-2038', course:'CYB-101', courseTitle:'Foundations of Cybersecurity',            reason:'Late registration due to visa processing delay.',                  priority:'medium', submitted:'2026-08-06', status:'deferred', note:'Awaiting registrar confirmation of enrolment status.' },
+    ];
+
+    let currentFilter = 'all';
+    let selectedIds = new Set();
+    let pendingAction = null; // { id, action }
+
+    // ── Helpers ─────────────────────────────────────────────────────────────────
+    function initials(name) { return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+    function avatarColor(id) { return AVATAR_COLORS[id % AVATAR_COLORS.length]; }
+    function formatDate(d) { return new Date(d).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+
+    function badgeHTML(status) {
+      const map = { pending:'badge-pending', approved:'badge-approved', denied:'badge-denied', deferred:'badge-deferred' };
+      return `<span class="badge ${map[status]}">${status.charAt(0).toUpperCase()+status.slice(1)}</span>`;
+    }
+
+    function priorityHTML(p) {
+      const map = { high:'priority-high', medium:'priority-medium', low:'priority-low' };
+      return `<span class="priority ${map[p]}">${p.toUpperCase()}</span>`;
+    }
+
+    // ── Stats ────────────────────────────────────────────────────────────────────
+    function updateStats() {
+      const counts = { total: REQUESTS.length, pending:0, approved:0, denied:0, deferred:0 };
+      REQUESTS.forEach(r => counts[r.status]++);
+      document.getElementById('s-total').textContent    = counts.total;
+      document.getElementById('s-pending').textContent  = counts.pending;
+      document.getElementById('s-approved').textContent = counts.approved;
+      document.getElementById('s-denied').textContent   = counts.denied;
+      document.getElementById('sidebar-count').textContent = counts.pending;
+    }
+
+    // ── Render ───────────────────────────────────────────────────────────────────
+    function filteredRequests() {
+      const q = document.getElementById('search-input').value.toLowerCase().trim();
+      return REQUESTS.filter(r => {
+        const matchFilter = currentFilter === 'all' || r.status === currentFilter;
+        const matchSearch = !q || r.student.toLowerCase().includes(q) || r.course.toLowerCase().includes(q) || r.courseTitle.toLowerCase().includes(q) || r.sid.toLowerCase().includes(q);
+        return matchFilter && matchSearch;
+      });
+    }
+
+    function render() {
+      updateStats();
+      const rows = filteredRequests();
+      const container = document.getElementById('cards-container');
+      const empty = document.getElementById('empty-state');
+
+      if (!rows.length) { container.innerHTML = ''; empty.style.display = 'block'; return; }
+      empty.style.display = 'none';
+
+      container.innerHTML = rows.map(r => {
+        const checked = selectedIds.has(r.id);
+        const isPending = r.status === 'pending';
+        return `
+        <div class="request-card is-${r.status}" id="card-${r.id}">
+          <div style="padding:18px 20px;">
+            <div style="display:flex; align-items:flex-start; gap:14px;">
+              <!-- Checkbox -->
+              <input type="checkbox" aria-label="Select ${r.student}" ${checked?'checked':''} onchange="toggleSelect(${r.id}, this.checked)"
+                style="width:15px; height:15px; margin-top:3px; cursor:pointer; flex-shrink:0; accent-color: var(--navy);">
+              <!-- Avatar -->
+              <div class="avatar" style="background:${avatarColor(r.id)};">${initials(r.student)}</div>
+              <!-- Body -->
+              <div style="flex:1; min-width:0;">
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:4px;">
+                  <span style="font-size:14px; font-weight:600; color: var(--text-primary);">${r.student}</span>
+                  <span class="mono" style="font-size:11px; color: var(--text-muted);">${r.sid}</span>
+                  ${priorityHTML(r.priority)}
+                  ${badgeHTML(r.status)}
+                </div>
+                <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px; flex-wrap:wrap;">
+                  <span class="mono" style="font-size:12px; color: var(--navy); font-weight:500;">${r.course}</span>
+                  <span style="color: var(--text-muted); font-size:12px;">·</span>
+                  <span style="font-size:12px; color: var(--text-secondary);">${r.courseTitle}</span>
+                  <span style="color: var(--text-muted); font-size:12px;">·</span>
+                  <span style="font-size:11px; color: var(--text-muted);">Submitted ${formatDate(r.submitted)}</span>
+                </div>
+                <div style="font-size:13px; color: var(--text-secondary); line-height:1.5; background:#f8fafc; border-radius:6px; padding:10px 12px; border:1px solid var(--border);">
+                  <i class="fa-solid fa-quote-left" style="font-size:10px; color: var(--text-muted); margin-right:4px;" aria-hidden="true"></i>${r.reason}
+                </div>
+                ${r.note ? `
+                <div style="margin-top:10px; font-size:12px; color: var(--text-secondary); display:flex; gap:7px; align-items:flex-start;">
+                  <i class="fa-solid fa-note-sticky" style="color: var(--accent-gold); margin-top:2px; flex-shrink:0;" aria-hidden="true"></i>
+                  <span><strong style="color: var(--text-primary);">Admin note:</strong> ${r.note}</span>
+                </div>` : ''}
+              </div>
+              <!-- Actions -->
+              <div style="display:flex; flex-direction:column; gap:6px; flex-shrink:0; align-items:flex-end;">
+                ${isPending ? `
+                  <button class="btn btn-approve" onclick="openModal(${r.id},'approved')" aria-label="Approve ${r.student}'s request">
+                    <i class="fa-solid fa-check" aria-hidden="true"></i> Approve
+                  </button>
+                  <button class="btn btn-deny" onclick="openModal(${r.id},'denied')" aria-label="Deny ${r.student}'s request">
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i> Deny
+                  </button>
+                  <button class="btn btn-defer" onclick="openModal(${r.id},'deferred')" aria-label="Defer ${r.student}'s request">
+                    <i class="fa-solid fa-clock" aria-hidden="true"></i> Defer
+                  </button>
+                ` : `
+                  <button class="btn btn-secondary" onclick="openModal(${r.id},'reopen')" style="font-size:11px;" aria-label="Edit decision for ${r.student}">
+                    <i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Decision
+                  </button>
+                `}
+              </div>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Select-all state
+      const allChecked = rows.length > 0 && rows.every(r => selectedIds.has(r.id));
+      document.getElementById('select-all').checked = allChecked;
+      document.getElementById('select-all').indeterminate = !allChecked && rows.some(r => selectedIds.has(r.id));
+      updateSelectedCount();
+    }
+
+    // ── Selection ────────────────────────────────────────────────────────────────
+    function toggleSelect(id, checked) {
+      if (checked) selectedIds.add(id); else selectedIds.delete(id);
+      updateSelectedCount();
+      const allVisible = filteredRequests();
+      const allChecked = allVisible.length > 0 && allVisible.every(r => selectedIds.has(r.id));
+      document.getElementById('select-all').checked = allChecked;
+      document.getElementById('select-all').indeterminate = !allChecked && allVisible.some(r => selectedIds.has(r.id));
+      document.getElementById('bulk-approve-btn').disabled = selectedIds.size === 0;
+    }
+
+    function updateSelectedCount() {
+      const el = document.getElementById('selected-count');
+      el.textContent = selectedIds.size > 0 ? `${selectedIds.size} selected` : '';
+      document.getElementById('bulk-approve-btn').disabled = selectedIds.size === 0;
+    }
+
+    document.getElementById('select-all').addEventListener('change', function() {
+      const rows = filteredRequests();
+      if (this.checked) rows.forEach(r => selectedIds.add(r.id));
+      else rows.forEach(r => selectedIds.delete(r.id));
+      updateSelectedCount();
+      render();
+    });
+
+    function bulkAction(action) {
+      if (!selectedIds.size) return;
+      selectedIds.forEach(id => {
+        const r = REQUESTS.find(x => x.id === id);
+        if (r) { r.status = action; r.note = r.note || 'Bulk action by administrator.'; }
+      });
+      selectedIds.clear();
+      render();
+      showToast(action, `${selectedIds.size || 'Selected'} requests ${action}.`);
+    }
+
+    // ── Filter tabs ──────────────────────────────────────────────────────────────
+    document.getElementById('filter-tabs').addEventListener('click', e => {
+      const tab = e.target.closest('[data-filter]');
+      if (!tab) return;
+      currentFilter = tab.dataset.filter;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      render();
+    });
+
+    document.getElementById('search-input').addEventListener('input', render);
+
+    // ── Modal ────────────────────────────────────────────────────────────────────
+    function openModal(id, action) {
+      const r = REQUESTS.find(x => x.id === id);
+      if (!r) return;
+      pendingAction = { id, action };
+
+      const titles = { approved:'Approve Override Request', denied:'Deny Override Request', deferred:'Defer Override Request', reopen:'Edit Decision' };
+      document.getElementById('modal-title').textContent   = titles[action] || 'Edit Request';
+      document.getElementById('modal-subtitle').textContent = `${r.student} · ${r.course} — ${r.courseTitle}`;
+      document.getElementById('modal-note').value          = r.note || '';
+
+      const actionsEl = document.getElementById('modal-actions');
+      if (action === 'reopen') {
+        actionsEl.innerHTML = `
+          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-approve" onclick="confirmModal('approved')"><i class="fa-solid fa-check"></i> Approve</button>
+          <button class="btn btn-deny"    onclick="confirmModal('denied')"><i class="fa-solid fa-xmark"></i> Deny</button>
+          <button class="btn btn-defer"   onclick="confirmModal('deferred')"><i class="fa-solid fa-clock"></i> Defer</button>`;
+      } else {
+        const btnClass = { approved:'btn-approve', denied:'btn-deny', deferred:'btn-defer' }[action];
+        const btnLabel = { approved:'Confirm Approval', denied:'Confirm Denial', deferred:'Confirm Deferral' }[action];
+        const btnIcon  = { approved:'fa-check', denied:'fa-xmark', deferred:'fa-clock' }[action];
+        actionsEl.innerHTML = `
+          <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+          <button class="btn ${btnClass}"   onclick="confirmModal('${action}')"><i class="fa-solid ${btnIcon}"></i> ${btnLabel}</button>`;
+      }
+
+      document.getElementById('note-modal').classList.add('open');
+      setTimeout(() => document.getElementById('modal-note').focus(), 200);
+    }
+
+    function confirmModal(action) {
+      if (!pendingAction) return;
+      const r = REQUESTS.find(x => x.id === pendingAction.id);
+      if (r) {
+        r.status = action;
+        r.note   = document.getElementById('modal-note').value.trim();
+      }
+      closeModal();
+      render();
+      const labels = { approved:'Request approved.', denied:'Request denied.', deferred:'Request deferred.' };
+      showToast(action, labels[action] || 'Decision saved.');
+    }
+
+    function closeModal() {
+      document.getElementById('note-modal').classList.remove('open');
+      pendingAction = null;
+    }
+
+    document.getElementById('note-modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('note-modal')) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Toast ────────────────────────────────────────────────────────────────────
+    function showToast(action, msg) {
+      const toast = document.getElementById('toast');
+      const iconMap = { approved:'fa-circle-check', denied:'fa-circle-xmark', deferred:'fa-clock' };
+      document.getElementById('toast-icon').className = `fa-solid ${iconMap[action] || 'fa-circle-check'}`;
+      document.getElementById('toast-msg').textContent = msg;
+      toast.className = `toast toast-${action} show`;
+      setTimeout(() => { toast.className = 'toast'; }, 3000);
+    }
+
+    // ── Export ───────────────────────────────────────────────────────────────────
+    function exportCSV() {
+      const rows = [['ID','Student','SID','Course','Course Title','Priority','Status','Submitted','Note']];
+      REQUESTS.forEach(r => rows.push([r.id, r.student, r.sid, r.course, r.courseTitle, r.priority, r.status, r.submitted, r.note]));
+      const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+      const a = document.createElement('a');
+      a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+      a.download = 'waitlist-overrides.csv';
+      a.click();
+    }
+
+    // ── Init ─────────────────────────────────────────────────────────────────────
+    render();
+  </script>
+</body>
+</html>
