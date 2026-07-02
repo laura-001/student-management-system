@@ -1,18 +1,25 @@
-users = []
+from sqlalchemy.orm import Session
 
-def register_user(username, password):
-    user = {
-        "username": username,
-        "password": password
-    }
-
-    users.append(user)
+from core.security import hash_password, verify_password
+from database.models import User
 
 
-def login(username, password):
-    for user in users:
-        if user["username"] == username and user["password"] == password:
-            print("Login successful!")
-            return True
+def register_user(db: Session, full_name: str, email: str, password: str, role: str) -> User:
+    user = User(
+        full_name=full_name,
+        email=email.lower(),
+        password_hash=hash_password(password),
+        role=role,
+        is_active=True,
+    )
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
 
-    return False
+
+def login(db: Session, email: str, password: str) -> User | None:
+    user = db.query(User).filter(User.email == email.lower(), User.is_active.is_(True)).first()
+    if user and verify_password(password, user.password_hash):
+        return user
+    return None
