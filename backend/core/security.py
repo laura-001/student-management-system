@@ -7,8 +7,8 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from core.config import settings
 
-#Password hashing context using bcrypt
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+#Password hashing context using bcrypt with SHA-256 pre-hashing to avoid the 72-byte bcrypt limit
+pwd_context = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
 
 def hash_password(password: str) -> str:
     """Hash a plaintext password."""
