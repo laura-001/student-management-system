@@ -131,39 +131,39 @@
       }
     </style>
 </head>
-<body class="flex min-h-screen">
-<!-- SideNavBar (Authority: JSON & Strategy) -->
-<aside class="h-screen fixed left-0 top-0 border-r border-outline-variant/30 flex flex-col py-gutter gap-xs z-50 text-white bg-primary-container w-64">
-<div class="px-margin mb-8"><h1 class="text-headline-sm font-headline-sm font-bold text-white tracking-tight">Academic Portal</h1><p class="text-label-md font-label-md text-white/70 uppercase tracking-widest mt-1">Student Services</p></div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center gap-3 text-white/80 hover:bg-white/10 transition-colors duration-200 mx-4 px-4 py-3 rounded-lg" href="student-dashboard.html">
+<body class="text-on-surface">
+<aside class="fixed left-0 top-0 h-full w-[240px] bg-primary-container text-white flex flex-col p-md gap-sm shadow-none z-50">
+<div class="mb-lg px-xs">
+<h1 class="text-headline-sm font-headline-sm font-bold text-inverse-primary">Academic Portal</h1>
+<p class="text-label-md font-label-md opacity-70">Student Services</p>
+</div>
+<nav class="flex flex-col gap-xs flex-1">
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="student-dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-body-lg font-body-lg">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="student-courses.html">
 <span class="material-symbols-outlined">school</span>
-<span class="text-label-md font-label-md">Dashboard</span>
+<span class="text-body-lg font-body-lg">Courses</span>
 </a>
-<a class="flex items-center gap-3 text-white/80 hover:bg-white/10 transition-colors duration-200 mx-4 px-4 py-3 rounded-lg" href="student-courses.html">
-<span class="material-symbols-outlined">group</span>
-<span class="text-label-md font-label-md">Courses</span>
+<a class="flex items-center gap-sm px-sm py-sm active-tab rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="student-registered-courses.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">app_registration</span>
+<span class="text-body-lg font-body-lg">Registered Courses</span>
 </a>
-<a class="flex items-center gap-3 bg-white/20 text-white rounded-lg font-semibold mx-4 px-4 py-3 elevation-1" href="student-registered-courses.html">
-<span class="material-symbols-outlined">library_books</span>
-<span class="text-label-md font-label-md">Registered Courses</span>
-</a>
-
 </nav>
-<div class="mt-auto border-t border-white/10 pt-4 space-y-1">
-<a class="flex items-center gap-3 text-white/80 hover:bg-white/10 transition-colors duration-200 mx-4 px-4 py-3 rounded-lg" href="student-profile.html">
+<div class="mt-auto border-t border-white/10 pt-sm">
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer mb-1" href="student-profile.html">
 <span class="material-symbols-outlined">account_circle</span>
-<span class="text-label-md font-label-md">Profile Record</span>
+<span class="text-body-lg font-body-lg">Profile Record</span>
 </a>
-
-<a class="flex items-center gap-3 text-error hover:bg-error-container/10 transition-colors duration-200 mx-4 px-4 py-3 rounded-lg" href="login.html" data-logout-trigger="true">
+<a class="flex items-center gap-sm px-sm py-sm text-on-primary-container hover:bg-white/10 rounded-lg transition-all duration-150 ease-in-out cursor-pointer" href="login.html" data-logout-trigger="true">
 <span class="material-symbols-outlined">logout</span>
-<span class="text-label-md font-label-md">Logout</span>
+<span class="text-body-lg font-body-lg">Logout</span>
 </a>
 </div>
 </aside>
 <!-- Main Viewport Shell -->
-<div class="flex-1 bg-background min-h-screen flex flex-col ml-64">
+<div class="flex-1 bg-background min-h-screen flex flex-col ml-[240px]">
 <!-- TopAppBar -->
 
 <!-- Main Content Canvas -->
@@ -202,6 +202,16 @@
 
 </div>
 <!-- Micro-interactions Script -->
+<div id="logout-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-50 flex" role="dialog" aria-modal="true" aria-labelledby="logout-title" aria-describedby="logout-description">
+<div class="bg-white w-[320px] rounded-xl shadow-[0px_12px_30px_rgba(0,0,0,0.2)] p-lg">
+<h3 id="logout-title" class="text-headline-sm font-headline-sm text-primary mb-xs">Confirm logout</h3>
+<p id="logout-description" class="text-body-lg font-body-lg text-on-surface-variant">Are you sure you want to log out?</p>
+<div class="mt-md flex items-center justify-end gap-sm">
+<button id="logout-cancel" type="button" class="px-md py-xs rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container">Cancel</button>
+<button id="logout-confirm" type="button" class="px-md py-xs rounded-lg bg-primary text-white hover:bg-primary/90">Logout</button>
+</div>
+</div>
+</div>
 <script src="../js/api.js"></script>
 <script>
         const registeredCourseList = document.getElementById('registered-course-list');
@@ -283,15 +293,60 @@
             navLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     if(!link.classList.contains('bg-primary')) {
-                        // Just a visual simulation
                         console.log('Navigating to:', link.textContent.trim());
                     }
                 });
             });
 
-            document.querySelectorAll('[data-logout-trigger]').forEach((trigger) => {
-                trigger.addEventListener('click', () => clearAuthSession());
+            const logoutModal = document.getElementById('logout-modal');
+            const logoutCancel = document.getElementById('logout-cancel');
+            const logoutConfirm = document.getElementById('logout-confirm');
+            const logoutTriggers = document.querySelectorAll('[data-logout-trigger]');
+
+            const openLogoutModal = (event) => {
+                event.preventDefault();
+                if (!logoutModal) {
+                    return;
+                }
+                logoutModal.classList.remove('hidden');
+            };
+
+            const closeLogoutModal = () => {
+                if (!logoutModal) {
+                    return;
+                }
+                logoutModal.classList.add('hidden');
+            };
+
+            logoutTriggers.forEach((trigger) => {
+                trigger.addEventListener('click', openLogoutModal);
             });
+
+            if (logoutCancel) {
+                logoutCancel.addEventListener('click', closeLogoutModal);
+            }
+
+            if (logoutConfirm) {
+                logoutConfirm.addEventListener('click', () => {
+                    clearAuthSession();
+                    window.location.href = 'login.html';
+                });
+            }
+
+            if (logoutModal) {
+                logoutModal.addEventListener('click', (event) => {
+                    if (event.target === logoutModal) {
+                        closeLogoutModal();
+                    }
+                });
+            }
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeLogoutModal();
+                }
+            });
+
         });
     </script>
 
