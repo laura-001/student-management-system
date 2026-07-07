@@ -158,27 +158,30 @@
 </header>
 <!-- Search and Filters Section -->
 <section class="bg-surface-container-lowest px-lg py-md border-b border-outline-variant sticky top-0 z-10">
-<div class="max-w-[1140px] mx-auto flex flex-col items-center flex-nowrap gap-sm gap-md">
+<div class="max-w-[1140px] mx-auto flex flex-col gap-sm md:gap-md">
 <!-- Search Bar -->
-<div class="relative flex-grow w-full">
+<div class="relative w-full">
 <span class="material-symbols-outlined absolute left-md top-1/2 -translate-y-1/2 text-outline">search</span>
 <input class="w-full pl-xl pr-md py-md bg-surface border border-outline-variant rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all text-body-lg" id="course-search" placeholder="Search courses by title or code..." type="text">
 </div>
 <!-- Category Filters -->
-<div class="flex w-full md:w-auto overflow-x-auto scrollbar-hide flex-nowrap md:w-full gap-md">
-<select class="bg-surface border border-outline-variant rounded-lg text-body-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer pr-xl relative px-sm py-sm">
-<option>Department</option>
-<option>Computer Science</option>
-<option>Engineering</option>
-<option>Mathematics</option>
+<div class="grid w-full grid-cols-1 gap-sm md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_220px_160px_160px]">
+<select class="w-full bg-surface border border-outline-variant rounded-lg text-body-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer px-sm py-sm" id="department-filter">
+<option value="">All departments</option>
 </select>
-<select class="bg-surface border border-outline-variant rounded-lg text-body-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer pr-xl px-sm py-sm">
-<option>Year</option>
-<option>Year 1</option>
-<option>Year 2</option>
-<option>Year 3</option>
-<option>Year 4</option>
+<select class="w-full bg-surface border border-outline-variant rounded-lg text-body-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer px-sm py-sm" id="year-filter">
+<option value="">All years</option>
+<option value="1">Year 1</option>
+<option value="2">Year 2</option>
+<option value="3">Year 3</option>
+<option value="4">Year 4</option>
 </select>
+<select class="w-full bg-surface border border-outline-variant rounded-lg text-body-lg focus:border-primary focus:ring-1 focus:ring-primary appearance-none cursor-pointer px-sm py-sm" id="semester-filter">
+<option value="">All semesters</option>
+<option value="1">Semester 1</option>
+<option value="2">Semester 2</option>
+</select>
+<button class="w-full rounded-lg border border-outline-variant bg-surface px-sm py-sm text-body-lg font-headline-sm text-on-surface-variant hover:bg-surface-container transition-colors" id="clear-filters" type="button">Clear filters</button>
 
 </div>
 </div>
@@ -264,6 +267,10 @@
 <script>
         const courseList = document.getElementById('course-list');
         const courseSearch = document.getElementById('course-search');
+        const departmentFilter = document.getElementById('department-filter');
+        const yearFilter = document.getElementById('year-filter');
+        const semesterFilter = document.getElementById('semester-filter');
+        const clearFiltersButton = document.getElementById('clear-filters');
         const courseResultCount = document.getElementById('course-result-count');
         let allCourses = [];
 
@@ -307,12 +314,45 @@
             `).join('');
         };
 
+        const populateDepartmentOptions = (courses) => {
+            if (!departmentFilter) {
+                return;
+            }
+
+            const currentValue = departmentFilter.value;
+            const departments = [...new Set(
+                courses
+                    .map((course) => (course.department || '').trim())
+                    .filter(Boolean)
+            )].sort((left, right) => left.localeCompare(right));
+
+            departmentFilter.innerHTML = ['<option value="">All departments</option>']
+                .concat(departments.map((department) => `<option value="${escapeHtml(department)}">${escapeHtml(department)}</option>`))
+                .join('');
+
+            if (departments.includes(currentValue)) {
+                departmentFilter.value = currentValue;
+            }
+        };
+
         const filterCourses = () => {
             const query = (courseSearch?.value || '').trim().toLowerCase();
-            const visibleCourses = allCourses.filter((course) => (
-                course.course_code.toLowerCase().includes(query)
-                || course.course_name.toLowerCase().includes(query)
-            ));
+            const selectedDepartment = (departmentFilter?.value || '').trim();
+            const selectedYear = (yearFilter?.value || '').trim();
+            const selectedSemester = (semesterFilter?.value || '').trim();
+
+            const visibleCourses = allCourses.filter((course) => {
+                const matchesSearch = (
+                    course.course_code.toLowerCase().includes(query)
+                    || course.course_name.toLowerCase().includes(query)
+                );
+                const matchesDepartment = !selectedDepartment || (course.department || '').trim() === selectedDepartment;
+                const matchesYear = !selectedYear || String(course.year_of_study) === selectedYear;
+                const matchesSemester = !selectedSemester || String(course.semester) === selectedSemester;
+
+                return matchesSearch && matchesDepartment && matchesYear && matchesSemester;
+            });
+
             renderCourses(visibleCourses);
         };
 
@@ -321,6 +361,7 @@
                 await requireStudentSession();
                 const data = await apiRequest('/courses');
                 allCourses = data.courses || [];
+                populateDepartmentOptions(allCourses);
                 filterCourses();
             } catch (error) {
                 if (courseList) {
@@ -330,6 +371,25 @@
         };
 
         courseSearch?.addEventListener('input', filterCourses);
+        departmentFilter?.addEventListener('change', filterCourses);
+        yearFilter?.addEventListener('change', filterCourses);
+        semesterFilter?.addEventListener('change', filterCourses);
+
+        clearFiltersButton?.addEventListener('click', () => {
+            if (courseSearch) {
+                courseSearch.value = '';
+            }
+            if (departmentFilter) {
+                departmentFilter.value = '';
+            }
+            if (yearFilter) {
+                yearFilter.value = '';
+            }
+            if (semesterFilter) {
+                semesterFilter.value = '';
+            }
+            filterCourses();
+        });
 
         courseList?.addEventListener('click', async (event) => {
             const button = event.target.closest('[data-course-id]');
