@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Academic Portal - Enrollment Roster</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "navy-primary": "#0a2558",
+            "navy-hover": "#0d2f6b",
+            "accent-gold": "#b48600",
+            "accent-gold-bg": "#fdf2d5",
+            "accent-gold-text": "#d49a2a",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#0b3d91",
+            "outline-variant": "#e2e8f0",
+            "surface": "#f4f7f9",
+            "error": "#ba1a1a",
+            "on-surface-variant": "#64748b",
+            "primary": "#0a2558",
+            "inverse-primary": "#b1c5ff",
+            "on-primary-container": "#8dadff",
+            "on-surface": "#1e293b",
+            "background": "#f4f7f9",
+            "surface-container-low": "#f8fafc"
+          }
+        },
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f4f7f9;
+      color: #1e293b;
+    }
+    .mono {
+      font-family: 'DM Mono', monospace;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .active-tab {
+      background-color: #0a2558;
+      color: #ffffff;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="flex min-h-screen overflow-hidden">
+
+  <!-- ═══════════════════════════════════ SIDEBAR ═══════════════════════════════════ -->
+  <aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low text-slate-600 flex flex-col p-4 gap-2 border-r border-outline-variant z-50">
+    <!-- Logo Area -->
+    <div class="mb-6 px-2 py-3 border-b border-outline-variant flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded flex items-center justify-center bg-navy-primary">
+        <span class="material-symbols-outlined text-white text-[16px]">school</span>
+      </div>
+      <div>
+        <h1 class="text-xs font-bold text-navy-primary tracking-wider leading-none">COURSE MGMT</h1>
+        <p class="text-[9px] font-mono tracking-widest uppercase text-slate-400 mt-1">Admin Space</p>
+      </div>
+    </div>
+
+    <!-- Active Term Badge -->
+    <div class="rounded-lg p-3 mb-4 bg-blue-50 border border-blue-200">
+      <div class="text-[9px] font-bold text-navy-primary tracking-wider uppercase mb-0.5">Active Term</div>
+      <div class="text-xs font-medium text-navy-primary">Fall Semester 2026</div>
+    </div>
+
+    <!-- Navigation List -->
+    <nav class="flex flex-col gap-1 flex-1">
+      <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-1">Academics</div>
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="admin-dashboard.html">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+        <span>Overview</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 active-tab rounded-lg transition-all cursor-pointer text-sm" href="enrollment-roster.html">
+        <span class="material-symbols-outlined text-[20px]">groups</span>
+        <span>Enrollment Roster</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="course-catalog.html">
+        <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+        <span>Course Catalog</span>
+      </a>
+    </nav>
+
+    <!-- Footer Identity -->
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm text-red-600" href="login.html">
+        <span class="material-symbols-outlined text-[20px]">logout</span>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════ MAIN CONTENT ═══════════════════════════════════ -->
+  <main class="ml-[240px] flex-1 flex flex-col h-screen overflow-y-auto">
+
+    <!-- Top Header Navigation Bar -->
+    <header class="sticky top-0 w-full flex justify-between items-center bg-white px-8 py-3 border-b border-outline-variant z-40 h-[64px]">
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <span class="material-symbols-outlined text-[16px]">account_balance</span>
+        <span>Faculty of Sciences</span>
+        <span class="text-slate-300">/</span>
+        <span class="text-navy-primary font-medium">Enrollment Roster</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button class="relative w-8 h-8 flex items-center justify-center rounded-full border border-outline-variant hover:bg-slate-50 transition-colors">
+          <span class="material-symbols-outlined text-slate-500 text-[18px]">notifications</span>
+          <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+        </button>
+        <div class="flex items-center gap-3 pl-3 border-l border-outline-variant">
+          <div class="text-right leading-tight">
+            <div class="text-xs font-bold text-navy-primary">Dr. Alistair Vance</div>
+            <div class="text-[9px] text-slate-400 uppercase tracking-wider mt-0.5">Course Admin</div>
+          </div>
+          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-8 h-8 rounded-full border object-cover">
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Workspace -->
+    <div class="p-8 max-w-[1240px] w-full mx-auto space-y-6">
+
+      <!-- Welcome Headline Area -->
+      <section>
+        <h2 class="text-xl font-bold text-navy-primary tracking-tight">Enrollment Roster</h2>
+        <p class="text-xs text-slate-500 mt-0.5">Live registration records for students across all active course sections.</p>
+      </section>
+
+      <!-- Filter & Search Controls -->
+      <section class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-3 rounded-xl border border-outline-variant shadow-sm">
+        <div class="relative w-full sm:w-[280px]">
+          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+          <input type="search" placeholder="Search student name or ID..." class="w-full pl-9 pr-4 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs focus:ring-1 focus:ring-navy-primary focus:border-navy-primary outline-none">
+        </div>
+        <div class="flex gap-2 w-full sm:w-auto justify-end">
+          <select class="px-3 py-1.5 bg-white border border-outline-variant rounded-lg text-xs text-slate-600 outline-none focus:ring-1 focus:ring-navy-primary w-full sm:w-auto">
+            <option>All Courses</option>
+            <option>CYB-101</option>
+            <option>CYB-210</option>
+            <option>CYB-220</option>
+            <option>CYB-231</option>
+            <option>CYB-305</option>
+          </select>
+        </div>
+      </section>
+
+      <!-- Stat Overview -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-navy-primary mb-3">
+            <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+          </div>
+          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Total Enrolled</p>
+          <p class="text-2xl font-bold text-navy-primary tracking-tight">144</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-green-50 text-green-600 mb-3">
+            <span class="material-symbols-outlined text-[18px]">check_circle</span>
+          </div>
+          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Active</p>
+          <p class="text-2xl font-bold text-navy-primary tracking-tight">128</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-accent-gold-bg text-accent-gold-text mb-3">
+            <span class="material-symbols-outlined text-[18px]">hourglass_top</span>
+          </div>
+          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Waitlisted</p>
+          <p class="text-2xl font-bold text-navy-primary tracking-tight">9</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-red-50 text-red-600 mb-3">
+            <span class="material-symbols-outlined text-[18px]">person_remove</span>
+          </div>
+          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Dropped</p>
+          <p class="text-2xl font-bold text-navy-primary tracking-tight">7</p>
+        </div>
+      </section>
+
+      <!-- Roster Table -->
+      <section>
+        <div class="bg-white rounded-xl shadow-sm border border-outline-variant overflow-hidden">
+          <div class="px-5 py-3 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+            <h3 class="text-xs font-bold text-navy-primary uppercase tracking-wider">Student Registrations</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full border-collapse">
+              <thead>
+                <tr class="bg-slate-50">
+                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Student ID</th>
+                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Name</th>
+                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Course</th>
+                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Instructor</th>
+                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Enrolled On</th>
+                  <th class="text-center px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Status</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-outline-variant text-xs text-slate-700">
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3041</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Amara Chen</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-101</td>
+                  <td class="px-5 py-3 text-slate-500">Dr. Patel</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 18, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3042</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Brian Otieno</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-210</td>
+                  <td class="px-5 py-3 text-slate-500">Dr. Vance</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 18, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3043</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Sofia Marín</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-220</td>
+                  <td class="px-5 py-3 text-slate-500">Prof. Osei</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 19, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-100 text-yellow-700">waitlisted</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3044</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Kwame Asante</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-231</td>
+                  <td class="px-5 py-3 text-slate-500">Dr. Nakamura</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 19, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3045</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Elena Petrova</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-305</td>
+                  <td class="px-5 py-3 text-slate-500">Prof. Eriksen</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 20, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3046</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Tumaini Njoroge</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-101</td>
+                  <td class="px-5 py-3 text-slate-500">Dr. Patel</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 20, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3047</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Daniel Kim</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-210</td>
+                  <td class="px-5 py-3 text-slate-500">Dr. Vance</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 21, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-700">dropped</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3048</span></td>
+                  <td class="px-5 py-3 font-medium text-slate-800">Fatima Al-Rashid</td>
+                  <td class="px-5 py-3 text-slate-500">CYB-220</td>
+                  <td class="px-5 py-3 text-slate-500">Prof. Osei</td>
+                  <td class="px-5 py-3 text-slate-500 mono">Aug 21, 2026</td>
+                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="px-5 py-3 border-t border-outline-variant flex items-center justify-between bg-slate-50 text-[11px] text-slate-400">
+            <span>Showing 8 of 144 students</span>
+            <div class="flex gap-1">
+              <button class="px-2 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors"><span class="material-symbols-outlined text-[12px] flex items-center">chevron_left</span></button>
+              <button class="px-2.5 py-1 bg-navy-primary text-white font-bold rounded text-[10px]">1</button>
+              <button class="px-2.5 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors text-[10px]">2</button>
+              <button class="px-2.5 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors text-[10px]">3</button>
+              <button class="px-2 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors"><span class="material-symbols-outlined text-[12px] flex items-center">chevron_right</span></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</body>
+</html>

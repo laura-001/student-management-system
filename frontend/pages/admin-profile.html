@@ -1,618 +1,292 @@
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Profile — Course Management Center</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Academic Portal - Admin Profile</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "navy-primary": "#0a2558",
+            "navy-hover": "#0d2f6b",
+            "accent-gold": "#b48600",
+            "accent-gold-bg": "#fdf2d5",
+            "accent-gold-text": "#d49a2a",
+            "surface-container-lowest": "#ffffff",
+            "primary-container": "#0b3d91",
+            "outline-variant": "#e2e8f0",
+            "surface": "#f4f7f9",
+            "error": "#ba1a1a",
+            "on-surface-variant": "#64748b",
+            "primary": "#0a2558",
+            "inverse-primary": "#b1c5ff",
+            "on-primary-container": "#8dadff",
+            "on-surface": "#1e293b",
+            "background": "#f4f7f9",
+            "surface-container-low": "#f8fafc"
+          }
+        },
+      }
+    }
+  </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
-    * { font-family: 'DM Sans', sans-serif; box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: #f4f7f9;
+      color: #1e293b;
+    }
     .mono { font-family: 'DM Mono', monospace; }
-
-    :root {
-      --navy: #0a2558;
-      --navy-hover: #0d2f6b;
-      --accent-gold: #b48600;
-      --accent-gold-bg: #fdf2d5;
-      --accent-gold-text: #d49a2a;
-      --bg-page: #f4f7f9;
-      --bg-sidebar: #f8fafc;
-      --border: #e2e8f0;
-      --text-primary: #1e293b;
-      --text-secondary: #64748b;
-      --text-muted: #94a3b8;
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
-
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-
-    .nav-active { background: var(--navy); color: #fff; }
-    .nav-item { color: var(--text-secondary); transition: background 0.15s; }
-    .nav-item:hover { background: #e8edf5; color: var(--navy); }
-    a:focus-visible, button:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; border-radius: 4px; }
-
-    .btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:background 0.15s; letter-spacing:0.03em; }
-    .btn-primary { background: var(--navy); color:#fff; }
-    .btn-primary:hover { background: var(--navy-hover); }
-    .btn-secondary { background:#fff; color: var(--text-primary); border:1px solid var(--border); }
-    .btn-secondary:hover { background:#f8fafc; }
-    .btn-warning { background: var(--accent-gold-bg); color: var(--accent-gold); border:1px solid #f0d080; }
-    .btn-warning:hover { background:#faefc0; }
-    .btn-danger { background:#fee2e2; color:#b91c1c; border:1px solid #fecaca; }
-    .btn-danger:hover { background:#fecaca; }
-    .btn:disabled { opacity:0.45; cursor:not-allowed; }
-
-    /* Section card */
-    .card { background:#fff; border:1px solid var(--border); border-radius:10px; }
-
-    /* Editable field */
-    .field-input {
-      width:100%; padding:9px 12px; border:1px solid var(--border); border-radius:6px;
-      font-size:13px; color: var(--text-primary); outline:none; transition:border 0.15s;
-      background:#fff;
+    .active-tab {
+      background-color: #0a2558;
+      color: #ffffff;
+      font-weight: 600;
     }
-    .field-input:focus { border-color:#93b4e0; }
-    .field-input:disabled { background:#f8fafc; color: var(--text-muted); cursor:not-allowed; }
-
-    /* Locked field */
-    .field-locked {
-      width:100%; padding:9px 12px; border:1px dashed #cbd5e1; border-radius:6px;
-      font-size:13px; color: var(--text-secondary); background:#f8fafc;
-      display:flex; align-items:center; justify-content:space-between; gap:8px;
+    [popover] {
+      margin: auto;
+      border: none;
+      padding: 0;
+      background: transparent;
+      overflow: visible;
     }
-
-    /* Lock badge */
-    .lock-badge {
-      display:inline-flex; align-items:center; gap:4px;
-      font-size:10px; font-weight:600; color: var(--text-muted);
-      background:#f1f5f9; border:1px solid var(--border);
-      padding:2px 7px; border-radius:99px; white-space:nowrap; letter-spacing:0.04em;
+    [popover]::backdrop {
+      background: rgba(10, 37, 88, 0.45);
     }
-
-    /* Activity log */
-    .log-row { display:flex; gap:14px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--border); }
-    .log-row:last-child { border-bottom:none; }
-    .log-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
-    .log-approve { background:#dcfce7; color:#16a34a; }
-    .log-deny    { background:#fee2e2; color:#dc2626; }
-    .log-defer   { background:#e0f2fe; color:#0369a1; }
-    .log-edit    { background:#f3e8ff; color:#7c3aed; }
-    .log-login   { background:#f1f5f9; color:#64748b; }
-    .log-export  { background: var(--accent-gold-bg); color: var(--accent-gold-text); }
-
-    /* Avatar upload ring */
-    .avatar-ring { position:relative; width:96px; height:96px; }
-    .avatar-ring img { width:96px; height:96px; border-radius:50%; object-fit:cover; border:3px solid var(--border); }
-    .avatar-ring .upload-btn {
-      position:absolute; bottom:2px; right:2px;
-      width:26px; height:26px; border-radius:50%;
-      background: var(--navy); color:#fff;
-      display:flex; align-items:center; justify-content:center;
-      font-size:10px; cursor:pointer; border:2px solid #fff;
-      transition: background 0.15s;
-    }
-    .avatar-ring .upload-btn:hover { background: var(--navy-hover); }
-
-    /* Profile header band */
-    .profile-band {
-      background: linear-gradient(120deg, #0a2558 0%, #1a3f7a 100%);
-      border-radius:10px 10px 0 0;
-      padding:28px 28px 20px;
-    }
-
-    /* Tab nav */
-    .ptab { padding:8px 18px; font-size:13px; font-weight:500; cursor:pointer; border-bottom:2px solid transparent; color: var(--text-secondary); transition:all 0.15s; background:none; border-top:none; border-left:none; border-right:none; }
-    .ptab:hover { color: var(--navy); }
-    .ptab.active { color: var(--navy); border-bottom-color: var(--navy); font-weight:600; }
-
-    /* Toast */
-    .toast { position:fixed; bottom:28px; right:28px; background: var(--navy); color:#fff; padding:12px 20px; border-radius:8px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:10px; box-shadow:0 8px 24px rgba(10,37,88,0.22); z-index:200; opacity:0; transform:translateY(8px); transition:opacity 0.25s, transform 0.25s; pointer-events:none; }
-    .toast.show { opacity:1; transform:translateY(0); }
-    .toast.toast-success { background:#16a34a; }
-    .toast.toast-warn    { background: var(--accent-gold); }
-
-    /* Modal */
-    .modal-overlay { position:fixed; inset:0; background:rgba(10,37,88,0.18); backdrop-filter:blur(2px); z-index:100; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.2s; }
-    .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal-box { background:#fff; border-radius:12px; width:440px; max-width:92vw; box-shadow:0 20px 60px rgba(10,37,88,0.18); transform:translateY(12px); transition:transform 0.2s; }
-    .modal-overlay.open .modal-box { transform:translateY(0); }
-
-    /* Status dot */
-    .status-dot { width:9px; height:9px; border-radius:50%; background:#22c55e; display:inline-block; margin-right:5px; box-shadow:0 0 0 2px #dcfce7; }
   </style>
 </head>
-<body class="h-screen flex overflow-hidden" style="background: var(--bg-page);">
+<body class="flex min-h-screen overflow-hidden">
 
-  <!-- ═══════════ SIDEBAR ═══════════ -->
-  <aside class="w-64 flex flex-col h-full z-20 flex-shrink-0" style="background: var(--bg-sidebar); border-right:1px solid var(--border);">
-    <div class="h-16 flex items-center px-6" style="border-bottom:1px solid var(--border); background:#fff;">
-      <div class="flex items-center gap-2.5">
-        <div class="w-7 h-7 rounded flex items-center justify-center" style="background: var(--navy);">
-          <i class="fa-solid fa-graduation-cap text-white" style="font-size:11px;"></i>
-        </div>
-        <h1 style="font-size:13px; font-weight:700; color: var(--navy); letter-spacing:0.07em;">COURSE MANAGEMENT</h1>
+  <aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low text-slate-600 flex flex-col p-4 gap-2 border-r border-outline-variant z-50">
+    <div class="mb-6 px-2 py-3 border-b border-outline-variant flex items-center gap-2.5">
+      <div class="w-7 h-7 rounded flex items-center justify-center bg-navy-primary">
+        <span class="material-symbols-outlined text-white text-[16px]">school</span>
+      </div>
+      <div>
+        <h1 class="text-xs font-bold text-navy-primary tracking-wider leading-none">COURSE MGMT</h1>
+        <p class="text-[9px] font-mono tracking-widest uppercase text-slate-400 mt-1">Admin Space</p>
       </div>
     </div>
-    <div class="p-4 flex-1 overflow-y-auto">
-      <div class="rounded-md p-3 mb-7 mt-1" style="background:rgba(167,197,235,0.25); border:1px solid #a7c5eb;">
-        <div style="font-size:10px; font-weight:700; color: var(--navy); letter-spacing:0.1em; margin-bottom:3px;">ACTIVE TERM</div>
-        <div style="font-size:13px; color: var(--navy); font-weight:500;">Fall Semester 2026</div>
-      </div>
-      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding:0 4px;">ACADEMICS</div>
-      <nav class="space-y-0.5 mb-7">
-        <a href="admin-dashboard.html" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-          <i class="fa-solid fa-chart-simple w-5 text-center mr-2.5"></i>Academic Overview
-        </a>
-        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-          <i class="fa-solid fa-users-rectangle w-5 text-center mr-2.5"></i>Enrollment Roster
-        </a>
-        <a href="admin-courses.html" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-          <i class="fa-solid fa-book-open-reader w-5 text-center mr-2.5"></i>Course Catalog
-        </a>
-      </nav>
-      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding:0 4px;">DEPARTMENT</div>
-      <nav class="space-y-0.5 mb-7">
-        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-          <i class="fa-solid fa-file-signature w-5 text-center mr-2.5"></i>Grade Records
-        </a>
-        <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-          <i class="fa-solid fa-calendar-days w-5 text-center mr-2.5"></i>Master Schedule
-        </a>
-      </nav>
-      <div style="font-size:10px; font-weight:700; color: var(--text-muted); letter-spacing:0.1em; margin-bottom:8px; padding:0 4px;">ADMIN</div>
-      <nav class="space-y-0.5">
-        <a href="waitlist-overrides.html" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-          <i class="fa-solid fa-clipboard-list w-5 text-center mr-2.5"></i>Waitlist Overrides
-        </a>
-        <a href="#" class="nav-active flex items-center px-3 py-2.5 rounded-md text-sm font-medium" aria-current="page">
-          <i class="fa-solid fa-user-shield w-5 text-center mr-2.5"></i>My Profile
-        </a>
-      </nav>
+
+    <div class="rounded-lg p-3 mb-4 bg-blue-50 border border-blue-200">
+      <div class="text-[9px] font-bold text-navy-primary tracking-wider uppercase mb-0.5">Active Term</div>
+      <div class="text-xs font-medium text-navy-primary">Fall Semester 2026</div>
     </div>
-    <div class="px-4 py-4 space-y-1" style="border-top:1px solid var(--border);">
-      <a href="#" class="nav-item flex items-center px-3 py-2.5 rounded-md text-sm font-medium">
-        <i class="fa-solid fa-gear w-5 text-center mr-2.5"></i>Settings
+
+    <nav class="flex flex-col gap-1 flex-1">
+      <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-1">Academics</div>
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="admin-dashboard.html">
+        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+        <span>Overview</span>
       </a>
-      <a href="login.html" class="flex items-center px-3 py-2.5 rounded-md text-sm font-medium transition-colors"
-        style="color:#dc2626; text-decoration:none;"
-        onmouseover="this.style.background='#fee2e2'" onmouseout="this.style.background='none'">
-        <i class="fa-solid fa-right-from-bracket w-5 text-center mr-2.5"></i>Log Out
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="enrollment-roster.html">
+        <span class="material-symbols-outlined text-[20px]">groups</span>
+        <span>Enrollment Roster</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="course-catalog.html">
+        <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+        <span>Course Catalog</span>
+      </a>
+    </nav>
+
+    <div class="mt-auto border-t border-outline-variant pt-2">
+      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm text-red-600" href="login.html">
+        <span class="material-symbols-outlined text-[20px]">logout</span>
+        <span>Logout</span>
       </a>
     </div>
   </aside>
 
-  <!-- ═══════════ MAIN ═══════════ -->
-  <main class="flex-1 flex flex-col h-full overflow-hidden">
+  <main class="ml-[240px] flex-1 flex flex-col h-screen overflow-y-auto">
 
-    <!-- Header -->
-    <header class="h-16 flex items-center justify-between px-8 flex-shrink-0" style="border-bottom:1px solid var(--border); background: var(--bg-page);">
-      <div class="flex items-center gap-2" style="font-size:13px; color: var(--text-secondary);">
-        <i class="fa-solid fa-building-columns" style="color: var(--text-muted);"></i>
-        <a href="admin-dashboard.html" style="color: var(--text-muted); text-decoration:none;" class="hover:underline">Academic Overview</a>
-        <i class="fa-solid fa-chevron-right" style="font-size:9px; color: var(--text-muted);"></i>
-        <span style="color: var(--text-primary); font-weight:500;">My Profile</span>
+    <header class="sticky top-0 w-full flex justify-between items-center bg-white px-8 py-3 border-b border-outline-variant z-40 h-[64px]">
+      <div class="flex items-center gap-2 text-xs text-slate-500">
+        <span class="material-symbols-outlined text-[16px]">account_balance</span>
+        <span>Faculty of Sciences</span>
+        <span class="text-slate-300">/</span>
+        <span class="text-navy-primary font-medium">My Profile</span>
       </div>
-      <div class="flex items-center gap-3">
-        <button class="relative w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100" style="border:1px solid var(--border); background:#fff;" aria-label="Notifications">
-          <i class="fa-regular fa-bell" style="font-size:14px; color: var(--text-secondary);"></i>
+      <div class="flex items-center gap-4">
+        <button class="relative w-8 h-8 flex items-center justify-center rounded-full border border-outline-variant hover:bg-slate-50 transition-colors">
+          <span class="material-symbols-outlined text-slate-500 text-[18px]">notifications</span>
+          <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
         </button>
-        <div class="flex items-center gap-3 pl-3" style="border-left:1px solid var(--border);">
-          <div class="text-right">
-            <div style="font-size:13px; font-weight:600; color: var(--text-primary);">Dr. Alistair Vance</div>
-            <div style="font-size:10px; color: var(--text-muted); letter-spacing:0.07em; text-transform:uppercase; margin-top:1px;">Course Administrator</div>
+        <a href="admin-profile.html" class="flex items-center gap-3 pl-3 border-l border-outline-variant hover:opacity-75 transition-opacity cursor-pointer">
+          <div class="text-right leading-tight">
+            <div id="nav-display-name" class="text-xs font-bold text-navy-primary">Dr. Alistair Vance</div>
+            <div id="nav-display-role" class="text-[9px] text-slate-400 uppercase tracking-wider mt-0.5">Course Admin</div>
           </div>
-          <div class="w-9 h-9 rounded-full overflow-hidden flex-shrink-0" style="border:2px solid var(--border);">
-            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Dr. Alistair Vance">
-          </div>
-        </div>
+          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-8 h-8 rounded-full border object-cover">
+        </a>
       </div>
     </header>
 
-    <!-- Body -->
-    <div class="flex-1 overflow-y-auto p-8">
+    <div class="p-8 max-w-[1240px] w-full mx-auto space-y-6">
 
-      <!-- Profile card -->
-      <div class="card mb-6" style="max-width:860px;">
+      <section>
+        <h2 class="text-xl font-bold text-navy-primary tracking-tight">My Profile</h2>
+        <p class="text-xs text-slate-500 mt-0.5">View and manage your admin account details.</p>
+      </section>
 
-        <!-- Band -->
-        <div class="profile-band">
-          <div class="flex items-end gap-5">
-            <div class="avatar-ring">
-              <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile photo" id="avatar-img">
-              <label class="upload-btn" for="avatar-upload" title="Change photo" aria-label="Upload new profile photo">
-                <i class="fa-solid fa-camera"></i>
-              </label>
-              <input type="file" id="avatar-upload" accept="image/*" style="display:none;" onchange="previewAvatar(event)">
-            </div>
-            <div style="flex:1; padding-bottom:4px;">
-              <div style="font-size:20px; font-weight:600; color:#fff; margin-bottom:3px;">Dr. Alistair Vance</div>
-              <div style="font-size:13px; color:rgba(255,255,255,0.65); display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
-                <span><span class="status-dot"></span>Active</span>
-                <span><i class="fa-solid fa-id-badge mr-1.5 opacity-60"></i>ADM-00421</span>
-                <span><i class="fa-solid fa-building-columns mr-1.5 opacity-60"></i>Faculty of Sciences</span>
-                <span><i class="fa-solid fa-calendar mr-1.5 opacity-60"></i>Member since Aug 2019</span>
+      <section class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+        <div class="h-20 bg-navy-primary"></div>
+        <div class="px-6 pb-6 -mt-10 flex flex-col sm:flex-row sm:items-end gap-4">
+          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm">
+          <div class="flex-1 sm:pb-1">
+            <h3 id="card-display-name" class="text-base font-bold text-navy-primary">Dr. Alistair Vance</h3>
+            <p id="card-display-meta" class="text-xs text-slate-500">Course Administrator &middot; Faculty of Sciences</p>
+          </div>
+          <button popovertarget="edit-profile-modal" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-navy-primary text-white hover:bg-navy-hover font-medium text-xs transition-colors shadow-sm sm:mb-1">
+            <span class="material-symbols-outlined text-[16px]">edit</span> Edit Profile
+          </button>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <section class="bg-white rounded-xl border border-outline-variant shadow-sm p-5">
+          <h3 class="text-xs font-bold text-navy-primary uppercase tracking-wider mb-4">Contact Information</h3>
+          <dl class="space-y-3 text-xs">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-slate-400">mail</span>
+              <div>
+                <dt class="text-slate-400">Email</dt>
+                <dd id="detail-display-email" class="text-slate-800 font-medium mono">a.vance@university.edu</dd>
               </div>
             </div>
-            <div>
-              <span style="font-size:11px; font-weight:700; letter-spacing:0.06em; padding:5px 14px; border-radius:99px; background:rgba(255,255,255,0.15); color:#fff; border:1px solid rgba(255,255,255,0.25);">COURSE ADMINISTRATOR</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tab bar -->
-        <div style="display:flex; border-bottom:1px solid var(--border); padding:0 24px; background:#fff;">
-          <button class="ptab active" data-tab="info" onclick="switchTab('info')">Profile Info</button>
-          <button class="ptab" data-tab="contact" onclick="switchTab('contact')">Contact Details</button>
-          <button class="ptab" data-tab="activity" onclick="switchTab('activity')">Activity Log</button>
-        </div>
-
-        <!-- ── TAB: Profile Info ── -->
-        <div id="tab-info" class="tab-panel p-7">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
-            <div>
-              <h3 style="font-size:14px; font-weight:600; color: var(--navy); margin-bottom:3px;">Basic Information</h3>
-              <p style="font-size:12px; color: var(--text-muted);">Fields marked <i class="fa-solid fa-lock" style="font-size:10px;"></i> require a System Administrator to change.</p>
-            </div>
-            <button class="btn btn-primary" id="save-info-btn" onclick="saveInfo()" disabled>
-              <i class="fa-solid fa-floppy-disk"></i> Save Changes
-            </button>
-          </div>
-
-          <div class="grid grid-cols-2 gap-x-8 gap-y-5">
-
-            <!-- Editable -->
-            <div>
-              <label class="field-label" for="f-preferred">Preferred Name <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-preferred" value="Alistair" oninput="markDirty('info')">
-            </div>
-            <div>
-              <label class="field-label" for="f-title">Display Title <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-title" value="Dr." oninput="markDirty('info')">
-            </div>
-            <div>
-              <label class="field-label" for="f-bio">Bio / About <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <textarea class="field-input" id="f-bio" rows="3" oninput="markDirty('info')" style="resize:vertical;">Course administrator for the Faculty of Sciences. Specialises in cybersecurity curriculum design and academic policy.</textarea>
-            </div>
-            <div>
-              <label class="field-label" for="f-timezone">Timezone <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <select class="field-input" id="f-timezone" onchange="markDirty('info')">
-                <option>Africa/Nairobi (EAT, UTC+3)</option>
-                <option>Europe/London (GMT, UTC+0)</option>
-                <option>America/New_York (EST, UTC-5)</option>
-                <option>Asia/Singapore (SGT, UTC+8)</option>
-              </select>
-            </div>
-
-            <!-- Locked -->
-            <div>
-              <label class="field-label">Full Legal Name <span class="lock-badge"><i class="fa-solid fa-lock" style="font-size:8px;"></i> Admin approval</span></label>
-              <div class="field-locked">
-                <span>Alistair James Vance</span>
-                <button class="btn btn-warning" style="font-size:11px; padding:5px 10px;" onclick="openChangeRequest('Full Legal Name')">
-                  <i class="fa-solid fa-paper-plane"></i> Request Change
-                </button>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-slate-400">call</span>
+              <div>
+                <dt class="text-slate-400">Phone</dt>
+                <dd id="detail-display-phone" class="text-slate-800 font-medium mono">+1 (555) 214-7790</dd>
               </div>
             </div>
-            <div>
-              <label class="field-label">Staff / Admin ID <span class="lock-badge"><i class="fa-solid fa-lock" style="font-size:8px;"></i> System only</span></label>
-              <div class="field-locked">
-                <span class="mono" style="font-size:13px;">ADM-00421</span>
-                <span style="font-size:11px; color: var(--text-muted); font-style:italic;">Cannot be changed</span>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-slate-400">location_on</span>
+              <div>
+                <dt class="text-slate-400">Office</dt>
+                <dd id="detail-display-office" class="text-slate-800 font-medium">Sciences Building, Room 214</dd>
               </div>
             </div>
-            <div>
-              <label class="field-label">Role / Permission Level <span class="lock-badge"><i class="fa-solid fa-lock" style="font-size:8px;"></i> Admin approval</span></label>
-              <div class="field-locked">
-                <span>Course Administrator</span>
-                <button class="btn btn-warning" style="font-size:11px; padding:5px 10px;" onclick="openChangeRequest('Role / Permission Level')">
-                  <i class="fa-solid fa-paper-plane"></i> Request Change
-                </button>
+          </dl>
+        </section>
+
+        <section class="bg-white rounded-xl border border-outline-variant shadow-sm p-5">
+          <h3 class="text-xs font-bold text-navy-primary uppercase tracking-wider mb-4">Account Details</h3>
+          <dl class="space-y-3 text-xs">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-slate-400">badge</span>
+              <div>
+                <dt class="text-slate-400">Role</dt>
+                <dd id="detail-display-role" class="text-slate-800 font-medium">Course Administrator</dd>
               </div>
             </div>
-            <div>
-              <label class="field-label">Department <span class="lock-badge"><i class="fa-solid fa-lock" style="font-size:8px;"></i> Admin approval</span></label>
-              <div class="field-locked">
-                <span>Faculty of Sciences</span>
-                <button class="btn btn-warning" style="font-size:11px; padding:5px 10px;" onclick="openChangeRequest('Department')">
-                  <i class="fa-solid fa-paper-plane"></i> Request Change
-                </button>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-slate-400">calendar_month</span>
+              <div>
+                <dt class="text-slate-400">Joined</dt>
+                <dd class="text-slate-800 font-medium">January 12, 2021</dd>
               </div>
             </div>
-
-          </div>
-        </div>
-
-        <!-- ── TAB: Contact ── -->
-        <div id="tab-contact" class="tab-panel p-7" style="display:none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:22px;">
-            <div>
-              <h3 style="font-size:14px; font-weight:600; color: var(--navy); margin-bottom:3px;">Contact Details</h3>
-              <p style="font-size:12px; color: var(--text-muted);">Primary email and phone require System Admin approval to change.</p>
-            </div>
-            <button class="btn btn-primary" id="save-contact-btn" onclick="saveContact()" disabled>
-              <i class="fa-solid fa-floppy-disk"></i> Save Changes
-            </button>
-          </div>
-
-          <div class="grid grid-cols-2 gap-x-8 gap-y-5">
-
-            <!-- Locked -->
-            <div>
-              <label class="field-label">Primary Email <span class="lock-badge"><i class="fa-solid fa-lock" style="font-size:8px;"></i> Admin approval</span></label>
-              <div class="field-locked">
-                <span>a.vance@university.ac.ke</span>
-                <button class="btn btn-warning" style="font-size:11px; padding:5px 10px;" onclick="openChangeRequest('Primary Email')">
-                  <i class="fa-solid fa-paper-plane"></i> Request Change
-                </button>
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[18px] text-slate-400">verified_user</span>
+              <div>
+                <dt class="text-slate-400">Access Level</dt>
+                <dd class="text-slate-800 font-medium">Full Admin</dd>
               </div>
             </div>
-            <div>
-              <label class="field-label">Primary Phone <span class="lock-badge"><i class="fa-solid fa-lock" style="font-size:8px;"></i> Admin approval</span></label>
-              <div class="field-locked">
-                <span>+254 700 000 421</span>
-                <button class="btn btn-warning" style="font-size:11px; padding:5px 10px;" onclick="openChangeRequest('Primary Phone')">
-                  <i class="fa-solid fa-paper-plane"></i> Request Change
-                </button>
-              </div>
-            </div>
+          </dl>
+        </section>
 
-            <!-- Editable -->
-            <div>
-              <label class="field-label" for="f-alt-email">Secondary Email <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-alt-email" type="email" value="alistair.vance@gmail.com" oninput="markDirty('contact')">
-            </div>
-            <div>
-              <label class="field-label" for="f-alt-phone">Secondary Phone <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-alt-phone" type="tel" value="+254 722 000 099" oninput="markDirty('contact')">
-            </div>
-            <div>
-              <label class="field-label" for="f-office">Office Location <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-office" value="Block C, Room 214" oninput="markDirty('contact')">
-            </div>
-            <div>
-              <label class="field-label" for="f-office-hours">Office Hours <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-office-hours" value="Mon / Wed 10:00 – 12:00" oninput="markDirty('contact')">
-            </div>
-            <div class="col-span-2">
-              <label class="field-label" for="f-linkedin">LinkedIn / Professional URL <span style="font-size:10px; color: var(--text-muted); font-weight:400;">(editable)</span></label>
-              <input class="field-input" id="f-linkedin" type="url" value="https://linkedin.com/in/alistairvance" oninput="markDirty('contact')">
-            </div>
-
-          </div>
-        </div>
-
-        <!-- ── TAB: Activity Log ── -->
-        <div id="tab-activity" class="tab-panel p-7" style="display:none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <div>
-              <h3 style="font-size:14px; font-weight:600; color: var(--navy); margin-bottom:3px;">Recent Activity</h3>
-              <p style="font-size:12px; color: var(--text-muted);">A log of actions taken under this administrator account.</p>
-            </div>
-            <button class="btn btn-secondary" onclick="exportLog()">
-              <i class="fa-solid fa-file-export"></i> Export Log
-            </button>
-          </div>
-
-          <!-- Filter pills -->
-          <div class="flex gap-2 flex-wrap mb-5" id="log-filters">
-            <button class="tab active" data-log="all"      style="padding:5px 14px; font-size:12px;">All</button>
-            <button class="tab"        data-log="override" style="padding:5px 14px; font-size:12px;">Overrides</button>
-            <button class="tab"        data-log="edit"     style="padding:5px 14px; font-size:12px;">Profile Edits</button>
-            <button class="tab"        data-log="login"    style="padding:5px 14px; font-size:12px;">Logins</button>
-            <button class="tab"        data-log="export"   style="padding:5px 14px; font-size:12px;">Exports</button>
-          </div>
-
-          <div id="log-list"></div>
-        </div>
-
-      </div><!-- /card -->
-
-      <!-- Danger zone -->
-      <div class="card p-6 mb-6" style="max-width:860px; border-color:#fecaca;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-          <div>
-            <h3 style="font-size:14px; font-weight:600; color:#b91c1c; margin-bottom:3px;"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Danger Zone</h3>
-            <p style="font-size:12px; color: var(--text-muted);">These actions are irreversible or require System Administrator sign-off.</p>
-          </div>
-          <div class="flex gap-2 flex-wrap">
-            <button class="btn btn-warning" onclick="openChangeRequest('Account Deactivation')">
-              <i class="fa-solid fa-user-slash"></i> Request Deactivation
-            </button>
-            <button class="btn btn-danger" onclick="openChangeRequest('Full Account Deletion')">
-              <i class="fa-solid fa-trash"></i> Request Account Deletion
-            </button>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /body -->
-  </main>
-
-  <!-- ═══════════ CHANGE REQUEST MODAL ═══════════ -->
-  <div class="modal-overlay" id="change-modal" role="dialog" aria-modal="true" aria-labelledby="change-modal-title">
-    <div class="modal-box">
-      <div class="flex items-center justify-between px-6 py-5" style="border-bottom:1px solid var(--border);">
-        <div>
-          <h3 id="change-modal-title" style="font-size:15px; font-weight:600; color: var(--navy); margin-bottom:2px;">Request Field Change</h3>
-          <p style="font-size:12px; color: var(--text-muted);" id="change-modal-field"></p>
-        </div>
-        <button onclick="closeChangeModal()" aria-label="Close" style="background:none; border:none; cursor:pointer; color: var(--text-muted); font-size:16px;">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="px-6 py-5 space-y-4">
-        <div>
-          <label class="field-label" for="change-new-value">Requested New Value</label>
-          <input class="field-input" id="change-new-value" placeholder="Enter the new value you are requesting…">
-        </div>
-        <div>
-          <label class="field-label" for="change-reason">Reason for Change</label>
-          <textarea class="field-input" id="change-reason" rows="3" placeholder="Briefly explain why this change is needed…" style="resize:vertical;"></textarea>
-        </div>
-        <div style="background: var(--accent-gold-bg); border:1px solid #f0d080; border-radius:6px; padding:10px 14px; font-size:12px; color: var(--accent-gold-text); display:flex; gap:8px; align-items:flex-start;">
-          <i class="fa-solid fa-circle-info" style="margin-top:1px; flex-shrink:0;"></i>
-          <span>This request will be sent to the System Administrator for review. You will be notified by email once a decision is made.</span>
-        </div>
-      </div>
-      <div class="flex justify-end gap-2 px-6 pb-5">
-        <button class="btn btn-secondary" onclick="closeChangeModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="submitChangeRequest()">
-          <i class="fa-solid fa-paper-plane"></i> Submit Request
-        </button>
       </div>
     </div>
-  </div>
 
-  <!-- Toast -->
-  <div class="toast" id="toast">
-    <i class="fa-solid fa-circle-check" id="toast-icon"></i>
-    <span id="toast-msg"></span>
-  </div>
-
-  <style>
-    .field-label { display:block; font-size:11px; font-weight:600; color: var(--text-secondary); letter-spacing:0.06em; margin-bottom:6px; }
-    .tab { padding:7px 16px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid transparent; transition:all 0.15s; color: var(--text-secondary); background:none; }
-    .tab:hover { background:#e8edf5; color: var(--navy); }
-    .tab.active { background: var(--navy); color:#fff; border-color: var(--navy); }
-  </style>
+    <div id="edit-profile-modal" popover class="w-[90vw] max-w-[480px] bg-white rounded-xl shadow-2xl border border-outline-variant overflow-hidden">
+      <div class="px-5 py-3.5 border-b border-outline-variant bg-navy-primary text-white flex justify-between items-center">
+        <h3 class="text-sm font-bold">Edit Profile</h3>
+        <button popovertarget="edit-profile-modal" popovertargetaction="hide" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+      <form id="edit-profile-form" class="p-5 space-y-3.5">
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Full Name</label>
+          <input id="input-name" type="text" value="Dr. Alistair Vance" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Role / Title</label>
+          <input id="input-role" type="text" value="Course Administrator" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Email</label>
+            <input id="input-email" type="email" value="a.vance@university.edu" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary mono">
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Phone</label>
+            <input id="input-phone" type="text" value="+1 (555) 214-7790" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary mono">
+          </div>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Office</label>
+          <input id="input-office" type="text" value="Sciences Building, Room 214" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" popovertarget="edit-profile-modal" popovertargetaction="hide" class="px-4 py-1.5 rounded-lg border border-outline-variant text-slate-700 bg-white hover:bg-slate-50 font-medium text-xs transition-colors">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-1.5 rounded-lg bg-navy-primary text-white hover:bg-navy-hover font-medium text-xs transition-colors shadow-sm">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
 
   <script>
-    // ── Activity log data ────────────────────────────────────────────────────────
-    const LOG = [
-      { type:'override', icon:'fa-check',           cls:'log-approve', label:'Approved override',    detail:'Tomás Ríos → CYB-220 Ethical Hacking & Penetration Testing',    time:'Today, 09:14' },
-      { type:'override', icon:'fa-xmark',           cls:'log-deny',    label:'Denied override',     detail:'Fatou Seck → CYB-315 Digital Forensics & Incident Response',      time:'Today, 09:10' },
-      { type:'override', icon:'fa-clock',           cls:'log-defer',   label:'Deferred override',   detail:'Nia Okonkwo → CYB-101 Foundations of Cybersecurity',              time:'Yesterday, 16:45' },
-      { type:'export',   icon:'fa-file-export',     cls:'log-export',  label:'Exported roster',     detail:'Full enrollment roster — Fall Semester 2026',                      time:'Yesterday, 14:22' },
-      { type:'override', icon:'fa-check',           cls:'log-approve', label:'Approved override',   detail:'Elias Bergström → CYB-420 Security Operations & Threat Intelligence', time:'Aug 7, 11:33' },
-      { type:'edit',     icon:'fa-pen',             cls:'log-edit',    label:'Profile updated',     detail:'Office hours changed to Mon / Wed 10:00 – 12:00',                 time:'Aug 6, 08:55' },
-      { type:'login',    icon:'fa-arrow-right-to-bracket', cls:'log-login', label:'Login',          detail:'Chrome · Nairobi, KE · 41.90.66.12',                              time:'Aug 6, 08:50' },
-      { type:'override', icon:'fa-check',           cls:'log-approve', label:'Approved override',   detail:'Kwame Asante → CYB-315 Digital Forensics & Incident Response',    time:'Aug 5, 15:02' },
-      { type:'export',   icon:'fa-file-export',     cls:'log-export',  label:'Exported overrides',  detail:'Waitlist override CSV export',                                     time:'Aug 5, 14:58' },
-      { type:'login',    icon:'fa-arrow-right-to-bracket', cls:'log-login', label:'Login',          detail:'Chrome · Nairobi, KE · 41.90.66.12',                              time:'Aug 4, 09:01' },
-      { type:'edit',     icon:'fa-pen',             cls:'log-edit',    label:'Profile updated',     detail:'Secondary email updated',                                          time:'Aug 3, 13:20' },
-      { type:'login',    icon:'fa-arrow-right-to-bracket', cls:'log-login', label:'Login',          detail:'Safari · Nairobi, KE · 41.90.66.12',                              time:'Aug 2, 08:44' },
-    ];
+    document.getElementById('edit-profile-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Stop standard form reload action
 
-    let logFilter = 'all';
+      // Fetch latest values out of form inputs
+      const updatedName = document.getElementById('input-name').value;
+      const updatedRole = document.getElementById('input-role').value;
+      const updatedEmail = document.getElementById('input-email').value;
+      const updatedPhone = document.getElementById('input-phone').value;
+      const updatedOffice = document.getElementById('input-office').value;
 
-    function renderLog() {
-      const rows = logFilter === 'all' ? LOG : LOG.filter(l => l.type === logFilter);
-      const el = document.getElementById('log-list');
-      if (!rows.length) { el.innerHTML = `<div style="text-align:center; padding:40px; color: var(--text-muted); font-size:13px;">No activity in this category.</div>`; return; }
-      el.innerHTML = rows.map(l => `
-        <div class="log-row">
-          <div class="log-icon ${l.cls}"><i class="fa-solid ${l.icon}" style="font-size:12px;"></i></div>
-          <div style="flex:1;">
-            <div style="font-size:13px; font-weight:500; color: var(--text-primary); margin-bottom:2px;">${l.label}</div>
-            <div style="font-size:12px; color: var(--text-secondary);">${l.detail}</div>
-          </div>
-          <div style="font-size:11px; color: var(--text-muted); white-space:nowrap; flex-shrink:0; margin-top:2px;">${l.time}</div>
-        </div>`).join('');
-    }
+      // Update Header Navigation bars indicators
+      document.getElementById('nav-display-name').textContent = updatedName;
+      
+      // Compute a clean short handle for the top corner layout footprint
+      let shortRole = updatedRole;
+      if (updatedRole.toLowerCase().includes('administrator')) {
+        shortRole = updatedRole.replace(/Administrator/i, 'Admin');
+      }
+      document.getElementById('nav-display-role').textContent = shortRole;
 
-    document.getElementById('log-filters').addEventListener('click', e => {
-      const tab = e.target.closest('[data-log]');
-      if (!tab) return;
-      logFilter = tab.dataset.log;
-      document.querySelectorAll('[data-log]').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      renderLog();
+      // Update Core Dashboard Display Panels layout cards values
+      document.getElementById('card-display-name').textContent = updatedName;
+      document.getElementById('card-display-meta').textContent = `${updatedRole} · Faculty of Sciences`;
+
+      // Update descriptive text records blocks fields
+      document.getElementById('detail-display-email').textContent = updatedEmail;
+      document.getElementById('detail-display-phone').textContent = updatedPhone;
+      document.getElementById('detail-display-office').textContent = updatedOffice;
+      document.getElementById('detail-display-role').textContent = updatedRole;
+
+      // Programmatically close the popover dialog wrapper view panel
+      const modal = document.getElementById('edit-profile-modal');
+      if (modal && typeof modal.hidePopover === 'function') {
+        modal.hidePopover();
+      }
     });
-
-    // ── Tab switching ────────────────────────────────────────────────────────────
-    function switchTab(name) {
-      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-      document.querySelectorAll('.ptab').forEach(t => t.classList.remove('active'));
-      document.getElementById('tab-' + name).style.display = 'block';
-      document.querySelector(`[data-tab="${name}"]`).classList.add('active');
-      if (name === 'activity') renderLog();
-    }
-
-    // ── Dirty tracking ───────────────────────────────────────────────────────────
-    const dirty = { info: false, contact: false };
-    function markDirty(tab) {
-      dirty[tab] = true;
-      document.getElementById(`save-${tab}-btn`).disabled = false;
-    }
-
-    function saveInfo() {
-      dirty.info = false;
-      document.getElementById('save-info-btn').disabled = true;
-      showToast('success', 'Profile info saved successfully.');
-      LOG.unshift({ type:'edit', icon:'fa-pen', cls:'log-edit', label:'Profile updated', detail:'Basic info fields updated', time:'Just now' });
-    }
-
-    function saveContact() {
-      dirty.contact = false;
-      document.getElementById('save-contact-btn').disabled = true;
-      showToast('success', 'Contact details saved successfully.');
-      LOG.unshift({ type:'edit', icon:'fa-pen', cls:'log-edit', label:'Profile updated', detail:'Contact details updated', time:'Just now' });
-    }
-
-    // ── Avatar preview ───────────────────────────────────────────────────────────
-    function previewAvatar(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        document.getElementById('avatar-img').src = ev.target.result;
-        showToast('success', 'Profile photo updated.');
-      };
-      reader.readAsDataURL(file);
-    }
-
-    // ── Change request modal ─────────────────────────────────────────────────────
-    let pendingField = '';
-    function openChangeRequest(field) {
-      pendingField = field;
-      document.getElementById('change-modal-field').textContent = `Requesting change to: ${field}`;
-      document.getElementById('change-new-value').value = '';
-      document.getElementById('change-reason').value = '';
-      document.getElementById('change-modal').classList.add('open');
-      setTimeout(() => document.getElementById('change-new-value').focus(), 200);
-    }
-
-    function closeChangeModal() {
-      document.getElementById('change-modal').classList.remove('open');
-    }
-
-    function submitChangeRequest() {
-      const val = document.getElementById('change-new-value').value.trim();
-      const reason = document.getElementById('change-reason').value.trim();
-      if (!val || !reason) { showToast('warn', 'Please fill in both fields.'); return; }
-      closeChangeModal();
-      showToast('success', `Change request for "${pendingField}" submitted.`);
-      LOG.unshift({ type:'edit', icon:'fa-paper-plane', cls:'log-edit', label:'Change request submitted', detail:`Requested change to: ${pendingField}`, time:'Just now' });
-    }
-
-    document.getElementById('change-modal').addEventListener('click', e => {
-      if (e.target === document.getElementById('change-modal')) closeChangeModal();
-    });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeChangeModal(); });
-
-    // ── Export log ───────────────────────────────────────────────────────────────
-    function exportLog() {
-      const rows = [['Type','Action','Detail','Time']].concat(LOG.map(l => [l.type, l.label, l.detail, l.time]));
-      const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
-      const a = document.createElement('a');
-      a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-      a.download = 'admin-activity-log.csv';
-      a.click();
-    }
-
-    // ── Toast ────────────────────────────────────────────────────────────────────
-    function showToast(type, msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toast-icon').className = type === 'warn' ? 'fa-solid fa-triangle-exclamation' : 'fa-solid fa-circle-check';
-      document.getElementById('toast-msg').textContent = msg;
-      toast.className = `toast toast-${type} show`;
-      setTimeout(() => { toast.className = 'toast'; }, 3200);
-    }
   </script>
 </body>
 </html>
