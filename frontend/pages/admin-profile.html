@@ -5,287 +5,133 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Academic Portal - Admin Profile</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "navy-primary": "#0a2558",
-            "navy-hover": "#0d2f6b",
-            "accent-gold": "#b48600",
-            "accent-gold-bg": "#fdf2d5",
-            "accent-gold-text": "#d49a2a",
-            "surface-container-lowest": "#ffffff",
-            "primary-container": "#0b3d91",
-            "outline-variant": "#e2e8f0",
-            "surface": "#f4f7f9",
-            "error": "#ba1a1a",
-            "on-surface-variant": "#64748b",
-            "primary": "#0a2558",
-            "inverse-primary": "#b1c5ff",
-            "on-primary-container": "#8dadff",
-            "on-surface": "#1e293b",
-            "background": "#f4f7f9",
-            "surface-container-low": "#f8fafc"
-          }
-        },
-      }
-    }
-  </script>
   <style>
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: #f4f7f9;
-      color: #1e293b;
-    }
-    .mono { font-family: 'DM Mono', monospace; }
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    .active-tab {
-      background-color: #0a2558;
-      color: #ffffff;
-      font-weight: 600;
-    }
-    [popover] {
-      margin: auto;
-      border: none;
-      padding: 0;
-      background: transparent;
-      overflow: visible;
-    }
-    [popover]::backdrop {
-      background: rgba(10, 37, 88, 0.45);
-    }
+    body { font-family: Inter, sans-serif; background-color: #f6f9ff; color: #151c22; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .active-tab { background-color: #dae2ff; color: #001947; font-weight: 700; }
   </style>
 </head>
-<body class="flex min-h-screen overflow-hidden">
-
-  <aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low text-slate-600 flex flex-col p-4 gap-2 border-r border-outline-variant z-50">
-    <div class="mb-6 px-2 py-3 border-b border-outline-variant flex items-center gap-2.5">
-      <div class="w-7 h-7 rounded flex items-center justify-center bg-navy-primary">
-        <span class="material-symbols-outlined text-white text-[16px]">school</span>
-      </div>
-      <div>
-        <h1 class="text-xs font-bold text-navy-primary tracking-wider leading-none">COURSE MGMT</h1>
-        <p class="text-[9px] font-mono tracking-widest uppercase text-slate-400 mt-1">Admin Space</p>
-      </div>
+<body class="flex min-h-screen">
+  <aside class="fixed left-0 top-0 h-full w-[240px] bg-[#0b3d91] text-white flex flex-col p-[21px] gap-[13px] z-50">
+    <div class="mb-[34px] px-2">
+      <h1 class="text-base font-bold text-[#b1c5ff]">Academic Portal</h1>
+      <p class="text-[10px] font-semibold uppercase tracking-wider opacity-70">Admin Services</p>
     </div>
-
-    <div class="rounded-lg p-3 mb-4 bg-blue-50 border border-blue-200">
-      <div class="text-[9px] font-bold text-navy-primary tracking-wider uppercase mb-0.5">Active Term</div>
-      <div class="text-xs font-medium text-navy-primary">Fall Semester 2026</div>
-    </div>
-
-    <nav class="flex flex-col gap-1 flex-1">
-      <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-1">Academics</div>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="admin-dashboard.html">
-        <span class="material-symbols-outlined text-[20px]">dashboard</span>
-        <span>Overview</span>
+    <nav class="flex flex-col gap-2 flex-1">
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="admin-dashboard.html">
+        <span class="material-symbols-outlined">dashboard</span><span>Dashboard</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="enrollment-roster.html">
-        <span class="material-symbols-outlined text-[20px]">groups</span>
-        <span>Enrollment Roster</span>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="course-catalog.html">
+        <span class="material-symbols-outlined">school</span><span>Courses</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="course-catalog.html">
-        <span class="material-symbols-outlined text-[20px]">auto_stories</span>
-        <span>Course Catalog</span>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="enrollment-roster.html">
+        <span class="material-symbols-outlined">groups</span><span>Registrations</span>
       </a>
     </nav>
-
-    <div class="mt-auto border-t border-outline-variant pt-2">
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm text-red-600" href="login.html">
-        <span class="material-symbols-outlined text-[20px]">logout</span>
-        <span>Logout</span>
+    <div class="mt-auto border-t border-white/10 pt-[13px]">
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] active-tab rounded-lg transition-all" href="admin-profile.html">
+        <span class="material-symbols-outlined">admin_panel_settings</span><span>Admin Profile</span>
+      </a>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="login.html" data-logout-trigger="true">
+        <span class="material-symbols-outlined">logout</span><span>Logout</span>
       </a>
     </div>
   </aside>
 
-  <main class="ml-[240px] flex-1 flex flex-col h-screen overflow-y-auto">
-
-    <header class="sticky top-0 w-full flex justify-between items-center bg-white px-8 py-3 border-b border-outline-variant z-40 h-[64px]">
-      <div class="flex items-center gap-2 text-xs text-slate-500">
-        <span class="material-symbols-outlined text-[16px]">account_balance</span>
-        <span>Faculty of Sciences</span>
-        <span class="text-slate-300">/</span>
-        <span class="text-navy-primary font-medium">My Profile</span>
+  <main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+    <header class="sticky top-0 w-full flex justify-between items-center bg-[#f6f9ff] px-[34px] py-[13px] border-b border-[#c4c6d3] shadow-sm z-40 h-[64px]">
+      <div class="flex items-center gap-[13px]">
+        <span class="material-symbols-outlined text-[#002869]">admin_panel_settings</span>
+        <span class="text-base font-bold text-[#002869]">Admin Profile</span>
       </div>
-      <div class="flex items-center gap-4">
-        <button class="relative w-8 h-8 flex items-center justify-center rounded-full border border-outline-variant hover:bg-slate-50 transition-colors">
-          <span class="material-symbols-outlined text-slate-500 text-[18px]">notifications</span>
-          <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-        </button>
-        <a href="admin-profile.html" class="flex items-center gap-3 pl-3 border-l border-outline-variant hover:opacity-75 transition-opacity cursor-pointer">
-          <div class="text-right leading-tight">
-            <div id="nav-display-name" class="text-xs font-bold text-navy-primary">Dr. Alistair Vance</div>
-            <div id="nav-display-role" class="text-[9px] text-slate-400 uppercase tracking-wider mt-0.5">Course Admin</div>
-          </div>
-          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-8 h-8 rounded-full border object-cover">
-        </a>
+      <div class="flex flex-col items-end leading-tight">
+        <span class="text-base text-[#151c22]" id="nav-admin-name">Loading...</span>
+        <span class="text-[10px] text-[#434652]" id="nav-admin-id">Staff: Loading...</span>
       </div>
     </header>
 
-    <div class="p-8 max-w-[1240px] w-full mx-auto space-y-6">
-
-      <section>
-        <h2 class="text-xl font-bold text-navy-primary tracking-tight">My Profile</h2>
-        <p class="text-xs text-slate-500 mt-0.5">View and manage your admin account details.</p>
+    <div class="p-[34px] max-w-[900px] mx-auto w-full space-y-[34px]">
+      <section class="space-y-2">
+        <h2 class="text-[42px] leading-tight font-semibold text-[#002869]">Profile Record</h2>
+        <p class="text-base text-[#434652]">Your admin account and permissions from the backend.</p>
       </section>
 
-      <section class="bg-white rounded-xl border border-outline-variant shadow-sm overflow-hidden">
-        <div class="h-20 bg-navy-primary"></div>
-        <div class="px-6 pb-6 -mt-10 flex flex-col sm:flex-row sm:items-end gap-4">
-          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-20 h-20 rounded-full border-4 border-white object-cover shadow-sm">
-          <div class="flex-1 sm:pb-1">
-            <h3 id="card-display-name" class="text-base font-bold text-navy-primary">Dr. Alistair Vance</h3>
-            <p id="card-display-meta" class="text-xs text-slate-500">Course Administrator &middot; Faculty of Sciences</p>
+      <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="h-24 bg-[#002869]"></div>
+        <div class="px-[34px] pb-[34px] -mt-10 flex flex-col md:flex-row md:items-end gap-[21px]">
+          <div class="w-20 h-20 rounded-xl bg-[#dae2ff] border-4 border-white shadow-sm flex items-center justify-center">
+            <span class="material-symbols-outlined text-[#002869] text-[42px]">admin_panel_settings</span>
           </div>
-          <button popovertarget="edit-profile-modal" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-navy-primary text-white hover:bg-navy-hover font-medium text-xs transition-colors shadow-sm sm:mb-1">
-            <span class="material-symbols-outlined text-[16px]">edit</span> Edit Profile
-          </button>
+          <div class="flex-1 md:pb-2">
+            <h3 id="profile-name" class="text-[26px] leading-tight font-semibold text-[#002869]">Loading...</h3>
+            <p id="profile-meta" class="text-base text-[#434652]">Admin account</p>
+          </div>
         </div>
       </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <section class="bg-white rounded-xl border border-outline-variant shadow-sm p-5">
-          <h3 class="text-xs font-bold text-navy-primary uppercase tracking-wider mb-4">Contact Information</h3>
-          <dl class="space-y-3 text-xs">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-slate-400">mail</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-[21px]">
+        <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] p-[34px]">
+          <h3 class="text-base font-semibold text-[#002869] mb-[21px]">Contact Information</h3>
+          <dl class="space-y-[21px]">
+            <div class="flex items-center gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">mail</span>
               <div>
-                <dt class="text-slate-400">Email</dt>
-                <dd id="detail-display-email" class="text-slate-800 font-medium mono">a.vance@university.edu</dd>
+                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Email</dt>
+                <dd id="profile-email" class="font-medium">Loading...</dd>
               </div>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-slate-400">call</span>
+            <div class="flex items-center gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">badge</span>
               <div>
-                <dt class="text-slate-400">Phone</dt>
-                <dd id="detail-display-phone" class="text-slate-800 font-medium mono">+1 (555) 214-7790</dd>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-slate-400">location_on</span>
-              <div>
-                <dt class="text-slate-400">Office</dt>
-                <dd id="detail-display-office" class="text-slate-800 font-medium">Sciences Building, Room 214</dd>
+                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Staff Number</dt>
+                <dd id="profile-staff" class="font-medium">Loading...</dd>
               </div>
             </div>
           </dl>
         </section>
 
-        <section class="bg-white rounded-xl border border-outline-variant shadow-sm p-5">
-          <h3 class="text-xs font-bold text-navy-primary uppercase tracking-wider mb-4">Account Details</h3>
-          <dl class="space-y-3 text-xs">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-slate-400">badge</span>
+        <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] p-[34px]">
+          <h3 class="text-base font-semibold text-[#002869] mb-[21px]">Permissions</h3>
+          <dl class="space-y-[21px]">
+            <div class="flex items-center gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">verified_user</span>
               <div>
-                <dt class="text-slate-400">Role</dt>
-                <dd id="detail-display-role" class="text-slate-800 font-medium">Course Administrator</dd>
+                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Role</dt>
+                <dd id="profile-role" class="font-medium">Admin</dd>
               </div>
             </div>
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-slate-400">calendar_month</span>
+            <div class="flex items-center gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">tune</span>
               <div>
-                <dt class="text-slate-400">Joined</dt>
-                <dd class="text-slate-800 font-medium">January 12, 2021</dd>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-[18px] text-slate-400">verified_user</span>
-              <div>
-                <dt class="text-slate-400">Access Level</dt>
-                <dd class="text-slate-800 font-medium">Full Admin</dd>
+                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Admin Level</dt>
+                <dd id="profile-level" class="font-medium">Loading...</dd>
               </div>
             </div>
           </dl>
         </section>
-
       </div>
-    </div>
-
-    <div id="edit-profile-modal" popover class="w-[90vw] max-w-[480px] bg-white rounded-xl shadow-2xl border border-outline-variant overflow-hidden">
-      <div class="px-5 py-3.5 border-b border-outline-variant bg-navy-primary text-white flex justify-between items-center">
-        <h3 class="text-sm font-bold">Edit Profile</h3>
-        <button popovertarget="edit-profile-modal" popovertargetaction="hide" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-          <span class="material-symbols-outlined text-[18px]">close</span>
-        </button>
-      </div>
-      <form id="edit-profile-form" class="p-5 space-y-3.5">
-        <div>
-          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Full Name</label>
-          <input id="input-name" type="text" value="Dr. Alistair Vance" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
-        </div>
-        <div>
-          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Role / Title</label>
-          <input id="input-role" type="text" value="Course Administrator" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Email</label>
-            <input id="input-email" type="email" value="a.vance@university.edu" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary mono">
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Phone</label>
-            <input id="input-phone" type="text" value="+1 (555) 214-7790" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary mono">
-          </div>
-        </div>
-        <div>
-          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Office</label>
-          <input id="input-office" type="text" value="Sciences Building, Room 214" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
-        </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" popovertarget="edit-profile-modal" popovertargetaction="hide" class="px-4 py-1.5 rounded-lg border border-outline-variant text-slate-700 bg-white hover:bg-slate-50 font-medium text-xs transition-colors">
-            Cancel
-          </button>
-          <button type="submit" class="px-4 py-1.5 rounded-lg bg-navy-primary text-white hover:bg-navy-hover font-medium text-xs transition-colors shadow-sm">
-            Save Changes
-          </button>
-        </div>
-      </form>
     </div>
   </main>
 
+  <script src="../js/api.js"></script>
   <script>
-    document.getElementById('edit-profile-form').addEventListener('submit', function(event) {
-      event.preventDefault(); // Stop standard form reload action
+    const loadProfile = async () => {
+      const admin = await requireAdminSession();
+      setText("#nav-admin-name", admin.full_name);
+      setText("#nav-admin-id", `Staff: ${admin.staff_number || "Not provided"}`);
+      setText("#profile-name", admin.full_name);
+      setText("#profile-meta", `Admin Level ${admin.admin_level || 1}`);
+      setText("#profile-email", admin.email);
+      setText("#profile-staff", admin.staff_number);
+      setText("#profile-role", admin.role);
+      setText("#profile-level", admin.admin_level || 1);
+    };
 
-      // Fetch latest values out of form inputs
-      const updatedName = document.getElementById('input-name').value;
-      const updatedRole = document.getElementById('input-role').value;
-      const updatedEmail = document.getElementById('input-email').value;
-      const updatedPhone = document.getElementById('input-phone').value;
-      const updatedOffice = document.getElementById('input-office').value;
-
-      // Update Header Navigation bars indicators
-      document.getElementById('nav-display-name').textContent = updatedName;
-      
-      // Compute a clean short handle for the top corner layout footprint
-      let shortRole = updatedRole;
-      if (updatedRole.toLowerCase().includes('administrator')) {
-        shortRole = updatedRole.replace(/Administrator/i, 'Admin');
-      }
-      document.getElementById('nav-display-role').textContent = shortRole;
-
-      // Update Core Dashboard Display Panels layout cards values
-      document.getElementById('card-display-name').textContent = updatedName;
-      document.getElementById('card-display-meta').textContent = `${updatedRole} · Faculty of Sciences`;
-
-      // Update descriptive text records blocks fields
-      document.getElementById('detail-display-email').textContent = updatedEmail;
-      document.getElementById('detail-display-phone').textContent = updatedPhone;
-      document.getElementById('detail-display-office').textContent = updatedOffice;
-      document.getElementById('detail-display-role').textContent = updatedRole;
-
-      // Programmatically close the popover dialog wrapper view panel
-      const modal = document.getElementById('edit-profile-modal');
-      if (modal && typeof modal.hidePopover === 'function') {
-        modal.hidePopover();
-      }
+    document.querySelectorAll("[data-logout-trigger]").forEach((trigger) => trigger.addEventListener("click", () => clearAuthSession()));
+    loadProfile().catch((error) => {
+      setText("#profile-name", error.message);
     });
   </script>
 </body>

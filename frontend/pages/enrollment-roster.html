@@ -3,291 +3,168 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Academic Portal - Enrollment Roster</title>
+  <title>Academic Portal - Registration Roster</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "navy-primary": "#0a2558",
-            "navy-hover": "#0d2f6b",
-            "accent-gold": "#b48600",
-            "accent-gold-bg": "#fdf2d5",
-            "accent-gold-text": "#d49a2a",
-            "surface-container-lowest": "#ffffff",
-            "primary-container": "#0b3d91",
-            "outline-variant": "#e2e8f0",
-            "surface": "#f4f7f9",
-            "error": "#ba1a1a",
-            "on-surface-variant": "#64748b",
-            "primary": "#0a2558",
-            "inverse-primary": "#b1c5ff",
-            "on-primary-container": "#8dadff",
-            "on-surface": "#1e293b",
-            "background": "#f4f7f9",
-            "surface-container-low": "#f8fafc"
-          }
-        },
-      }
-    }
-  </script>
   <style>
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: #f4f7f9;
-      color: #1e293b;
-    }
-    .mono {
-      font-family: 'DM Mono', monospace;
-    }
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    .active-tab {
-      background-color: #0a2558;
-      color: #ffffff;
-      font-weight: 600;
-    }
+    body { font-family: Inter, sans-serif; background-color: #f6f9ff; color: #151c22; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .active-tab { background-color: #dae2ff; color: #001947; font-weight: 700; }
   </style>
 </head>
-<body class="flex min-h-screen overflow-hidden">
-
-  <!-- ═══════════════════════════════════ SIDEBAR ═══════════════════════════════════ -->
-  <aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low text-slate-600 flex flex-col p-4 gap-2 border-r border-outline-variant z-50">
-    <!-- Logo Area -->
-    <div class="mb-6 px-2 py-3 border-b border-outline-variant flex items-center gap-2.5">
-      <div class="w-7 h-7 rounded flex items-center justify-center bg-navy-primary">
-        <span class="material-symbols-outlined text-white text-[16px]">school</span>
-      </div>
-      <div>
-        <h1 class="text-xs font-bold text-navy-primary tracking-wider leading-none">COURSE MGMT</h1>
-        <p class="text-[9px] font-mono tracking-widest uppercase text-slate-400 mt-1">Admin Space</p>
-      </div>
+<body class="flex min-h-screen">
+  <aside class="fixed left-0 top-0 h-full w-[240px] bg-[#0b3d91] text-white flex flex-col p-[21px] gap-[13px] z-50">
+    <div class="mb-[34px] px-2">
+      <h1 class="text-base font-bold text-[#b1c5ff]">Academic Portal</h1>
+      <p class="text-[10px] font-semibold uppercase tracking-wider opacity-70">Admin Services</p>
     </div>
-
-    <!-- Active Term Badge -->
-    <div class="rounded-lg p-3 mb-4 bg-blue-50 border border-blue-200">
-      <div class="text-[9px] font-bold text-navy-primary tracking-wider uppercase mb-0.5">Active Term</div>
-      <div class="text-xs font-medium text-navy-primary">Fall Semester 2026</div>
-    </div>
-
-    <!-- Navigation List -->
-    <nav class="flex flex-col gap-1 flex-1">
-      <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-1">Academics</div>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="admin-dashboard.html">
-        <span class="material-symbols-outlined text-[20px]">dashboard</span>
-        <span>Overview</span>
+    <nav class="flex flex-col gap-2 flex-1">
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="admin-dashboard.html">
+        <span class="material-symbols-outlined">dashboard</span><span>Dashboard</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 active-tab rounded-lg transition-all cursor-pointer text-sm" href="enrollment-roster.html">
-        <span class="material-symbols-outlined text-[20px]">groups</span>
-        <span>Enrollment Roster</span>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="course-catalog.html">
+        <span class="material-symbols-outlined">school</span><span>Courses</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="course-catalog.html">
-        <span class="material-symbols-outlined text-[20px]">auto_stories</span>
-        <span>Course Catalog</span>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] active-tab rounded-lg transition-all" href="enrollment-roster.html">
+        <span class="material-symbols-outlined">groups</span><span>Registrations</span>
       </a>
     </nav>
-
-    <!-- Footer Identity -->
-    <div class="mt-auto border-t border-outline-variant pt-2">
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm text-red-600" href="login.html">
-        <span class="material-symbols-outlined text-[20px]">logout</span>
-        <span>Logout</span>
+    <div class="mt-auto border-t border-white/10 pt-[13px]">
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="admin-profile.html">
+        <span class="material-symbols-outlined">admin_panel_settings</span><span>Admin Profile</span>
+      </a>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="login.html" data-logout-trigger="true">
+        <span class="material-symbols-outlined">logout</span><span>Logout</span>
       </a>
     </div>
   </aside>
 
-  <!-- ═══════════════════════════════════ MAIN CONTENT ═══════════════════════════════════ -->
-  <main class="ml-[240px] flex-1 flex flex-col h-screen overflow-y-auto">
-
-    <!-- Top Header Navigation Bar -->
-    <header class="sticky top-0 w-full flex justify-between items-center bg-white px-8 py-3 border-b border-outline-variant z-40 h-[64px]">
-      <div class="flex items-center gap-2 text-xs text-slate-500">
-        <span class="material-symbols-outlined text-[16px]">account_balance</span>
-        <span>Faculty of Sciences</span>
-        <span class="text-slate-300">/</span>
-        <span class="text-navy-primary font-medium">Enrollment Roster</span>
+  <main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+    <header class="sticky top-0 w-full flex justify-between items-center bg-[#f6f9ff] px-[34px] py-[13px] border-b border-[#c4c6d3] shadow-sm z-40 h-[64px]">
+      <div class="flex items-center gap-[13px]">
+        <span class="material-symbols-outlined text-[#002869]">groups</span>
+        <span class="text-base font-bold text-[#002869]">Registration Roster</span>
       </div>
-      <div class="flex items-center gap-4">
-        <button class="relative w-8 h-8 flex items-center justify-center rounded-full border border-outline-variant hover:bg-slate-50 transition-colors">
-          <span class="material-symbols-outlined text-slate-500 text-[18px]">notifications</span>
-          <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-        </button>
-        <div class="flex items-center gap-3 pl-3 border-l border-outline-variant">
-          <div class="text-right leading-tight">
-            <div class="text-xs font-bold text-navy-primary">Dr. Alistair Vance</div>
-            <div class="text-[9px] text-slate-400 uppercase tracking-wider mt-0.5">Course Admin</div>
-          </div>
-          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-8 h-8 rounded-full border object-cover">
-        </div>
+      <div class="flex flex-col items-end leading-tight">
+        <span class="text-base text-[#151c22]" id="nav-admin-name">Loading...</span>
+        <span class="text-[10px] text-[#434652]" id="nav-admin-id">Staff: Loading...</span>
       </div>
     </header>
 
-    <!-- Content Workspace -->
-    <div class="p-8 max-w-[1240px] w-full mx-auto space-y-6">
-
-      <!-- Welcome Headline Area -->
-      <section>
-        <h2 class="text-xl font-bold text-navy-primary tracking-tight">Enrollment Roster</h2>
-        <p class="text-xs text-slate-500 mt-0.5">Live registration records for students across all active course sections.</p>
+    <div class="p-[34px] max-w-[1140px] mx-auto w-full space-y-[34px]">
+      <section class="space-y-2">
+        <h2 class="text-[42px] leading-tight font-semibold text-[#002869]">Registrations</h2>
+        <p class="text-base text-[#434652]">View students and their course registration statuses from the backend.</p>
       </section>
 
-      <!-- Filter & Search Controls -->
-      <section class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-3 rounded-xl border border-outline-variant shadow-sm">
-        <div class="relative w-full sm:w-[280px]">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
-          <input type="search" placeholder="Search student name or ID..." class="w-full pl-9 pr-4 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs focus:ring-1 focus:ring-navy-primary focus:border-navy-primary outline-none">
+      <section class="grid grid-cols-1 md:grid-cols-4 gap-[21px]">
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-[#002869]">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Total</p>
+          <p class="text-[36px] leading-none font-bold text-[#002869]" id="stat-total">0</p>
         </div>
-        <div class="flex gap-2 w-full sm:w-auto justify-end">
-          <select class="px-3 py-1.5 bg-white border border-outline-variant rounded-lg text-xs text-slate-600 outline-none focus:ring-1 focus:ring-navy-primary w-full sm:w-auto">
-            <option>All Courses</option>
-            <option>CYB-101</option>
-            <option>CYB-210</option>
-            <option>CYB-220</option>
-            <option>CYB-231</option>
-            <option>CYB-305</option>
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-green-600">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Active</p>
+          <p class="text-[36px] leading-none font-bold text-green-700" id="stat-active">0</p>
+        </div>
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-[#e9c349]">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Waitlisted</p>
+          <p class="text-[36px] leading-none font-bold text-[#735c00]" id="stat-waitlisted">0</p>
+        </div>
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-[#c4c6d3]">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Dropped</p>
+          <p class="text-[36px] leading-none font-bold text-[#434652]" id="stat-dropped">0</p>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="px-[34px] py-[21px] border-b border-[#c4c6d3] bg-[#eef4fd] flex flex-col md:flex-row md:items-center md:justify-between gap-[13px]">
+          <h3 class="text-base font-semibold text-[#002869]">Student Course Registrations</h3>
+          <select id="status-filter" class="rounded-lg border border-[#c4c6d3] bg-white px-3 py-2 text-[#151c22] outline-none focus:border-[#002869] focus:ring-1 focus:ring-[#002869]">
+            <option value="">All statuses</option>
+            <option value="active">Active</option>
+            <option value="waitlisted">Waitlisted</option>
+            <option value="dropped">Dropped</option>
           </select>
         </div>
-      </section>
-
-      <!-- Stat Overview -->
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 text-navy-primary mb-3">
-            <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
-          </div>
-          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Total Enrolled</p>
-          <p class="text-2xl font-bold text-navy-primary tracking-tight">144</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-green-50 text-green-600 mb-3">
-            <span class="material-symbols-outlined text-[18px]">check_circle</span>
-          </div>
-          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Active</p>
-          <p class="text-2xl font-bold text-navy-primary tracking-tight">128</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-accent-gold-bg text-accent-gold-text mb-3">
-            <span class="material-symbols-outlined text-[18px]">hourglass_top</span>
-          </div>
-          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Waitlisted</p>
-          <p class="text-2xl font-bold text-navy-primary tracking-tight">9</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-outline-variant shadow-sm transition-all hover:-translate-y-0.5">
-          <div class="w-8 h-8 rounded-lg flex items-center justify-center bg-red-50 text-red-600 mb-3">
-            <span class="material-symbols-outlined text-[18px]">person_remove</span>
-          </div>
-          <p class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">Dropped</p>
-          <p class="text-2xl font-bold text-navy-primary tracking-tight">7</p>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="bg-white">
+                <th class="text-left px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Student</th>
+                <th class="text-left px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Course</th>
+                <th class="text-left px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Department</th>
+                <th class="text-center px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Status</th>
+                <th class="text-right px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Registered</th>
+              </tr>
+            </thead>
+            <tbody id="registration-table-body">
+              <tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">Loading registrations...</td></tr>
+            </tbody>
+          </table>
         </div>
       </section>
-
-      <!-- Roster Table -->
-      <section>
-        <div class="bg-white rounded-xl shadow-sm border border-outline-variant overflow-hidden">
-          <div class="px-5 py-3 border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
-            <h3 class="text-xs font-bold text-navy-primary uppercase tracking-wider">Student Registrations</h3>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full border-collapse">
-              <thead>
-                <tr class="bg-slate-50">
-                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Student ID</th>
-                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Name</th>
-                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Course</th>
-                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Instructor</th>
-                  <th class="text-left px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Enrolled On</th>
-                  <th class="text-center px-5 py-2.5 text-[10px] font-bold text-slate-400 tracking-wider uppercase border-b border-outline-variant">Status</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-outline-variant text-xs text-slate-700">
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3041</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Amara Chen</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-101</td>
-                  <td class="px-5 py-3 text-slate-500">Dr. Patel</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 18, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3042</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Brian Otieno</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-210</td>
-                  <td class="px-5 py-3 text-slate-500">Dr. Vance</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 18, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3043</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Sofia Marín</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-220</td>
-                  <td class="px-5 py-3 text-slate-500">Prof. Osei</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 19, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-yellow-100 text-yellow-700">waitlisted</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3044</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Kwame Asante</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-231</td>
-                  <td class="px-5 py-3 text-slate-500">Dr. Nakamura</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 19, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3045</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Elena Petrova</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-305</td>
-                  <td class="px-5 py-3 text-slate-500">Prof. Eriksen</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 20, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3046</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Tumaini Njoroge</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-101</td>
-                  <td class="px-5 py-3 text-slate-500">Dr. Patel</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 20, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3047</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Daniel Kim</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-210</td>
-                  <td class="px-5 py-3 text-slate-500">Dr. Vance</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 21, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-red-100 text-red-700">dropped</span></td>
-                </tr>
-                <tr class="hover:bg-slate-50/80 transition-colors">
-                  <td class="px-5 py-3"><span class="mono font-medium text-navy-primary">STU-3048</span></td>
-                  <td class="px-5 py-3 font-medium text-slate-800">Fatima Al-Rashid</td>
-                  <td class="px-5 py-3 text-slate-500">CYB-220</td>
-                  <td class="px-5 py-3 text-slate-500">Prof. Osei</td>
-                  <td class="px-5 py-3 text-slate-500 mono">Aug 21, 2026</td>
-                  <td class="px-5 py-3 text-center"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-green-100 text-green-700">active</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pagination Footer -->
-          <div class="px-5 py-3 border-t border-outline-variant flex items-center justify-between bg-slate-50 text-[11px] text-slate-400">
-            <span>Showing 8 of 144 students</span>
-            <div class="flex gap-1">
-              <button class="px-2 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors"><span class="material-symbols-outlined text-[12px] flex items-center">chevron_left</span></button>
-              <button class="px-2.5 py-1 bg-navy-primary text-white font-bold rounded text-[10px]">1</button>
-              <button class="px-2.5 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors text-[10px]">2</button>
-              <button class="px-2.5 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors text-[10px]">3</button>
-              <button class="px-2 py-1 border border-outline-variant rounded bg-white hover:bg-slate-50 transition-colors"><span class="material-symbols-outlined text-[12px] flex items-center">chevron_right</span></button>
-            </div>
-          </div>
-        </div>
-      </section>
-
     </div>
   </main>
+
+  <script src="../js/api.js"></script>
+  <script>
+    const tbody = document.getElementById("registration-table-body");
+    const statusFilter = document.getElementById("status-filter");
+
+    const badgeClass = (statusValue) => {
+      if (statusValue === "active") return "bg-green-100 text-green-700";
+      if (statusValue === "waitlisted") return "bg-yellow-100 text-yellow-700";
+      return "bg-[#e8eef7] text-[#434652]";
+    };
+
+    const renderRows = (registrations) => {
+      if (!registrations.length) {
+        tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">No registrations found.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = registrations.map((registration) => `
+        <tr class="hover:bg-[#eef4fd] transition-colors">
+          <td class="px-[34px] py-[21px] border-b border-[#c4c6d3]">
+            <div class="font-medium">${escapeHtml(registration.student_name || "Unknown student")}</div>
+            <div class="text-sm text-[#434652]">${escapeHtml(registration.student_number || registration.student_email || "No student number")}</div>
+          </td>
+          <td class="px-[34px] py-[21px] border-b border-[#c4c6d3]">
+            <div class="font-medium text-[#002869]">${escapeHtml(registration.course_code)}</div>
+            <div class="text-sm text-[#434652]">${escapeHtml(registration.course_name)}</div>
+          </td>
+          <td class="px-[34px] py-[21px] border-b border-[#c4c6d3]">${escapeHtml(registration.department || "Not assigned")}</td>
+          <td class="px-[34px] py-[21px] text-center border-b border-[#c4c6d3]">
+            <span class="inline-flex rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${badgeClass(registration.status)}">${escapeHtml(registration.status)}</span>
+          </td>
+          <td class="px-[34px] py-[21px] text-right border-b border-[#c4c6d3]">${escapeHtml(formatDate(registration.registered_at))}</td>
+        </tr>`).join("");
+    };
+
+    const loadRoster = async () => {
+      const admin = await requireAdminSession();
+      setText("#nav-admin-name", admin.full_name);
+      setText("#nav-admin-id", `Staff: ${admin.staff_number || "Not provided"}`);
+      const statusQuery = statusFilter.value ? `?status=${encodeURIComponent(statusFilter.value)}` : "";
+      const data = await apiRequest(`/admin/registrations${statusQuery}`);
+      setText("#stat-total", data.summary?.total ?? 0);
+      setText("#stat-active", data.summary?.active ?? 0);
+      setText("#stat-waitlisted", data.summary?.waitlisted ?? 0);
+      setText("#stat-dropped", data.summary?.dropped ?? 0);
+      renderRows(data.registrations || []);
+    };
+
+    statusFilter.addEventListener("change", () => {
+      tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">Loading registrations...</td></tr>';
+      loadRoster().catch((error) => {
+        tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="5">${escapeHtml(error.message)}</td></tr>`;
+      });
+    });
+    document.querySelectorAll("[data-logout-trigger]").forEach((trigger) => trigger.addEventListener("click", () => clearAuthSession()));
+
+    loadRoster().catch((error) => {
+      tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="5">${escapeHtml(error.message)}</td></tr>`;
+    });
+  </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ from pathlib import Path
 import sys
 from typing import Optional
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
@@ -66,6 +66,18 @@ class RegisterCourseRequest(BaseModel):
     status: str = Field(default="active", pattern="^(active|waitlisted)$")
 
 
+class CourseWriteRequest(BaseModel):
+    course_code: Optional[str] = Field(default=None, min_length=1, max_length=15)
+    course_name: Optional[str] = Field(default=None, min_length=1, max_length=150)
+    department_id: Optional[int] = None
+    credit_units: Optional[int] = Field(default=None, ge=1, le=6)
+    year_of_study: Optional[int] = Field(default=None, ge=1, le=4)
+    semester: Optional[int] = Field(default=None, ge=1, le=2)
+    total_slots: Optional[int] = Field(default=None, ge=0)
+    available_slots: Optional[int] = Field(default=None, ge=0)
+    is_active: Optional[bool] = None
+
+
 def _student_number_for(user_id: int) -> str:
     return f"STU/{user_id:05d}/26"
 
@@ -85,6 +97,46 @@ def _serialize_student(user: User) -> dict:
         "student_number": student.student_number if student else None,
         "year_of_study": student.year_of_study if student else None,
     }
+
+
+def _serialize_admin(user: User) -> dict:
+    admin = user.admin
+    return {
+        "id": user.id,
+        "full_name": user.full_name,
+        "email": user.email,
+        "role": user.role,
+        "is_active": user.is_active,
+        "staff_number": admin.staff_number if admin else None,
+        "admin_level": admin.admin_level if admin else None,
+        "created_at": str(user.created_at) if user.created_at else None,
+    }
+
+
+def _serialize_user_summary(user: User) -> dict:
+    payload = {
+        "id": user.id,
+        "full_name": user.full_name,
+        "email": user.email,
+        "role": user.role,
+        "is_active": user.is_active,
+        "created_at": str(user.created_at) if user.created_at else None,
+    }
+    if user.role == "student" and user.student:
+        payload.update(
+            {
+                "student_number": user.student.student_number,
+                "year_of_study": user.student.year_of_study,
+            }
+        )
+    if user.role == "admin" and user.admin:
+        payload.update(
+            {
+                "staff_number": user.admin.staff_number,
+                "admin_level": user.admin.admin_level,
+            }
+        )
+    return payload
 
 
 def _serialize_course(course: Course) -> dict:
@@ -112,6 +164,19 @@ def _serialize_registration(registration: Registration) -> dict:
     return payload
 
 
+def _serialize_admin_registration(registration: Registration) -> dict:
+    payload = _serialize_registration(registration)
+    student_user = registration.student.user if registration.student else None
+    payload.update(
+        {
+            "student_name": student_user.full_name if student_user else None,
+            "student_email": student_user.email if student_user else None,
+            "student_number": registration.student.student_number if registration.student else None,
+        }
+    )
+    return payload
+
+
 def _current_student(user: User = Depends(get_current_user)) -> User:
     if user.role != "student" or user.student is None:
         raise HTTPException(
@@ -119,6 +184,46 @@ def _current_student(user: User = Depends(get_current_user)) -> User:
             detail="A student account is required for this action.",
         )
     return user
+
+
+def _current_admin(user: User = Depends(get_current_user)) -> User:
+    if user.role != "admin" or user.admin is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="An admin account is required for this action.",
+        )
+    return user
+
+
+def _apply_course_payload(course: Course, payload: CourseWriteRequest, *, creating: bool = False) -> None:
+    data = payload.model_dump(exclude_unset=not creating)
+    required_fields = ("course_code", "course_name", "credit_units", "year_of_study", "semester")
+    if creating:
+        missing = [field for field in required_fields if data.get(field) in (None, "")]
+        if missing:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=f"Missing required course fields: {', '.join(missing)}.",
+            )
+
+    for field, value in data.items():
+        if value is None and field not in {"department_id"}:
+            continue
+        if field == "course_code" and value is not None:
+            value = value.strip().upper()
+        if field == "course_name" and value is not None:
+            value = value.strip()
+        setattr(course, field, value)
+
+    if course.total_slots is None:
+        course.total_slots = 60
+    if course.available_slots is None:
+        course.available_slots = course.total_slots
+    if course.available_slots > course.total_slots:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Available slots cannot be greater than total slots.",
+        )
 
 
 @app.on_event("startup")
@@ -196,6 +301,130 @@ def login(payload: LoginRequest, db: Session = Depends(get_db)) -> dict:
             "email": user.email,
             "role": user.role,
             "is_active": user.is_active,
+        },
+    }
+
+
+@app.get("/admin/me")
+def get_my_admin_profile(current_user: User = Depends(_current_admin)) -> dict:
+    return _serialize_admin(current_user)
+
+
+@app.get("/admin/users")
+def list_admin_users(
+    role: Optional[str] = Query(default=None, pattern="^(student|admin)$"),
+    active_only: bool = True,
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    query = db.query(User).options(joinedload(User.student), joinedload(User.admin))
+    if role:
+        query = query.filter(User.role == role)
+    if active_only:
+        query = query.filter(User.is_active.is_(True))
+    users = query.order_by(User.role, User.full_name).all()
+    return {"users": [_serialize_user_summary(user) for user in users]}
+
+
+@app.get("/admin/courses")
+def list_admin_courses(
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    courses = (
+        db.query(Course)
+        .options(joinedload(Course.department))
+        .order_by(Course.year_of_study, Course.semester, Course.course_code)
+        .all()
+    )
+    return {"courses": [_serialize_course(course) for course in courses]}
+
+
+@app.post("/admin/courses", status_code=status.HTTP_201_CREATED)
+def create_admin_course(
+    payload: CourseWriteRequest,
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    course = Course()
+    _apply_course_payload(course, payload, creating=True)
+    if course.is_active is None:
+        course.is_active = True
+    db.add(course)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A course with this code already exists.",
+        )
+    db.refresh(course)
+    return _serialize_course(course)
+
+
+@app.patch("/admin/courses/{course_id}")
+def update_admin_course(
+    course_id: int,
+    payload: CourseWriteRequest,
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    course = db.query(Course).filter(Course.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course not found.")
+    _apply_course_payload(course, payload)
+    try:
+        db.commit()
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A course with this code already exists.",
+        )
+    db.refresh(course)
+    return _serialize_course(course)
+
+
+@app.patch("/admin/courses/{course_id}/deactivate")
+def deactivate_admin_course(
+    course_id: int,
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    course = db.query(Course).filter(Course.id == course_id).first()
+    if not course:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Course not found.")
+    course.is_active = False
+    db.commit()
+    db.refresh(course)
+    return _serialize_course(course)
+
+
+@app.get("/admin/registrations")
+def list_admin_registrations(
+    status_filter: Optional[str] = Query(default=None, alias="status", pattern="^(active|waitlisted|dropped)$"),
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    query = (
+        db.query(Registration)
+        .options(
+            joinedload(Registration.course).joinedload(Course.department),
+            joinedload(Registration.student).joinedload(Student.user),
+        )
+    )
+    if status_filter:
+        query = query.filter(Registration.status == status_filter)
+    registrations = query.order_by(Registration.registered_at.desc()).all()
+    items = [_serialize_admin_registration(registration) for registration in registrations]
+    return {
+        "registrations": items,
+        "summary": {
+            "total": len(items),
+            "active": sum(1 for item in items if item["status"] == "active"),
+            "waitlisted": sum(1 for item in items if item["status"] == "waitlisted"),
+            "dropped": sum(1 for item in items if item["status"] == "dropped"),
         },
     }
 

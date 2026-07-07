@@ -80,6 +80,20 @@ async function requireStudentSession() {
     return student;
 }
 
+async function requireAdminSession() {
+    const token = getAuthToken();
+    if (!token) {
+        redirectToLogin();
+        throw new Error("Please sign in first.");
+    }
+    const admin = await apiRequest("/admin/me");
+    if (admin.role !== "admin") {
+        redirectToLogin();
+        throw new Error("An admin account is required.");
+    }
+    return admin;
+}
+
 function setText(selector, value) {
     const element = document.querySelector(selector);
     if (element) {

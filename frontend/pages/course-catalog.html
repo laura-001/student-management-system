@@ -3,289 +3,277 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Academic Portal - Course Catalog</title>
+  <title>Academic Portal - Course Management</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "navy-primary": "#0a2558",
-            "navy-hover": "#0d2f6b",
-            "accent-gold": "#b48600",
-            "accent-gold-bg": "#fdf2d5",
-            "accent-gold-text": "#d49a2a",
-            "surface-container-lowest": "#ffffff",
-            "primary-container": "#0b3d91",
-            "outline-variant": "#e2e8f0",
-            "surface": "#f4f7f9",
-            "error": "#ba1a1a",
-            "on-surface-variant": "#64748b",
-            "primary": "#0a2558",
-            "inverse-primary": "#b1c5ff",
-            "on-primary-container": "#8dadff",
-            "on-surface": "#1e293b",
-            "background": "#f4f7f9",
-            "surface-container-low": "#f8fafc"
-          }
-        },
-      }
-    }
-  </script>
   <style>
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background-color: #f4f7f9;
-      color: #1e293b;
-    }
-    .mono {
-      font-family: 'DM Mono', monospace;
-    }
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    .active-tab {
-      background-color: #0a2558;
-      color: #ffffff;
-      font-weight: 600;
-    }
-    [popover] {
-      margin: auto;
-      border: none;
-      padding: 0;
-      background: transparent;
-      overflow: visible;
-    }
-    [popover]::backdrop {
-      background: rgba(10, 37, 88, 0.45);
-    }
+    body { font-family: Inter, sans-serif; background-color: #f6f9ff; color: #151c22; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    .active-tab { background-color: #dae2ff; color: #001947; font-weight: 700; }
   </style>
 </head>
-<body class="flex min-h-screen overflow-hidden">
-
-  <!-- ═══════════════════════════════════ SIDEBAR ═══════════════════════════════════ -->
-  <aside class="fixed left-0 top-0 h-full w-[240px] bg-surface-container-low text-slate-600 flex flex-col p-4 gap-2 border-r border-outline-variant z-50">
-    <!-- Logo Area -->
-    <div class="mb-6 px-2 py-3 border-b border-outline-variant flex items-center gap-2.5">
-      <div class="w-7 h-7 rounded flex items-center justify-center bg-navy-primary">
-        <span class="material-symbols-outlined text-white text-[16px]">school</span>
-      </div>
-      <div>
-        <h1 class="text-xs font-bold text-navy-primary tracking-wider leading-none">COURSE MGMT</h1>
-        <p class="text-[9px] font-mono tracking-widest uppercase text-slate-400 mt-1">Admin Space</p>
-      </div>
+<body class="flex min-h-screen">
+  <aside class="fixed left-0 top-0 h-full w-[240px] bg-[#0b3d91] text-white flex flex-col p-[21px] gap-[13px] z-50">
+    <div class="mb-[34px] px-2">
+      <h1 class="text-base font-bold text-[#b1c5ff]">Academic Portal</h1>
+      <p class="text-[10px] font-semibold uppercase tracking-wider opacity-70">Admin Services</p>
     </div>
-
-    <!-- Active Term Badge -->
-    <div class="rounded-lg p-3 mb-4 bg-blue-50 border border-blue-200">
-      <div class="text-[9px] font-bold text-navy-primary tracking-wider uppercase mb-0.5">Active Term</div>
-      <div class="text-xs font-medium text-navy-primary">Fall Semester 2026</div>
-    </div>
-
-    <!-- Navigation List -->
-    <nav class="flex flex-col gap-1 flex-1">
-      <div class="text-[10px] font-bold text-slate-400 tracking-wider uppercase px-2 mb-1">Academics</div>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="admin-dashboard.html">
-        <span class="material-symbols-outlined text-[20px]">dashboard</span>
-        <span>Overview</span>
+    <nav class="flex flex-col gap-2 flex-1">
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="admin-dashboard.html">
+        <span class="material-symbols-outlined">dashboard</span><span>Dashboard</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm" href="enrollment-roster.html">
-        <span class="material-symbols-outlined text-[20px]">groups</span>
-        <span>Enrollment Roster</span>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] active-tab rounded-lg transition-all" href="course-catalog.html">
+        <span class="material-symbols-outlined">school</span><span>Courses</span>
       </a>
-      <a class="flex items-center gap-3 px-3 py-2 active-tab rounded-lg transition-all cursor-pointer text-sm" href="course-catalog.html">
-        <span class="material-symbols-outlined text-[20px]">auto_stories</span>
-        <span>Course Catalog</span>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="enrollment-roster.html">
+        <span class="material-symbols-outlined">groups</span><span>Registrations</span>
       </a>
     </nav>
-
-    <!-- Footer Identity -->
-    <div class="mt-auto border-t border-outline-variant pt-2">
-      <a class="flex items-center gap-3 px-3 py-2 text-slate-600 hover:bg-slate-200/60 rounded-lg transition-all cursor-pointer text-sm text-red-600" href="login.html">
-        <span class="material-symbols-outlined text-[20px]">logout</span>
-        <span>Logout</span>
+    <div class="mt-auto border-t border-white/10 pt-[13px]">
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="admin-profile.html">
+        <span class="material-symbols-outlined">admin_panel_settings</span><span>Admin Profile</span>
+      </a>
+      <a class="flex items-center gap-[13px] px-[13px] py-[13px] text-[#8dadff] hover:bg-white/10 rounded-lg transition-all" href="login.html" data-logout-trigger="true">
+        <span class="material-symbols-outlined">logout</span><span>Logout</span>
       </a>
     </div>
   </aside>
 
-  <!-- ═══════════════════════════════════ MAIN CONTENT ═══════════════════════════════════ -->
-  <main class="ml-[240px] flex-1 flex flex-col h-screen overflow-y-auto">
-
-    <!-- Top Header Navigation Bar -->
-    <header class="sticky top-0 w-full flex justify-between items-center bg-white px-8 py-3 border-b border-outline-variant z-40 h-[64px]">
-      <div class="flex items-center gap-2 text-xs text-slate-500">
-        <span class="material-symbols-outlined text-[16px]">account_balance</span>
-        <span>Faculty of Sciences</span>
-        <span class="text-slate-300">/</span>
-        <span class="text-navy-primary font-medium">Course Catalog</span>
+  <main class="ml-[240px] flex-1 flex flex-col min-h-screen">
+    <header class="sticky top-0 w-full flex justify-between items-center bg-[#f6f9ff] px-[34px] py-[13px] border-b border-[#c4c6d3] shadow-sm z-40 h-[64px]">
+      <div class="flex items-center gap-[13px]">
+        <span class="material-symbols-outlined text-[#002869]">school</span>
+        <span class="text-base font-bold text-[#002869]">Course Management</span>
       </div>
-      <div class="flex items-center gap-4">
-        <button class="relative w-8 h-8 flex items-center justify-center rounded-full border border-outline-variant hover:bg-slate-50 transition-colors">
-          <span class="material-symbols-outlined text-slate-500 text-[18px]">notifications</span>
-          <span class="absolute top-1 right-1 w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-        </button>
-        <div class="flex items-center gap-3 pl-3 border-l border-outline-variant">
-          <div class="text-right leading-tight">
-            <div class="text-xs font-bold text-navy-primary">Dr. Alistair Vance</div>
-            <div class="text-[9px] text-slate-400 uppercase tracking-wider mt-0.5">Course Admin</div>
-          </div>
-          <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="w-8 h-8 rounded-full border object-cover">
-        </div>
+      <div class="flex flex-col items-end leading-tight">
+        <span class="text-base text-[#151c22]" id="nav-admin-name">Loading...</span>
+        <span class="text-[10px] text-[#434652]" id="nav-admin-id">Staff: Loading...</span>
       </div>
     </header>
 
-    <!-- Content Workspace -->
-    <div class="p-8 max-w-[1240px] w-full mx-auto space-y-6">
-
-      <!-- Welcome Headline Area -->
-      <section>
-        <h2 class="text-xl font-bold text-navy-primary tracking-tight">Course Catalog</h2>
-        <p class="text-xs text-slate-500 mt-0.5">The master list of courses offered by the Cybersecurity department this semester.</p>
-      </section>
-
-      <!-- Filter & Search Controls -->
-      <section class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-white p-3 rounded-xl border border-outline-variant shadow-sm">
-        <div class="relative w-full sm:w-[280px]">
-          <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
-          <input type="search" placeholder="Search course code or title..." class="w-full pl-9 pr-4 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs focus:ring-1 focus:ring-navy-primary focus:border-navy-primary outline-none">
+    <div class="p-[34px] max-w-[1140px] mx-auto w-full space-y-[34px]">
+      <section class="flex flex-col md:flex-row md:items-end justify-between gap-[21px]">
+        <div class="space-y-2">
+          <h2 class="text-[42px] leading-tight font-semibold text-[#002869]">Courses</h2>
+          <p class="text-base text-[#434652]">Create, edit, and deactivate courses stored in the backend.</p>
         </div>
-        <div class="flex gap-2 w-full sm:w-auto justify-end">
-          <select class="px-3 py-1.5 bg-white border border-outline-variant rounded-lg text-xs text-slate-600 outline-none focus:ring-1 focus:ring-navy-primary">
-            <option>All Credit Levels</option>
-            <option>3 Credits</option>
-            <option>4 Credits</option>
-          </select>
-          <button popovertarget="add-course-modal" class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-navy-primary text-white hover:bg-navy-hover font-medium text-xs transition-colors shadow-sm whitespace-nowrap">
-            <span class="material-symbols-outlined text-[16px]">add</span> New Course
-          </button>
-        </div>
-      </section>
-
-      <!-- Course Cards Grid -->
-      <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-        <div class="bg-white rounded-xl border border-outline-variant shadow-sm p-5 transition-all hover:-translate-y-0.5">
-          <div class="flex items-start justify-between mb-3">
-            <span class="mono text-xs font-bold text-navy-primary bg-slate-100 px-2 py-1 rounded">CYB-101</span>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">3 Credits</span>
-          </div>
-          <h3 class="text-sm font-bold text-slate-800 mb-1">Foundations of Cybersecurity</h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">Introduces core security principles including threat modeling, risk assessment, and the CIA triad, with hands-on labs in a sandboxed environment.</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-outline-variant">
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">co_present</span> Dr. Patel</span>
-            <span>No prerequisites</span>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-outline-variant shadow-sm p-5 transition-all hover:-translate-y-0.5">
-          <div class="flex items-start justify-between mb-3">
-            <span class="mono text-xs font-bold text-navy-primary bg-slate-100 px-2 py-1 rounded">CYB-210</span>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">4 Credits</span>
-          </div>
-          <h3 class="text-sm font-bold text-slate-800 mb-1">Network Security &amp; Protocols</h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">Covers firewalls, VPNs, intrusion detection systems, and secure protocol design, with a weekly lab section on live network traffic analysis.</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-outline-variant">
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">co_present</span> Dr. Vance</span>
-            <span>Requires CYB-101</span>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-outline-variant shadow-sm p-5 transition-all hover:-translate-y-0.5">
-          <div class="flex items-start justify-between mb-3">
-            <span class="mono text-xs font-bold text-navy-primary bg-slate-100 px-2 py-1 rounded">CYB-220</span>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">4 Credits</span>
-          </div>
-          <h3 class="text-sm font-bold text-slate-800 mb-1">Ethical Hacking &amp; Penetration Testing</h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">A hands-on course in reconnaissance, vulnerability scanning, and exploitation techniques within a legal, controlled testing environment.</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-outline-variant">
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">co_present</span> Prof. Osei</span>
-            <span>Requires CYB-210</span>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-outline-variant shadow-sm p-5 transition-all hover:-translate-y-0.5">
-          <div class="flex items-start justify-between mb-3">
-            <span class="mono text-xs font-bold text-navy-primary bg-slate-100 px-2 py-1 rounded">CYB-231</span>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">3 Credits</span>
-          </div>
-          <h3 class="text-sm font-bold text-slate-800 mb-1">Cryptography &amp; Secure Communications</h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">Explores symmetric and asymmetric encryption, hashing, digital signatures, and applied cryptographic protocols like TLS.</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-outline-variant">
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">co_present</span> Dr. Nakamura</span>
-            <span>Requires CYB-101</span>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-xl border border-outline-variant shadow-sm p-5 transition-all hover:-translate-y-0.5">
-          <div class="flex items-start justify-between mb-3">
-            <span class="mono text-xs font-bold text-navy-primary bg-slate-100 px-2 py-1 rounded">CYB-305</span>
-            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">4 Credits</span>
-          </div>
-          <h3 class="text-sm font-bold text-slate-800 mb-1">Malware Analysis &amp; Reverse Engineering</h3>
-          <p class="text-xs text-slate-500 leading-relaxed mb-4">Advanced study of malware behavior, static and dynamic analysis techniques, and disassembly using industry-standard tooling.</p>
-          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-3 border-t border-outline-variant">
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">co_present</span> Prof. Eriksen</span>
-            <span>Requires CYB-220</span>
-          </div>
-        </div>
-
-      </section>
-
-    </div>
-
-    <!-- ═══════════════════════════════════ ADD COURSE MODAL (no JS — HTML popover attribute) ═══════════════════════════════════ -->
-    <div id="add-course-modal" popover class="w-[90vw] max-w-[480px] bg-white rounded-xl shadow-2xl border border-outline-variant overflow-hidden">
-      <div class="px-5 py-3.5 border-b border-outline-variant bg-navy-primary text-white flex justify-between items-center">
-        <h3 class="text-sm font-bold">Add New Course</h3>
-        <button popovertarget="add-course-modal" popovertargetaction="hide" class="w-6 h-6 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors">
-          <span class="material-symbols-outlined text-[18px]">close</span>
+        <button id="add-course-button" class="inline-flex items-center justify-center gap-2 rounded-lg bg-[#002869] px-[21px] py-[13px] text-white font-semibold hover:bg-[#0b3d91]">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          Add Course
         </button>
-      </div>
-      <form class="p-5 space-y-3.5">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Course Code</label>
-            <input type="text" placeholder="CYB-310" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary mono">
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Credits</label>
-            <select class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
-              <option>3 Credits</option>
-              <option>4 Credits</option>
-            </select>
-          </div>
+      </section>
+
+      <section class="grid grid-cols-1 md:grid-cols-4 gap-[21px]">
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-[#002869]">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Total</p>
+          <p class="text-[36px] leading-none font-bold text-[#002869]" id="stat-total">0</p>
         </div>
-        <div>
-          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Course Title</label>
-          <input type="text" placeholder="e.g. Cloud Security Architecture" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-green-600">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Open</p>
+          <p class="text-[36px] leading-none font-bold text-green-700" id="stat-open">0</p>
         </div>
-        <div>
-          <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Description</label>
-          <textarea rows="3" placeholder="Brief course description..." class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary resize-none"></textarea>
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-[#e9c349]">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Full</p>
+          <p class="text-[36px] leading-none font-bold text-[#735c00]" id="stat-full">0</p>
         </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Instructor</label>
-            <input type="text" placeholder="Dr. Jane Doe" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary">
-          </div>
-          <div>
-            <label class="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1 block">Prerequisite</label>
-            <input type="text" placeholder="e.g. CYB-210" class="w-full px-3 py-1.5 bg-slate-50 border border-outline-variant rounded-lg text-xs outline-none focus:ring-1 focus:ring-navy-primary focus:border-navy-primary mono">
+        <div class="bg-white p-[21px] rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border-l-4 border-[#c4c6d3]">
+          <p class="text-[10px] font-semibold text-[#434652] uppercase mb-2">Inactive</p>
+          <p class="text-[36px] leading-none font-bold text-[#434652]" id="stat-inactive">0</p>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden">
+        <div class="px-[34px] py-[21px] border-b border-[#c4c6d3] bg-[#eef4fd] flex flex-col md:flex-row gap-[13px] md:items-center md:justify-between">
+          <h3 class="text-base font-semibold text-[#002869]">Course Catalog</h3>
+          <div class="relative w-full md:w-[320px]">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#747783] text-[18px]">search</span>
+            <input id="search-input" class="w-full rounded-lg border border-[#c4c6d3] bg-white py-2 pl-10 pr-3 outline-none focus:border-[#002869] focus:ring-1 focus:ring-[#002869]" type="search" placeholder="Search course code or name">
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button type="button" popovertarget="add-course-modal" popovertargetaction="hide" class="px-4 py-1.5 rounded-lg border border-outline-variant text-slate-700 bg-white hover:bg-slate-50 font-medium text-xs transition-colors">
-            Cancel
-          </button>
-          <button type="submit" class="px-4 py-1.5 rounded-lg bg-navy-primary text-white hover:bg-navy-hover font-medium text-xs transition-colors shadow-sm">
-            Save Course
-          </button>
+        <div class="overflow-x-auto">
+          <table class="w-full border-collapse">
+            <thead>
+              <tr class="bg-white">
+                <th class="text-left px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Code</th>
+                <th class="text-left px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Course</th>
+                <th class="text-center px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Year/Sem</th>
+                <th class="text-right px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Slots</th>
+                <th class="text-right px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="course-table-body">
+              <tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">Loading courses...</td></tr>
+            </tbody>
+          </table>
         </div>
-      </form>
+      </section>
     </div>
   </main>
+
+  <div id="course-modal" class="fixed inset-0 hidden items-center justify-center bg-black/40 backdrop-blur-sm z-50">
+    <form id="course-form" class="bg-white w-[560px] max-w-[92vw] rounded-xl shadow-[0px_12px_30px_rgba(0,0,0,0.2)] overflow-hidden">
+      <div class="px-[34px] py-[21px] bg-[#002869] text-white flex justify-between items-center">
+        <h3 class="font-semibold" id="modal-title">Add Course</h3>
+        <button id="close-modal-button" type="button" class="w-8 h-8 rounded-lg hover:bg-white/10"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="p-[34px] space-y-[21px]">
+        <div id="form-error" class="hidden rounded-lg border border-[#ba1a1a]/40 bg-[#ffdad6] px-[13px] py-2 text-sm text-[#93000a]"></div>
+        <input type="hidden" id="course-id">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-[21px]">
+          <label class="space-y-2 text-[10px] font-semibold uppercase text-[#434652]">Course Code
+            <input id="course-code" class="w-full rounded-lg border border-[#c4c6d3] px-3 py-2 text-base normal-case font-normal text-[#151c22]" required maxlength="15">
+          </label>
+          <label class="space-y-2 text-[10px] font-semibold uppercase text-[#434652]">Course Name
+            <input id="course-name" class="w-full rounded-lg border border-[#c4c6d3] px-3 py-2 text-base normal-case font-normal text-[#151c22]" required maxlength="150">
+          </label>
+          <label class="space-y-2 text-[10px] font-semibold uppercase text-[#434652]">Credit Units
+            <input id="credit-units" class="w-full rounded-lg border border-[#c4c6d3] px-3 py-2 text-base normal-case font-normal text-[#151c22]" required type="number" min="1" max="6">
+          </label>
+          <label class="space-y-2 text-[10px] font-semibold uppercase text-[#434652]">Year of Study
+            <input id="year-of-study" class="w-full rounded-lg border border-[#c4c6d3] px-3 py-2 text-base normal-case font-normal text-[#151c22]" required type="number" min="1" max="4">
+          </label>
+          <label class="space-y-2 text-[10px] font-semibold uppercase text-[#434652]">Semester
+            <input id="semester" class="w-full rounded-lg border border-[#c4c6d3] px-3 py-2 text-base normal-case font-normal text-[#151c22]" required type="number" min="1" max="2">
+          </label>
+          <label class="space-y-2 text-[10px] font-semibold uppercase text-[#434652]">Total Slots
+            <input id="total-slots" class="w-full rounded-lg border border-[#c4c6d3] px-3 py-2 text-base normal-case font-normal text-[#151c22]" required type="number" min="0">
+          </label>
+        </div>
+        <div class="flex justify-end gap-[13px]">
+          <button type="button" id="cancel-modal-button" class="rounded-lg border border-[#c4c6d3] px-[21px] py-2 text-[#434652] hover:bg-[#eef4fd]">Cancel</button>
+          <button type="submit" class="rounded-lg bg-[#002869] px-[21px] py-2 text-white hover:bg-[#0b3d91]">Save Course</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="../js/api.js"></script>
+  <script>
+    let courses = [];
+    let editingCourse = null;
+
+    const tbody = document.getElementById("course-table-body");
+    const searchInput = document.getElementById("search-input");
+    const modal = document.getElementById("course-modal");
+    const formError = document.getElementById("form-error");
+
+    const courseStatus = (course) => !course.is_active ? "Inactive" : Number(course.available_slots) <= 0 ? "Full" : "Open";
+
+    const updateStats = () => {
+      setText("#stat-total", courses.length);
+      setText("#stat-open", courses.filter((course) => courseStatus(course) === "Open").length);
+      setText("#stat-full", courses.filter((course) => courseStatus(course) === "Full").length);
+      setText("#stat-inactive", courses.filter((course) => courseStatus(course) === "Inactive").length);
+    };
+
+    const renderCourses = () => {
+      updateStats();
+      const query = searchInput.value.trim().toLowerCase();
+      const rows = courses.filter((course) => {
+        return !query || course.course_code.toLowerCase().includes(query) || course.course_name.toLowerCase().includes(query);
+      });
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">No courses match your search.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = rows.map((course) => `
+        <tr class="hover:bg-[#eef4fd] transition-colors">
+          <td class="px-[34px] py-[21px] font-semibold text-[#002869] border-b border-[#c4c6d3]">${escapeHtml(course.course_code)}</td>
+          <td class="px-[34px] py-[21px] border-b border-[#c4c6d3]">
+            <div class="font-medium">${escapeHtml(course.course_name)}</div>
+            <div class="text-sm text-[#434652]">${escapeHtml(course.credit_units)} units · ${escapeHtml(courseStatus(course))}</div>
+          </td>
+          <td class="px-[34px] py-[21px] text-center border-b border-[#c4c6d3]">Year ${escapeHtml(course.year_of_study)} / Sem ${escapeHtml(course.semester)}</td>
+          <td class="px-[34px] py-[21px] text-right border-b border-[#c4c6d3]">${escapeHtml(course.available_slots)} / ${escapeHtml(course.total_slots)}</td>
+          <td class="px-[34px] py-[21px] text-right border-b border-[#c4c6d3]">
+            <div class="inline-flex gap-2">
+              <button class="rounded-lg border border-[#c4c6d3] px-3 py-1 text-sm text-[#002869] hover:bg-[#eef4fd]" type="button" data-edit="${course.id}">Edit</button>
+              <button class="rounded-lg border border-[#c4c6d3] px-3 py-1 text-sm text-[#ba1a1a] hover:bg-[#ffdad6]" type="button" data-deactivate="${course.id}" ${course.is_active ? "" : "disabled"}>Deactivate</button>
+            </div>
+          </td>
+        </tr>`).join("");
+    };
+
+    const openModal = (course = null) => {
+      editingCourse = course;
+      formError.classList.add("hidden");
+      setText("#modal-title", course ? "Edit Course" : "Add Course");
+      document.getElementById("course-id").value = course?.id || "";
+      document.getElementById("course-code").value = course?.course_code || "";
+      document.getElementById("course-name").value = course?.course_name || "";
+      document.getElementById("credit-units").value = course?.credit_units || 3;
+      document.getElementById("year-of-study").value = course?.year_of_study || 1;
+      document.getElementById("semester").value = course?.semester || 1;
+      document.getElementById("total-slots").value = course?.total_slots || 60;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    };
+
+    const closeModal = () => {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      editingCourse = null;
+    };
+
+    const loadCourses = async () => {
+      const admin = await requireAdminSession();
+      setText("#nav-admin-name", admin.full_name);
+      setText("#nav-admin-id", `Staff: ${admin.staff_number || "Not provided"}`);
+      const data = await apiRequest("/admin/courses");
+      courses = data.courses || [];
+      renderCourses();
+    };
+
+    document.getElementById("add-course-button").addEventListener("click", () => openModal());
+    document.getElementById("close-modal-button").addEventListener("click", closeModal);
+    document.getElementById("cancel-modal-button").addEventListener("click", closeModal);
+    searchInput.addEventListener("input", renderCourses);
+    document.querySelectorAll("[data-logout-trigger]").forEach((trigger) => trigger.addEventListener("click", () => clearAuthSession()));
+
+    tbody.addEventListener("click", async (event) => {
+      const editButton = event.target.closest("[data-edit]");
+      const deactivateButton = event.target.closest("[data-deactivate]");
+      if (editButton) {
+        const course = courses.find((item) => String(item.id) === editButton.dataset.edit);
+        openModal(course);
+      }
+      if (deactivateButton) {
+        await apiRequest(`/admin/courses/${deactivateButton.dataset.deactivate}/deactivate`, { method: "PATCH" });
+        await loadCourses();
+      }
+    });
+
+    document.getElementById("course-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const totalSlots = Number(document.getElementById("total-slots").value);
+      const payload = {
+        course_code: document.getElementById("course-code").value,
+        course_name: document.getElementById("course-name").value,
+        credit_units: Number(document.getElementById("credit-units").value),
+        year_of_study: Number(document.getElementById("year-of-study").value),
+        semester: Number(document.getElementById("semester").value),
+        total_slots: totalSlots,
+      };
+      if (!editingCourse) {
+        payload.available_slots = totalSlots;
+      }
+      try {
+        await apiRequest(editingCourse ? `/admin/courses/${editingCourse.id}` : "/admin/courses", {
+          method: editingCourse ? "PATCH" : "POST",
+          body: JSON.stringify(payload),
+        });
+        closeModal();
+        await loadCourses();
+      } catch (error) {
+        formError.textContent = error.message;
+        formError.classList.remove("hidden");
+      }
+    });
+
+    loadCourses().catch((error) => {
+      tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="5">${escapeHtml(error.message)}</td></tr>`;
+    });
+  </script>
 </body>
 </html>

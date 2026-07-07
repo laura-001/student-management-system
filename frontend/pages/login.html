@@ -132,6 +132,14 @@
 <!-- Product/portal name. -->
 <h1 class="font-headline-md text-headline-md text-primary">Academic Management System</h1>
 </div>
+<div class="grid grid-cols-2 gap-xs mb-md rounded-xl bg-surface-container p-xs" role="tablist" aria-label="Login account type">
+<button class="login-mode-btn rounded-lg bg-primary text-on-primary py-xs font-headline-sm text-headline-sm transition-colors" type="button" data-role="student" aria-pressed="true">
+Student Login
+</button>
+<button class="login-mode-btn rounded-lg text-primary py-xs font-headline-sm text-headline-sm hover:bg-primary-fixed transition-colors" type="button" data-role="admin" aria-pressed="false">
+Admin Login
+</button>
+</div>
 <!-- Login form: grows to keep footer anchored to the bottom. -->
 <form class="flex flex-col gap-md flex-grow" id="login-form" novalidate>
 <!-- Form-level error message for invalid credentials. -->
@@ -221,6 +229,22 @@
                 const formError = document.getElementById("form-error");
                 const usernameError = document.getElementById("username-error");
                 const passwordError = document.getElementById("password-error");
+                const modeButtons = document.querySelectorAll(".login-mode-btn");
+                let expectedRole = "student";
+
+                modeButtons.forEach((button) => {
+                        button.addEventListener("click", () => {
+                                expectedRole = button.dataset.role || "student";
+                                modeButtons.forEach((item) => {
+                                        const isActive = item === button;
+                                        item.setAttribute("aria-pressed", String(isActive));
+                                        item.classList.toggle("bg-primary", isActive);
+                                        item.classList.toggle("text-on-primary", isActive);
+                                        item.classList.toggle("text-primary", !isActive);
+                                        item.classList.toggle("hover:bg-primary-fixed", !isActive);
+                                });
+                        });
+                });
 
                 if (form && username && password && formError && usernameError && passwordError) {
                         // Clear error styling and messages from previous attempts.
@@ -270,6 +294,14 @@
 
                                 try {
                                         const signedInUser = await loginWithDatabase(usernameValue, passwordValue);
+                                        if (signedInUser.role !== expectedRole) {
+                                                clearAuthSession();
+                                                formError.textContent = expectedRole === "admin"
+                                                        ? "This is not an admin account."
+                                                        : "This is not a student account.";
+                                                formError.classList.remove("hidden");
+                                                return;
+                                        }
                                         window.location.href = signedInUser.role === "admin"
                                                 ? "admin-dashboard.html"
                                                 : "student-dashboard.html";

@@ -25,6 +25,7 @@ def get_db():
     except Exception as e:
         print(f"Database error: {e}")
         db.rollback()
+        raise
     finally:       
         db.close()
 
