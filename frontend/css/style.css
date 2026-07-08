@@ -1,1 +1,174 @@
 
+/* Shared Academic Portal styling.
+   This restores the project stylesheet and keeps admin pages visually aligned
+   with the student portal screens. */
+
+:root {
+  --portal-primary: #002869;
+  --portal-primary-container: #0b3d91;
+  --portal-primary-fixed: #dae2ff;
+  --portal-inverse-primary: #b1c5ff;
+  --portal-on-primary-container: #8dadff;
+  --portal-secondary: #735c00;
+  --portal-secondary-fixed-dim: #e9c349;
+  --portal-secondary-container: #fed65b;
+  --portal-surface: #f6f9ff;
+  --portal-surface-container-low: #eef4fd;
+  --portal-surface-container: #e8eef7;
+  --portal-surface-container-high: #e2e9f1;
+  --portal-surface-container-highest: #dce3ec;
+  --portal-surface-container-lowest: #ffffff;
+  --portal-outline-variant: #c4c6d3;
+  --portal-on-surface: #151c22;
+  --portal-on-surface-variant: #434652;
+  --portal-error: #ba1a1a;
+  --portal-error-container: #ffdad6;
+  --portal-success: #15803d;
+  --portal-warning: #735c00;
+  --portal-card-shadow: 0 2px 13px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--portal-surface);
+  color: var(--portal-on-surface);
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.active-tab,
+.portal-active-tab {
+  background-color: var(--portal-primary-fixed);
+  color: #001947;
+  font-weight: 700;
+}
+
+.portal-sidebar {
+  background-color: var(--portal-primary-container);
+  color: #ffffff;
+}
+
+.portal-sidebar-link {
+  color: var(--portal-on-primary-container);
+  transition: background-color 150ms ease, transform 150ms ease;
+}
+
+.portal-sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.portal-card {
+  background: var(--portal-surface-container-lowest);
+  border-radius: 0.5rem;
+  box-shadow: var(--portal-card-shadow);
+}
+
+.portal-section-header {
+  background: var(--portal-surface-container-low);
+  border-bottom: 1px solid var(--portal-outline-variant);
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portal-table th {
+  color: var(--portal-on-surface-variant);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.portal-table td,
+.portal-table th {
+  border-bottom: 1px solid var(--portal-outline-variant);
+}
+
+.portal-table tr:hover {
+  background: var(--portal-surface-container-low);
+}
+
+.portal-button-primary {
+  align-items: center;
+  background: var(--portal-primary);
+  border-radius: 0.5rem;
+  color: #ffffff;
+  display: inline-flex;
+  font-weight: 600;
+  gap: 0.5rem;
+  justify-content: center;
+  transition: background-color 150ms ease;
+}
+
+.portal-button-primary:hover {
+  background: var(--portal-primary-container);
+}
+
+.portal-button-secondary {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid var(--portal-outline-variant);
+  border-radius: 0.5rem;
+  color: var(--portal-primary);
+  display: inline-flex;
+  font-weight: 600;
+  gap: 0.5rem;
+  justify-content: center;
+  transition: background-color 150ms ease;
+}
+
+.portal-button-secondary:hover {
+  background: var(--portal-surface-container-low);
+}
+
+.portal-stat-primary {
+  border-left: 4px solid var(--portal-primary);
+}
+
+.portal-stat-secondary {
+  border-left: 4px solid var(--portal-secondary-fixed-dim);
+}
+
+.portal-muted {
+  color: var(--portal-on-surface-variant);
+}
+
+.portal-title {
+  color: var(--portal-primary);
+}
+
+.portal-badge {
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.75rem;
+  text-transform: uppercase;
+}
+
+.portal-badge-active,
+.portal-badge-open {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.portal-badge-waitlisted,
+.portal-badge-full {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.portal-badge-dropped,
+.portal-badge-inactive {
+  background: var(--portal-surface-container);
+  color: var(--portal-on-surface-variant);
+}
