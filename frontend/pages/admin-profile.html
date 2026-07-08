@@ -53,64 +53,93 @@
       </div>
     </header>
 
-    <div class="p-[34px] max-w-[900px] mx-auto w-full space-y-[34px]">
-      <section class="space-y-2">
-        <h2 class="text-[42px] leading-tight font-semibold text-[#002869]">Profile Record</h2>
-        <p class="text-base text-[#434652]">Your admin account and permissions from the backend.</p>
-      </section>
-
-      <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden">
-        <div class="h-24 bg-[#002869]"></div>
-        <div class="px-[34px] pb-[34px] -mt-10 flex flex-col md:flex-row md:items-end gap-[21px]">
-          <div class="w-20 h-20 rounded-xl bg-[#dae2ff] border-4 border-white shadow-sm flex items-center justify-center">
-            <span class="material-symbols-outlined text-[#002869] text-[42px]">admin_panel_settings</span>
+    <div class="p-[34px] max-w-6xl mx-auto w-full space-y-[34px]">
+      <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border border-[#dce3ec] p-[34px] flex flex-col md:flex-row md:items-center gap-[34px]">
+        <div class="w-24 h-24 rounded-xl bg-[#dae2ff] flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-[#002869] text-[52px]">admin_panel_settings</span>
+        </div>
+        <div class="flex-1">
+          <div class="flex flex-col md:flex-row md:items-center gap-[13px] mb-2">
+            <h2 id="profile-name" class="text-[42px] leading-tight font-semibold text-[#002869]">Loading...</h2>
+            <span class="inline-flex items-center px-3 py-1 rounded-full bg-green-100 text-green-800 text-xs font-bold uppercase tracking-wider self-start md:self-center">
+              Active
+            </span>
           </div>
-          <div class="flex-1 md:pb-2">
-            <h3 id="profile-name" class="text-[26px] leading-tight font-semibold text-[#002869]">Loading...</h3>
-            <p id="profile-meta" class="text-base text-[#434652]">Admin account</p>
-          </div>
+          <p id="profile-meta" class="text-base font-semibold text-[#434652]">Admin account</p>
+          <p class="text-base text-[#747783] mt-2">Manage courses, registrations, waitlist decisions, and student records.</p>
         </div>
       </section>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-[21px]">
-        <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] p-[34px]">
-          <h3 class="text-base font-semibold text-[#002869] mb-[21px]">Contact Information</h3>
-          <dl class="space-y-[21px]">
-            <div class="flex items-center gap-[13px]">
-              <span class="material-symbols-outlined text-[#002869]">mail</span>
-              <div>
-                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Email</dt>
-                <dd id="profile-email" class="font-medium">Loading...</dd>
-              </div>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-[21px]">
+        <section class="lg:col-span-8 bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border border-[#dce3ec] p-[34px]">
+          <div class="flex items-center gap-[13px] border-b border-[#c4c6d3] pb-[13px] mb-[21px]">
+            <span class="material-symbols-outlined text-[#002869]">badge</span>
+            <h3 class="text-base font-semibold text-[#002869] uppercase tracking-tight">Admin Profile Details</h3>
+          </div>
+          <dl class="grid grid-cols-1 md:grid-cols-2 gap-y-[34px] gap-x-[55px]">
+            <div>
+              <dt class="text-[10px] font-semibold uppercase text-[#747783] mb-1">Full Name</dt>
+              <dd id="profile-detail-name" class="text-base font-semibold text-[#151c22]">Loading...</dd>
             </div>
-            <div class="flex items-center gap-[13px]">
-              <span class="material-symbols-outlined text-[#002869]">badge</span>
-              <div>
-                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Staff Number</dt>
-                <dd id="profile-staff" class="font-medium">Loading...</dd>
-              </div>
+            <div>
+              <dt class="text-[10px] font-semibold uppercase text-[#747783] mb-1">Email</dt>
+              <dd id="profile-email" class="text-base font-semibold text-[#151c22]">Loading...</dd>
+            </div>
+            <div class="border-t border-[#c4c6d3] pt-[13px]">
+              <dt class="text-[10px] font-semibold uppercase text-[#747783] mb-1">Staff Number</dt>
+              <dd id="profile-staff" class="text-base font-semibold text-[#151c22]">Loading...</dd>
+            </div>
+            <div class="border-t border-[#c4c6d3] pt-[13px]">
+              <dt class="text-[10px] font-semibold uppercase text-[#747783] mb-1">Account Role</dt>
+              <dd id="profile-role" class="text-base font-semibold text-[#151c22]">Admin</dd>
+            </div>
+            <div class="border-t border-[#c4c6d3] pt-[13px]">
+              <dt class="text-[10px] font-semibold uppercase text-[#747783] mb-1">Admin Level</dt>
+              <dd id="profile-level" class="text-[26px] leading-tight font-semibold text-[#002869]">Loading...</dd>
+            </div>
+            <div class="border-t border-[#c4c6d3] pt-[13px]">
+              <dt class="text-[10px] font-semibold uppercase text-[#747783] mb-1">Account Status</dt>
+              <dd class="inline-flex items-center gap-2 text-base font-semibold text-green-700">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                Active
+              </dd>
             </div>
           </dl>
         </section>
 
-        <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] p-[34px]">
-          <h3 class="text-base font-semibold text-[#002869] mb-[21px]">Permissions</h3>
-          <dl class="space-y-[21px]">
-            <div class="flex items-center gap-[13px]">
-              <span class="material-symbols-outlined text-[#002869]">verified_user</span>
+        <section class="lg:col-span-4 bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] border border-[#dce3ec] overflow-hidden">
+          <div class="px-[34px] py-[21px] bg-[#002869] text-white">
+            <h3 class="text-base font-semibold">Admin Permissions</h3>
+          </div>
+          <div class="p-[34px] space-y-[21px]">
+            <div class="flex items-start gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">check_circle</span>
               <div>
-                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Role</dt>
-                <dd id="profile-role" class="font-medium">Admin</dd>
+                <p class="font-semibold">Course Management</p>
+                <p class="text-sm text-[#434652]">Create, update, and deactivate courses.</p>
               </div>
             </div>
-            <div class="flex items-center gap-[13px]">
-              <span class="material-symbols-outlined text-[#002869]">tune</span>
+            <div class="flex items-start gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">check_circle</span>
               <div>
-                <dt class="text-[10px] font-semibold uppercase text-[#434652]">Admin Level</dt>
-                <dd id="profile-level" class="font-medium">Loading...</dd>
+                <p class="font-semibold">Registration Roster</p>
+                <p class="text-sm text-[#434652]">View all active, dropped, and waitlisted registrations.</p>
               </div>
             </div>
-          </dl>
+            <div class="flex items-start gap-[13px]">
+              <span class="material-symbols-outlined text-[#002869]">check_circle</span>
+              <div>
+                <p class="font-semibold">Waitlist Acceptance</p>
+                <p class="text-sm text-[#434652]">Accept waitlisted students into a course.</p>
+              </div>
+            </div>
+            <div class="pt-[13px] border-t border-[#c4c6d3]">
+              <a href="enrollment-roster.html" class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-[#002869] px-[21px] py-[13px] text-white font-semibold hover:bg-[#0b3d91]">
+                <span class="material-symbols-outlined text-[18px]">groups</span>
+                Review Registrations
+              </a>
+            </div>
+          </div>
         </section>
       </div>
     </div>
@@ -123,6 +152,7 @@
       setText("#nav-admin-name", admin.full_name);
       setText("#nav-admin-id", `Staff: ${admin.staff_number || "Not provided"}`);
       setText("#profile-name", admin.full_name);
+      setText("#profile-detail-name", admin.full_name);
       setText("#profile-meta", `Admin Level ${admin.admin_level || 1}`);
       setText("#profile-email", admin.email);
       setText("#profile-staff", admin.staff_number);

@@ -80,13 +80,19 @@
 
       <section class="bg-white rounded-xl shadow-[0px_2px_13px_rgba(0,0,0,0.05)] overflow-hidden">
         <div class="px-[34px] py-[21px] border-b border-[#c4c6d3] bg-[#eef4fd] flex flex-col md:flex-row md:items-center md:justify-between gap-[13px]">
-          <h3 class="text-base font-semibold text-[#002869]">Student Course Registrations</h3>
-          <select id="status-filter" class="rounded-lg border border-[#c4c6d3] bg-white px-3 py-2 text-[#151c22] outline-none focus:border-[#002869] focus:ring-1 focus:ring-[#002869]">
-            <option value="">All statuses</option>
-            <option value="active">Active</option>
-            <option value="waitlisted">Waitlisted</option>
-            <option value="dropped">Dropped</option>
-          </select>
+          <div>
+            <h3 class="text-base font-semibold text-[#002869]">Student Course Registrations</h3>
+            <p id="roster-message" class="mt-1 text-sm text-[#434652]" aria-live="polite"></p>
+          </div>
+          <div class="flex items-center gap-[13px]">
+            <a href="course-catalog.html" class="hidden md:inline-flex rounded-lg border border-[#c4c6d3] bg-white px-3 py-2 text-sm font-semibold text-[#002869] hover:bg-[#eef4fd]">View Courses</a>
+            <select id="status-filter" class="rounded-lg border border-[#c4c6d3] bg-white px-3 py-2 text-[#151c22] outline-none focus:border-[#002869] focus:ring-1 focus:ring-[#002869]">
+              <option value="">All statuses</option>
+              <option value="active">Active</option>
+              <option value="waitlisted">Waitlisted</option>
+              <option value="dropped">Dropped</option>
+            </select>
+          </div>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full border-collapse">
@@ -97,10 +103,11 @@
                 <th class="text-left px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Department</th>
                 <th class="text-center px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Status</th>
                 <th class="text-right px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Registered</th>
+                <th class="text-right px-[34px] py-[13px] text-[10px] font-semibold text-[#434652] uppercase border-b border-[#c4c6d3]">Action</th>
               </tr>
             </thead>
             <tbody id="registration-table-body">
-              <tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">Loading registrations...</td></tr>
+              <tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="6">Loading registrations...</td></tr>
             </tbody>
           </table>
         </div>
@@ -112,6 +119,7 @@
   <script>
     const tbody = document.getElementById("registration-table-body");
     const statusFilter = document.getElementById("status-filter");
+    const rosterMessage = document.getElementById("roster-message");
 
     const badgeClass = (statusValue) => {
       if (statusValue === "active") return "bg-green-100 text-green-700";
@@ -121,7 +129,7 @@
 
     const renderRows = (registrations) => {
       if (!registrations.length) {
-        tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">No registrations found.</td></tr>';
+        tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="6">No registrations found.</td></tr>';
         return;
       }
       tbody.innerHTML = registrations.map((registration) => `
@@ -139,6 +147,17 @@
             <span class="inline-flex rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-wider ${badgeClass(registration.status)}">${escapeHtml(registration.status)}</span>
           </td>
           <td class="px-[34px] py-[21px] text-right border-b border-[#c4c6d3]">${escapeHtml(formatDate(registration.registered_at))}</td>
+          <td class="px-[34px] py-[21px] text-right border-b border-[#c4c6d3]">
+            ${registration.status === "waitlisted" ? `
+              <button
+                class="inline-flex items-center gap-1 rounded-lg bg-[#002869] px-3 py-2 text-sm font-semibold text-white hover:bg-[#0b3d91]"
+                type="button"
+                data-accept-registration="${registration.registration_id}">
+                <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                Accept
+              </button>
+            ` : '<span class="text-sm text-[#434652]">No action</span>'}
+          </td>
         </tr>`).join("");
     };
 
@@ -156,15 +175,48 @@
     };
 
     statusFilter.addEventListener("change", () => {
-      tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="5">Loading registrations...</td></tr>';
+      tbody.innerHTML = '<tr><td class="px-[34px] py-[21px] text-[#434652]" colspan="6">Loading registrations...</td></tr>';
       loadRoster().catch((error) => {
-        tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="5">${escapeHtml(error.message)}</td></tr>`;
+        tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="6">${escapeHtml(error.message)}</td></tr>`;
       });
     });
+
+    tbody.addEventListener("click", async (event) => {
+      const button = event.target.closest("[data-accept-registration]");
+      if (!button) {
+        return;
+      }
+
+      button.disabled = true;
+      button.classList.add("opacity-60", "cursor-wait");
+      if (rosterMessage) {
+        rosterMessage.textContent = "Accepting waitlisted student...";
+        rosterMessage.className = "mt-1 text-sm text-[#434652]";
+      }
+
+      try {
+        const data = await apiRequest(`/admin/registrations/${button.dataset.acceptRegistration}/accept`, {
+          method: "PATCH",
+        });
+        if (rosterMessage) {
+          rosterMessage.textContent = data.message || "Waitlisted student accepted.";
+          rosterMessage.className = "mt-1 text-sm text-green-700";
+        }
+        await loadRoster();
+      } catch (error) {
+        if (rosterMessage) {
+          rosterMessage.textContent = error.message;
+          rosterMessage.className = "mt-1 text-sm text-[#ba1a1a]";
+        }
+        button.disabled = false;
+        button.classList.remove("opacity-60", "cursor-wait");
+      }
+    });
+
     document.querySelectorAll("[data-logout-trigger]").forEach((trigger) => trigger.addEventListener("click", () => clearAuthSession()));
 
     loadRoster().catch((error) => {
-      tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="5">${escapeHtml(error.message)}</td></tr>`;
+      tbody.innerHTML = `<tr><td class="px-[34px] py-[21px] text-[#ba1a1a]" colspan="6">${escapeHtml(error.message)}</td></tr>`;
     });
   </script>
 </body>

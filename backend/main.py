@@ -27,13 +27,20 @@ allowed_origins = [
     for origin in settings.ALLOWED_ORIGINS.split(",")
     if origin.strip()
 ]
-for dev_origin in ("http://127.0.0.1:5500", "http://localhost:5500", "null"):
+for dev_origin in (
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "null",
+):
     if dev_origin not in allowed_origins:
         allowed_origins.append(dev_origin)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"] if "*" in allowed_origins else allowed_origins,
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -426,6 +433,51 @@ def list_admin_registrations(
             "waitlisted": sum(1 for item in items if item["status"] == "waitlisted"),
             "dropped": sum(1 for item in items if item["status"] == "dropped"),
         },
+    }
+
+
+@app.patch("/admin/registrations/{registration_id}/accept")
+def accept_waitlisted_registration(
+    registration_id: int,
+    current_user: User = Depends(_current_admin),
+    db: Session = Depends(get_db),
+) -> dict:
+    registration = (
+        db.query(Registration)
+        .options(
+            joinedload(Registration.course).joinedload(Course.department),
+            joinedload(Registration.student).joinedload(Student.user),
+        )
+        .filter(Registration.id == registration_id)
+        .first()
+    )
+    if not registration:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Registration not found.")
+    if registration.status != "waitlisted":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Only waitlisted registrations can be accepted.",
+        )
+    if not registration.course or not registration.course.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Cannot accept a waitlisted student into an inactive course.",
+        )
+
+    course = registration.course
+    if course.available_slots > 0:
+        course.available_slots -= 1
+    else:
+        # Admin acceptance is an explicit capacity override for demo/admin workflows.
+        course.total_slots += 1
+
+    registration.status = "active"
+    db.commit()
+    db.refresh(registration)
+    return {
+        "message": "Waitlisted student accepted.",
+        "registration": _serialize_admin_registration(registration),
+        "course": _serialize_course(course),
     }
 
 
